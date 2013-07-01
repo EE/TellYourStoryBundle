@@ -1,0 +1,23 @@
+{
+    "name": "ee/tellyourstory-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony Bundle for building applications that allow its users to share theirs stories.",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Konrad Podgórski",
+            "email": "konrad.podgorski@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "EE\\TYSBundle": ""
+        }
+    },
+    "target-dir": "EE/TYSBundle",
+    "require": {
+        "symfony/symfony": "~2.3-dev",
+        "twitter/bootstrap": "2.3.*"
+    }
+}

@@ -1,0 +1,3 @@
+eetys_homepage:
+    pattern:  /
+    defaults: { _controller: EETYSBundle:Default:homepage }

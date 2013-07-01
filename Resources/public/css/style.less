@@ -1,0 +1,18 @@
+// this relative path hopefully will be removed in future
+@import '../../../../../../../twitter/bootstrap/less/bootstrap.less';
+@import '_mixins.less';
+
+// sticky footer begin
+@footerHeight: 120px;
+
+html, body { height: 100%; }
+#footer-push, footer { min-height: @footerHeight; }
+.page-wrap {
+  .box-sizing(border-box);
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin-bottom: (@footerHeight * -1);
+}
+// sticky footer end

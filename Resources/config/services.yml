@@ -1,0 +1,7 @@
+parameters:
+#    eetys.example.class: EE\TYSBundle\Example
+
+services:
+#    eetys.example:
+#        class: %eetys.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
