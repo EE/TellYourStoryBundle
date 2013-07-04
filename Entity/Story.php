@@ -3,6 +3,7 @@
 namespace EE\TYSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Story
@@ -25,6 +26,7 @@ class Story
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -32,6 +34,7 @@ class Story
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -39,6 +42,7 @@ class Story
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $address;
 
@@ -49,6 +53,10 @@ class Story
      */
     private $createdAt;
 
+    function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * Get id

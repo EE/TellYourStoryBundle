@@ -59,6 +59,4 @@ class UrlItem extends Item
         return $this->url;
     }
 
-
-
 }

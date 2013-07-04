@@ -1,0 +1,3 @@
+stories:
+    type:        rest
+    resource: EE\TYSBundle\Controller\StoryController
