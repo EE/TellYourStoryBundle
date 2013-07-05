@@ -4,12 +4,15 @@ namespace EE\TYSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Story
  *
  * @ORM\Table(name="tys_story")
  * @ORM\Entity(repositoryClass="EE\TYSBundle\Entity\StoryRepository")
+ * @Serializer\ExclusionPolicy("all")
+ * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
 class Story
 {
@@ -19,6 +22,8 @@ class Story
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"get", "cget"})
      */
     private $id;
 
@@ -27,6 +32,8 @@ class Story
      *
      * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
+     * @Serializer\Expose
+     * @Serializer\Groups({"get"})
      */
     private $name;
 
@@ -35,6 +42,8 @@ class Story
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank()
+     * @Serializer\Expose
+     * @Serializer\Groups({"get"})
      */
     private $description;
 
@@ -43,6 +52,8 @@ class Story
      *
      * @ORM\Column(name="address", type="string", length=255)
      * @Assert\NotBlank()
+     * @Serializer\Expose
+     * @Serializer\Groups({"get"})
      */
     private $address;
 
@@ -50,6 +61,8 @@ class Story
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     * @Serializer\Expose
+     * @Serializer\Groups({"get"})
      */
     private $createdAt;
 
@@ -162,5 +175,11 @@ class Story
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    public function serialize() {
+        return array(
+            'name' => $this->getName()
+        );
     }
 }

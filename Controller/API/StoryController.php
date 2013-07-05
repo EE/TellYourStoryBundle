@@ -1,6 +1,6 @@
 <?php
 
-namespace EE\TYSBundle\Controller;
+namespace EE\TYSBundle\Controller\API;
 
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\View\View;
@@ -14,13 +14,13 @@ use FOS\RestBundle\Controller\Annotations as REST;
 /**
  * Class StoryController
  *
- * @package EE\TYSBundle\Controller
+ * @package EE\TYSBundle\Controller\API
  * @author  Konrad Podgórski <konrad.podgorski@gmail.com>
  */
 class StoryController extends ResourceController
 {
     /**
-     * {@inherit}
+     * {@inheritdoc}
      */
     public function __construct()
     {

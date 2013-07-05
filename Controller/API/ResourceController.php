@@ -1,6 +1,6 @@
 <?php
 
-namespace EE\TYSBundle\Controller;
+namespace EE\TYSBundle\Controller\API;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,10 +11,13 @@ use FOS\RestBundle\Controller\Annotations as REST,
 
 use FOS\RestBundle\Routing\ClassResourceInterface;
 
+use EE\TYSBundle\Controller\Annotation\Voter;
+
+
 /**
  * Class ResourceController
  *
- * @package EE\TYSBundle\Controller
+ * @package EE\TYSBundle\Controller\API
  * @author  Konrad Podgórski <konrad.podgorski@gmail.com>
  */
 class ResourceController extends FOSRestController implements ClassResourceInterface
@@ -37,7 +40,10 @@ class ResourceController extends FOSRestController implements ClassResourceInter
      *
      * @param integer $id
      *
-     * @REST\Route(requirements={"_format"="html|json|xml","id"="\d+"} )
+     * @REST\Route(requirements={"_format"="json|xml","id"="\d+"} )
+     * @REST\View(serializerGroups={"get"})
+     *
+     * @Voter()
      *
      * @throws NotFoundHttpException
      *
@@ -58,6 +64,7 @@ class ResourceController extends FOSRestController implements ClassResourceInter
      * Get collection of resource objects
      *
      * @REST\Route(requirements={"_format"="json|xml"})
+     * @REST\View(serializerGroups={"cget"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

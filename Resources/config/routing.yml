@@ -2,8 +2,8 @@ ee_tys_default:
     resource: "@EETYSBundle/Resources/config/routing/default.yml"
     prefix: /
 
-ee_tys_story:
+ee_tys_api:
     type: rest
-    resource: "@EETYSBundle/Resources/config/routing/story.yml"
+    resource: "@EETYSBundle/Resources/config/routing/api.yml"
     prefix: /
 

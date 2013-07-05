@@ -2,6 +2,15 @@ parameters:
 #    eetys.example.class: EE\TYSBundle\Example
 
 services:
-#    eetys.example:
-#        class: %eetys.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    ee_tys.story_voter:
+        class: EE\TYSBundle\Security\Authorization\Voter\StoryVoter
+        arguments: [@service_container]
+        public: false
+        tags:
+          - { name: security.voter }
+
+    ee_tys.voter_listener:
+        class: EE\TYSBundle\EventListener\VoterListener
+        arguments: [@service_container]
+        tags:
+          - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -128  }
