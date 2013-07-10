@@ -1,0 +1,30 @@
+story:
+    pattern:  /
+    defaults: { _controller: "EETYSBundle:Story:index" }
+
+story_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "EETYSBundle:Story:show" }
+
+story_new:
+    pattern:  /new
+    defaults: { _controller: "EETYSBundle:Story:new" }
+
+story_create:
+    pattern:  /create
+    defaults: { _controller: "EETYSBundle:Story:create" }
+    requirements: { _method: post }
+
+story_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "EETYSBundle:Story:edit" }
+
+story_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "EETYSBundle:Story:update" }
+    requirements: { _method: post|put }
+
+story_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "EETYSBundle:Story:delete" }
+    requirements: { _method: post|delete }

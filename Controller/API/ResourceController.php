@@ -2,16 +2,14 @@
 
 namespace EE\TYSBundle\Controller\API;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException,
+    Symfony\Component\HttpFoundation\Request;
 
 use FOS\RestBundle\Controller\Annotations as REST,
     FOS\RestBundle\Controller\FOSRestController,
-    FOS\Rest\Util\Codes;
+    FOS\RestBundle\Routing\ClassResourceInterface;
 
-use FOS\RestBundle\Routing\ClassResourceInterface;
-
-use EE\TYSBundle\Controller\Annotation\Voter;
+use EE\TYSBundle\Controller\Annotation\VoterAnnotation as Voter;
 
 
 /**
@@ -43,7 +41,7 @@ class ResourceController extends FOSRestController implements ClassResourceInter
      * @REST\Route(requirements={"_format"="json|xml","id"="\d+"} )
      * @REST\View(serializerGroups={"get"})
      *
-     * @Voter()
+     * @Voter(action="get")
      *
      * @throws NotFoundHttpException
      *
@@ -71,19 +69,6 @@ class ResourceController extends FOSRestController implements ClassResourceInter
     public function cgetAction()
     {
         return $this->getResourceRepository()->findAll();
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
-     * @REST\Route(requirements={"_format"="json|xml"})
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function putAction($id)
-    {
-        // @TODO
     }
 
     // helpers

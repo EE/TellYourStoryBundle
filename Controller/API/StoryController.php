@@ -4,7 +4,6 @@ namespace EE\TYSBundle\Controller\API;
 
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\View\View;
-use EE\TYSBundle\Form\StoryType;
 use EE\TYSBundle\Entity\Story;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -49,8 +48,6 @@ class StoryController extends ResourceController
         $validator = $this->get('validator');
         $errors = $validator->validate($story);
 
-        $statusCode = Codes::HTTP_OK;
-
         if (count($errors) > 0) {
             $data = $errors;
             $statusCode = Codes::HTTP_BAD_REQUEST;
@@ -68,5 +65,4 @@ class StoryController extends ResourceController
         return $this->view($data, $statusCode);
 
     }
-
 }

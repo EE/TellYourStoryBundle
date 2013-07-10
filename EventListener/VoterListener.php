@@ -2,15 +2,15 @@
 
 namespace EE\TYSBundle\EventListener;
 
+use EE\TYSBundle\Controller\Annotation\VoterAnnotation;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use EE\TYSBundle\Controller\Annotation\Voter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Class VoterListener
@@ -32,14 +32,33 @@ class VoterListener implements EventSubscriberInterface
 
     public function onKernelController(FilterControllerEvent $event)
     {
-        $request = $event->getRequest();
-
-        if ($configuration = $request->attributes->get('_voter')) {
-            if (!$configuration instanceof Voter) {
-                return;
-            }
+        if (!is_array($controller = $event->getController())) {
+            return;
         }
-        throw new AccessDeniedException();
+
+        $object = new \ReflectionObject($controller[0]);
+        $method = $object->getMethod($controller[1]);
+
+        $annotationReader = $this->container->get('annotation_reader');
+
+        $annotation = $annotationReader->getMethodAnnotation(
+            $method,
+            'EE\TYSBundle\Controller\Annotation\VoterAnnotation'
+        );
+
+        if (!$annotation instanceof VoterAnnotation) {
+            return;
+        }
+
+        $object = $this->container->get('doctrine')->getManager()->find(
+            // temporary
+            'EETYSBundle:Story',
+            $event->getRequest()->get('id')
+        );
+
+        if (false === $this->isGranted($annotation->getAction(), $object)) {
+            throw new AccessDeniedHttpException();
+        }
     }
 
     public static function getSubscribedEvents()
@@ -50,12 +69,13 @@ class VoterListener implements EventSubscriberInterface
     }
 
 
-
-    public function getSecurityContext(){
+    public function getSecurityContext()
+    {
         return $this->container->get('security.context');
     }
 
-    public function isGranted($permission, $domainObject = null){
+    public function isGranted($permission, $domainObject = null)
+    {
         return $this->getSecurityContext()->isGranted($permission, $domainObject);
     }
 
