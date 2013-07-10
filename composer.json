@@ -18,6 +18,22 @@
     "target-dir": "EE/TYSBundle",
     "require": {
         "symfony/symfony": "~2.3-dev",
-        "twitter/bootstrap": "2.3.*"
-    }
+        "mopa/bootstrap-bundle": "dev-master",
+        "twitter/bootstrap": "2.3.*",
+        "desandro/masonry": "*"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "version": "master",
+                "name": "desandro/masonry",
+                "source": {
+                    "url": "https://github.com/desandro/masonry.git",
+                    "type": "git",
+                    "reference": "v3.0.1"
+                }
+            }
+        }
+    ]
 }
