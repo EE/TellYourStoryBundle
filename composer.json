@@ -20,7 +20,7 @@
         "symfony/symfony": "~2.3",
         "mopa/bootstrap-bundle": "dev-master",
         "twitter/bootstrap": "2.3.*",
-        "desandro/masonry": "v3.0.1"
+        "doctrine/doctrine-fixtures-bundle": "~2.0"
     }
 
 }

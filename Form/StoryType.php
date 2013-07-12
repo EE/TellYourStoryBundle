@@ -13,8 +13,7 @@ class StoryType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('address')
-            ->add('createdAt');
+            ->add('address');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -3,6 +3,12 @@
 {% block content %}
     <h1>Story list</h1>
 
+    <div class="js-masonry" data-masonry-options='{ "itemSelector": ".item", "columnWidth": 200 }'>
+        {%  for item in entities %}
+            <div class="item">{{ item.id }} {{ item.name }}</div>
+        {% endfor %}
+    </div>
+
     <table class="records_list">
         <thead>
             <tr>

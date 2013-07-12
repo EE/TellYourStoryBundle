@@ -14,3 +14,15 @@ Required config
 
     sensio_framework_extra:
         view:    { annotations: false }
+
+AppKernel.php
+
+    new FOS\RestBundle\FOSRestBundle(),
+    new JMS\SerializerBundle\JMSSerializerBundle(),
+    new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
+    new EE\TYSBundle\EETYSBundle(),
+    new TB\TYSBundle\TBTYSBundle(),
+
+Dev & Test
+
+    $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
