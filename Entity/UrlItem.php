@@ -13,31 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 class UrlItem extends Item
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="url", type="string")
      */
     private $url;
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @param string $url

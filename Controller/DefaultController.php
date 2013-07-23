@@ -14,6 +14,12 @@ class DefaultController extends Controller
 {
     public function homepageAction()
     {
-        return $this->render('EETYSBundle:Default:homepage.html.twig');
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('EETYSBundle:FileItem')->findAll();
+
+        return $this->render('EETYSBundle:Default:homepage.html.twig', array(
+                'entities' => $entities
+            ));
     }
 }

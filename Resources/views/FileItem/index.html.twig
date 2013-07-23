@@ -1,0 +1,55 @@
+{%  extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+    <h1>FileItem list</h1>
+
+    <div class="js-masonry" data-masonry-options='{ "itemSelector": ".item", "columnWidth": 200 }'>
+        {%  for item in entities %}
+            <div class="item">
+                {% if item.files[0] is defined %}
+                    <img src="{{ item.files[0] | imagine_filter('tile') }}" alt=""/>
+                {% else %}
+                    <img src="http://placehold.it/200x200" alt=""/>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Createdat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('fileitem_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.name }}</td>
+                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('fileitem_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('fileitem_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('fileitem_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

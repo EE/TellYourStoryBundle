@@ -3,6 +3,7 @@
 namespace EE\TYSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Item
@@ -18,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *      "audio" = "AudioItem",
  *      "url"   = "UrlItem"
  * })
+ * @Serializer\ExclusionPolicy("all")
  *
  */
 abstract class Item
@@ -28,6 +30,8 @@ abstract class Item
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"get", "cget"})
      */
     private $id;
 
@@ -35,6 +39,8 @@ abstract class Item
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Serializer\Expose
+     * @Serializer\Groups({"get", "cget"})
      */
     private $name;
 
@@ -45,7 +51,10 @@ abstract class Item
      */
     private $createdAt;
 
-    function __construct()
+    /**
+     * Item Constructor
+     */
+    public function __construct()
     {
         $this->createdAt = new \DateTime();
     }

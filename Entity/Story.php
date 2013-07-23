@@ -33,7 +33,7 @@ class Story
      * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
      * @Serializer\Expose
-     * @Serializer\Groups({"get"})
+     * @Serializer\Groups({"get", "cget"})
      */
     private $name;
 
@@ -48,7 +48,7 @@ class Story
     private $description;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="address", type="string", length=255)
      * @Assert\NotBlank()
@@ -58,6 +58,17 @@ class Story
     private $address;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="background_filename", type="string", length=255, nullable=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Groups({"get", "cget"})
+
+     */
+    private $backgroundFilename;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -65,6 +76,14 @@ class Story
      * @Serializer\Groups({"get"})
      */
     private $createdAt;
+
+
+    /**
+     * @Assert\File(
+     *     maxSize = "32M"
+     * )
+     */
+    public $file;
 
     function __construct()
     {
@@ -151,6 +170,26 @@ class Story
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * @param null|string $backgroundFilename
+     *
+     * @return $this
+     */
+    public function setBackgroundFilename($backgroundFilename)
+    {
+        $this->backgroundFilename = $backgroundFilename;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getBackgroundFilename()
+    {
+        return $this->backgroundFilename;
     }
 
     /**

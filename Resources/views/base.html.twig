@@ -8,6 +8,12 @@
     '@EETYSBundle/Resources/public/css/style.less' %}
     <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
     {% endstylesheets %}
+    <script type="text/javascript">
+        {# if this gets bigger we can replace this with FOSRoutingBundle #}
+        var Routing = {
+            get_stories: "{{ path('get_stories') }}"
+        }
+    </script>
 </head>
 <body>
 <div class="page-wrap">
@@ -21,8 +27,10 @@
 {% include "EETYSBundle:Component:footer.html.twig" %}
 {% javascripts
 '@EETYSBundle/Resources/public/js/vendor/jquery-2.0.3.js'
-'@EETYSBundle/Resources/public/js/vendor/masonry.pkgd.min.js' %}
-<script src="{{ asset_url }}"></script>
+'@EETYSBundle/Resources/public/js/vendor/masonry.pkgd.min.js'
+'@EETYSBundle/Resources/public/js/homepage-stories.js'
+%}
+<script src="{{ asset_url }}" type="text/javascript"></script>
 {% endjavascripts %}
 </body>
 </html>

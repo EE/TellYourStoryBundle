@@ -1,12 +1,10 @@
 {%  extends 'EETYSBundle::base.html.twig' %}
 
 {% block content %}
-    <h1>Story edit</h1>
+    <h1>FileItem edit</h1>
 
-    <form action="{{ path('story_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    <form action="{{ path('fileitem_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
         <input type="hidden" name="_method" value="PUT" />
-        {{ form_errors(edit_form) }}
-
         {{ form_widget(edit_form) }}
         <p>
             <button type="submit">Edit</button>
@@ -15,12 +13,12 @@
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('story') }}">
+        <a href="{{ path('fileitem') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <form action="{{ path('story_delete', { 'id': entity.id }) }}" method="post">
+        <form action="{{ path('fileitem_delete', { 'id': entity.id }) }}" method="post">
             <input type="hidden" name="_method" value="DELETE" />
             {{ form_widget(delete_form) }}
             <button type="submit">Delete</button>

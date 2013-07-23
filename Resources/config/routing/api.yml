@@ -1,3 +1,7 @@
 api_story:
     type:        rest
     resource: EE\TYSBundle\Controller\API\StoryController
+
+api_item:
+    type:        rest
+    resource: EE\TYSBundle\Controller\API\ItemController

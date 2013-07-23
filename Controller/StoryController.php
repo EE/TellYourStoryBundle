@@ -37,10 +37,13 @@ class StoryController extends Controller
     {
         $entity  = new Story();
         $form = $this->createForm(new StoryType(), $entity);
-        $form->handleRequest($request);
+        $form->submit($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $this->handleUpload($entity);
+
             $em->persist($entity);
             $em->flush();
 
@@ -55,7 +58,6 @@ class StoryController extends Controller
 
     /**
      * Displays a form to create a new Story entity.
-     *
      */
     public function newAction()
     {
@@ -116,6 +118,10 @@ class StoryController extends Controller
     /**
      * Edits an existing Story entity.
      *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function updateAction(Request $request, $id)
     {
@@ -128,10 +134,13 @@ class StoryController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new StoryType(), $entity);
-        $editForm->handleRequest($request);
+        $editForm = $this->createForm(new StoryType(), $entity, array('method'=>'PUT'));
+        $editForm->submit($request);
 
         if ($editForm->isValid()) {
+
+            $this->handleUpload($entity);
+
             $em->persist($entity);
             $em->flush();
 
@@ -151,7 +160,7 @@ class StoryController extends Controller
     public function deleteAction(Request $request, $id)
     {
         $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $form->submit($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -181,5 +190,25 @@ class StoryController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+
+    /**
+     * @param $entity
+     */
+    private function handleUpload(&$entity)
+    {
+        if ($entity->file) {
+            $uploadsAdapter = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
+            try {
+                $uploadsAdapter->delete($entity->getBackgroundFilename());
+            } catch (\RuntimeException $e) {
+                // file didn't exist on server, don't do anything
+            };
+
+            $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $entity->file->guessExtension();
+            $uploadsAdapter->write($key, file_get_contents($entity->file));
+
+            $entity->setBackgroundFilename($key);
+        }
     }
 }

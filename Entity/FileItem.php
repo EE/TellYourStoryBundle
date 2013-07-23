@@ -3,7 +3,7 @@
 namespace EE\TYSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * FileItem
@@ -13,30 +13,33 @@ use Doctrine\ORM\Mapping as ORM;
 class FileItem extends Item
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="filename", type="string")
      */
     private $filename;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="files", type="array")
+     */
+    public $files;
+
+    /**     *
+     * Dummy property used to generate form based on entity
+     *
+     * @var array
+     */
+    public $uploadedFiles;
 
     /**
-     * Get id
-     *
-     * @return integer 
+     * FileItem Constructor
      */
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
+        parent::__construct();
+        $this->files = new ArrayCollection();
     }
 
     /**
@@ -59,4 +62,47 @@ class FileItem extends Item
         return $this->filename;
     }
 
+    /**
+     * @param array $files
+     *
+     * @return $this
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return $this
+     */
+    public function addFile($file)
+    {
+        $this->files[] = $file;
+
+        return $this;
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return $this
+     */
+    public function removeFile($file)
+    {
+        $this->files->removeElement($file);
+
+        return $this;
+    }
 }

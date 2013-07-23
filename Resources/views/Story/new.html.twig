@@ -4,6 +4,8 @@
     <h1>Story creation</h1>
 
     <form action="{{ path('story_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
+
         {{ form_widget(form) }}
         <p>
             <button type="submit" class="btn">Create</button>

@@ -11,4 +11,8 @@ EETYSBundle_story:
     resource: "@EETYSBundle/Resources/config/routing/story.yml"
     prefix:   /story
 
+EETYSBundle_fileitem:
+    resource: "@EETYSBundle/Resources/config/routing/fileitem.yml"
+    prefix:   /fileitem
+
 

@@ -1,0 +1,22 @@
+{%  extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+    <h1>FileItem creation</h1>
+
+    <form action="{{ path('fileitem_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_row(form.name) }}
+        {{ form_row(form.uploadedFiles, { 'attr': { 'multiple': 'multiple' }, 'full_name': form.uploadedFiles.vars['full_name'] ~ '[]' }) }}
+        {{ form_rest(form) }}
+        <p>
+            <button type="submit" class="btn">Create</button>
+        </p>
+    </form>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('fileitem') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}
