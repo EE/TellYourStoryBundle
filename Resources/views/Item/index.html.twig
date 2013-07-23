@@ -1,0 +1,81 @@
+{% extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+    <h1>Item list</h1>
+
+    <table class="records_list">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Createdat</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% import _self as macro_list %}
+        {% for entity in entities %}
+            {# use macro depending on item type #}
+            {{ attribute(macro_list, entity.type, [entity]) }}
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+
+{% macro audio(entity) %}
+    <tr>
+        <td>audio</td>
+        <td>{{ entity.name }}</td>
+        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>
+
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro file(entity) %}
+    <tr>
+        <td>file</td>
+        <td>{{ entity.name }}</td>
+        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>
+
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro text(entity) %}
+    <tr>
+        <td>text</td>
+        <td>{{ entity.name }}</td>
+        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>
+            {% if entity.url is defined %}URL{% endif %}
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro url(entity) %}
+    <tr>
+        <td>url</td>
+        <td>{{ entity.name }}</td>
+        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>
+            {% if entity.url is defined %}URL{% endif %}
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro video(entity) %}
+    <tr>
+        <td>video</td>
+        <td>{{ entity.name }}</td>
+        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        <td>
+            {% if entity.url is defined %}URL{% endif %}
+        </td>
+    </tr>
+{% endmacro %}

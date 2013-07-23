@@ -1,0 +1,34 @@
+item:
+    pattern:  /
+    defaults: { _controller: "EETYSBundle:Item:index" }
+
+item_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "EETYSBundle:Item:show" }
+
+item_new:
+    pattern:  /{type}/new
+    defaults: { _controller: "EETYSBundle:Item:new" }
+    requirements:
+        type:    audio|file|text|url|video
+
+item_create:
+    pattern:  /{type}/create
+    defaults: { _controller: "EETYSBundle:Item:create" }
+    requirements:
+        _method: post
+        type:    audio|file|text|url|video
+
+item_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "EETYSBundle:Item:edit" }
+
+item_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "EETYSBundle:Item:update" }
+    requirements: { _method: post|put }
+
+item_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "EETYSBundle:Item:delete" }
+    requirements: { _method: post|delete }

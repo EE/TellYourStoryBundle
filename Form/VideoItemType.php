@@ -7,32 +7,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class StoryType
+ * Class VideoItemType
  *
  * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
-class StoryType extends AbstractType
+class VideoItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('description')
-            ->add('address')
-            ->add('file');
+            ->add('name');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'EE\TYSBundle\Entity\Story'
-            )
-        );
+        $resolver->setDefaults(array(
+            'data_class' => 'EE\TYSBundle\Entity\VideoItem'
+        ));
     }
 
     public function getName()
     {
-        return 'ee_tysbundle_storytype';
+        return 'ee_tysbundle_videoitemtype';
     }
 }

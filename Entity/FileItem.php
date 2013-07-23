@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * FileItem
  *
  * @ORM\Entity
+ * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
 class FileItem extends Item
 {
@@ -105,4 +106,17 @@ class FileItem extends Item
 
         return $this;
     }
+
+    /**
+     * Returns unique type for item, e.g. 'url' or 'video'
+     * In most cases it's the same as discriminator column value
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return 'file';
+    }
+
+
 }

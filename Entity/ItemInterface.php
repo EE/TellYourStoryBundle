@@ -1,17 +1,14 @@
 <?php
 
+
 namespace EE\TYSBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-
 /**
- * AudioItem
+ * Class ItemInterface
  *
- * @ORM\Entity
  * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
-class AudioItem extends FileItem
+interface ItemInterface
 {
     /**
      * Returns unique type for item, e.g. 'url' or 'video'
@@ -19,9 +16,5 @@ class AudioItem extends FileItem
      *
      * @return string
      */
-    public function getType()
-    {
-        return 'audio';
-    }
-
+    public function getType();
 }
