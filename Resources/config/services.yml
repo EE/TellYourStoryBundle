@@ -22,3 +22,10 @@ services:
             - 'data://uploads/'
         tags:
             - { name: 'liip_imagine.data.loader', loader: 'stream.uploads' }
+
+    ee_tys.serializer.filename_handler:
+        class: EE\TYSBundle\Handler\FilenameHandler
+        arguments:
+            - "@liip_imagine.cache.manager"
+        tags:
+            - { name: 'jms_serializer.handler', type: Filename, format: json}

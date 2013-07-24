@@ -64,7 +64,9 @@ class Story
      *
      * @Serializer\Expose
      * @Serializer\Groups({"get", "cget"})
-
+     * @Serializer\Accessor(getter="getBackgroundFilenameForSerialization")
+     * @Serializer\Type("Filename")
+     * @Serializer\SerializedName("background_uri")
      */
     private $backgroundFilename;
 
@@ -85,7 +87,8 @@ class Story
      */
     public $file;
 
-    function __construct()
+
+    public function __construct()
     {
         $this->createdAt = new \DateTime();
     }
@@ -190,6 +193,14 @@ class Story
     public function getBackgroundFilename()
     {
         return $this->backgroundFilename;
+    }
+
+    /**
+     * @return Filename
+     */
+    public function getBackgroundFilenameForSerialization()
+    {
+        return new Filename($this->backgroundFilename);
     }
 
     /**
