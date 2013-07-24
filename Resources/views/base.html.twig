@@ -23,9 +23,9 @@
         {% block content %}{% endblock %}
         <div id="footer-push"></div>
     </div>
-{% block stories %}{% endblock %}
+    {% block stories %}{% endblock %}
+    {% include "EETYSBundle:Component:footer.html.twig" %}
 </div>
-{% include "EETYSBundle:Component:footer.html.twig" %}
 {% javascripts
 '@EETYSBundle/Resources/public/js/vendor/jquery-2.0.3.js'
 '@EETYSBundle/Resources/public/js/vendor/masonry.pkgd.min.js'

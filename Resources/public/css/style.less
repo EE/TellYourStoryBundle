@@ -1,12 +1,15 @@
-// this relative path hopefully will be removed in future
-@import '../../../../../../../twitter/bootstrap/less/bootstrap.less';
-@import '_mixins.less';
-
 // sticky footer begin
 @footerHeight: 120px;
 @storiesWidth: 940px;
 @storiesWidthBroad: 1580px;
 @storyWidth: 300px;
+
+// this relative path hopefully will be removed in future
+@import '../../../../../../../twitter/bootstrap/less/bootstrap.less';
+@import '_mixins.less';
+@import 'footer.less';
+
+
 
 html, body { height: 100%; }
 #footer-push, footer { min-height: @footerHeight; }
