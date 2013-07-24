@@ -79,6 +79,14 @@ class Story
      */
     private $createdAt;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tagline", type="string", length=255)
+     * @Serializer\Expose
+     * @Serializer\Groups({"cget"})
+     */
+    private $tagline;
 
     /**
      * @Assert\File(
@@ -232,4 +240,25 @@ class Story
             'name' => $this->getName()
         );
     }
+
+    /**
+     * @param string $tagline
+     * @return $this
+     */
+    public function setTagline($tagline)
+    {
+        $this->tagline = $tagline;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTagline()
+    {
+        return $this->tagline;
+    }
+
+
 }

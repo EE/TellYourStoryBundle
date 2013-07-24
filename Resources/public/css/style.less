@@ -4,6 +4,9 @@
 
 // sticky footer begin
 @footerHeight: 120px;
+@storiesWidth: 940px;
+@storiesWidthBroad: 1580px;
+@storyWidth: 300px;
 
 html, body { height: 100%; }
 #footer-push, footer { min-height: @footerHeight; }
@@ -14,5 +17,49 @@ html, body { height: 100%; }
   height: 100%;
   /* Negative indent footer by it's height */
   margin-bottom: (@footerHeight * -1);
+}
+
+#masonry-container {
+  width: @storiesWidth;
+  @media only screen and (min-width : 1600px) { width: @storiesWidthBroad;}
+  margin-right: auto;
+  margin-left: auto;
+
+  .story-item {
+    width: 0.7*@storyWidth;
+    margin-bottom:20px;
+    background-position: center center;
+    background-size: cover;
+    background-repeat:no-repeat;
+    padding:0.15*@storyWidth;
+    display: table-cell;
+    vertical-align: middle;
+    .circle {
+      width: 0.7*@storyWidth;
+      height:0.7*@storyWidth;
+      background:rgba(255,255,255,0.3);
+      border-radius:50%;
+      display:table-cell;
+      text-align:center;
+      vertical-align:middle;
+      .name, .address {
+        font-family:'Arial';
+      }
+      .name {
+
+      }
+      .address{
+
+      }
+    }
+  }
+  .story-item:hover {
+    .circle {
+      background:rgba(173, 255, 234, 0.7);
+    }
+  }
+  .story-item:nth-child(3n+3) {
+    margin-right:0px
+  }
 }
 // sticky footer end
