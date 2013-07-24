@@ -4,6 +4,7 @@ namespace EE\TYSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * FileItem
@@ -23,11 +24,11 @@ class FileItem extends Item
     /**
      * @var array
      *
-     * @ORM\Column(name="files", type="array")
+     * @ORM\Column(name="files", type="json_array")
      */
     public $files;
 
-    /**     *
+    /**
      * Dummy property used to generate form based on entity
      *
      * @var array

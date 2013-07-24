@@ -145,7 +145,7 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Unable to find Item entity.');
         }
 
-        $editForm = $this->createForm(new ItemType(), $entity);
+        $editForm = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $entity->getType()), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
@@ -178,10 +178,24 @@ class ItemController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new ItemType(), $entity);
+        $editForm = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $entity->getType()), $entity);
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
+
+            $data = $request->files->get($editForm->getName());
+
+            $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
+
+            foreach ($data['uploadedFiles'] as $uploadedFile) {
+                // Symfony\Component\HttpFoundation\File\UploadedFile
+
+                $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
+
+                $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
+                $entity->addFile($key);
+            }
+
             $em->persist($entity);
             $em->flush();
 

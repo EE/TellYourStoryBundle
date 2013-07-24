@@ -3,6 +3,17 @@
 {% block content %}
     <h1>{{ entity.type | capitalize }} Item</h1>
 
+    {% if entity.type == 'audio' %}
+        {% for filekey in entity.files %}
+            <object type="application/x-shockwave-flash" data="{{ asset('bundles/eetys/flash/dewplayer.swf') }}" width="200" height="20" id="dewplayer" name="dewplayer">
+                <param name="wmode" value="transparent" />
+                <param name="movie" value="dewplayer.swf" />
+                <param name="flashvars" value="mp3=/uploads/{{ filekey }}" />
+            </object>
+
+        {% endfor %}
+
+    {% endif %}
     <table class="table">
         <tbody>
         <tr>
@@ -15,8 +26,9 @@
         </tr>
         <tr>
             <th>Files</th>
-            <td>{% for filekey in entity.files %}
-                    <img src="{{ filekey | imagine_filter('my_thumb') }}" alt=""/>
+            <td>
+                {% for filekey in entity.files %}
+                    <a href="/uploads/{{ filekey }}">{{ filekey }}</a>
                 {% endfor %}
             </td>
         </tr>
