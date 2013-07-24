@@ -7,32 +7,28 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class StoryType
+ * Class AudioItemType
  *
  * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
-class StoryType extends AbstractType
+class AudioItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
-            ->add('description')
-            ->add('address')
-            ->add('file');
+            ->add('uploadedFiles', 'file');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'EE\TYSBundle\Entity\Story'
-            )
-        );
+        $resolver->setDefaults(array(
+            'data_class' => 'EE\TYSBundle\Entity\AudioItem'
+        ));
     }
 
     public function getName()
     {
-        return 'ee_tysbundle_storytype';
+        return 'ee_tysbundle_audioitemtype';
     }
 }

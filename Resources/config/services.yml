@@ -1,5 +1,9 @@
 parameters:
-#    eetys.example.class: EE\TYSBundle\Example
+    eetys.form.type.audio.class: EE\TYSBundle\Form\AudioItemType
+    eetys.form.type.file.class:  EE\TYSBundle\Form\FileItemType
+    eetys.form.type.text.class:  EE\TYSBundle\Form\TextItemType
+    eetys.form.type.url.class:   EE\TYSBundle\Form\UrlItemType
+    eetys.form.type.video.class: EE\TYSBundle\Form\VideoItemType
 
 services:
     ee_tys.story_voter:
@@ -29,3 +33,28 @@ services:
             - "@liip_imagine.cache.manager"
         tags:
             - { name: 'jms_serializer.handler', type: Filename, format: json}
+
+    ee_tys.form.type.audio:
+        class: "%eetys.form.type.audio.class%"
+        tags:
+            - { name: form.type, alias: ee_tysbundle_audioitemtype }
+
+    ee_tys.form.type.file:
+        class: "%eetys.form.type.file.class%"
+        tags:
+            - { name: form.type, alias: ee_tysbundle_fileitemtype }
+
+    ee_tys.form.type.text:
+        class: "%eetys.form.type.text.class%"
+        tags:
+            - { name: form.type, alias: ee_tysbundle_textitemtype }
+
+    ee_tys.form.type.url:
+        class: "%eetys.form.type.url.class%"
+        tags:
+            - { name: form.type, alias: ee_tysbundle_urlitemtype }
+
+    ee_tys.form.type.video:
+        class: "%eetys.form.type.video.class%"
+        tags:
+            - { name: form.type, alias: ee_tysbundle_videoitemtype }

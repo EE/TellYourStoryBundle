@@ -1,17 +1,14 @@
 <?php
 
+
 namespace EE\TYSBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-
 /**
- * VideoItem
+ * Class ItemInterface
  *
- * @ORM\Entity
  * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
-class VideoItem extends Item
+interface ItemInterface
 {
     /**
      * Returns unique type for item, e.g. 'url' or 'video'
@@ -19,9 +16,5 @@ class VideoItem extends Item
      *
      * @return string
      */
-    public function getType()
-    {
-        return 'video';
-    }
-
+    public function getType();
 }

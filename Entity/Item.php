@@ -20,9 +20,9 @@ use JMS\Serializer\Annotation as Serializer;
  *      "url"   = "UrlItem"
  * })
  * @Serializer\ExclusionPolicy("all")
- *
+ * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
-abstract class Item
+abstract class Item implements ItemInterface
 {
     /**
      * @var integer

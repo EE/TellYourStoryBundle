@@ -1,0 +1,14 @@
+{% extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+    <form action="{{ path('item_create', {type: app.request.get('type')}) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_row(form.name) }}
+        {% if entity.type in ['audio', 'file'] %}
+        {{ form_row(form.uploadedFiles, { 'attr': { 'multiple': 'multiple' }, 'full_name': form.uploadedFiles.vars['full_name'] ~ '[]' }) }}
+        {% endif %}
+        {{ form_rest(form) }}
+        <div class="form-actions">
+            <button type="submit" class="btn">Create</button>
+        </div>
+    </form>
+{% endblock %}
