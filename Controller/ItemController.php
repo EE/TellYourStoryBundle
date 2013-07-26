@@ -25,9 +25,12 @@ class ItemController extends Controller
 
         $entities = $em->getRepository('EETYSBundle:Item')->findAll();
 
-        return $this->render('EETYSBundle:Item:index.html.twig', array(
+        return $this->render(
+            'EETYSBundle:Item:index.html.twig',
+            array(
                 'entities' => $entities,
-            ));
+            )
+        );
     }
 
     /**
@@ -52,14 +55,17 @@ class ItemController extends Controller
 
             $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
 
-            foreach ($data['uploadedFiles'] as $uploadedFile) {
-                // Symfony\Component\HttpFoundation\File\UploadedFile
+            if (isset($data['uploadedFiles'])) {
+                foreach ((array) $data['uploadedFiles'] as $uploadedFile) {
+                    // Symfony\Component\HttpFoundation\File\UploadedFile
 
-                $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
+                    $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
 
-                $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
-                $entity->addFile($key);
+                    $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
+                    $entity->addFile($key);
+                }
             }
+
 
             $em->persist($entity);
             $em->flush();

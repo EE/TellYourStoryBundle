@@ -16,6 +16,7 @@
     </script>
 </head>
 <body>
+{# div.page-wrap is used by sticky footer trick #}
 <div class="page-wrap">
 {% include "EETYSBundle:Component:header.html.twig" %}
     {# remove div.container if you want full screen app #}
@@ -29,7 +30,7 @@
 {% javascripts
 '@EETYSBundle/Resources/public/js/vendor/jquery-2.0.3.js'
 '@EETYSBundle/Resources/public/js/vendor/masonry.pkgd.min.js'
-'@EETYSBundle/Resources/public/js/homepage-stories.js'
+'@EETYSBundle/Resources/public/js/*.js'
 %}
 <script src="{{ asset_url }}" type="text/javascript"></script>
 {% endjavascripts %}

@@ -9,22 +9,15 @@
 
         {{ form_widget(edit_form) }}
         <div class="form-actions">
-            <button type="submit">Edit</button>
-        </div>
-    </form>
-
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('story') }}">
+            <button class="btn" type="submit">Edit</button>
+            <a class="btn" href="{{ path('story') }}">
                 Back to the list
             </a>
-        </li>
-        <li>
-            <form action="{{ path('story_delete', { 'id': entity.id }) }}" method="post">
-                <input type="hidden" name="_method" value="DELETE"/>
-                {{ form_widget(delete_form) }}
-                <button type="submit">Delete</button>
-            </form>
-        </li>
-    </ul>
+        </div>
+    </form>
+    <form class="pull-right" action="{{ path('story_delete', { 'id': entity.id }) }}" method="post">
+        <input type="hidden" name="_method" value="DELETE"/>
+        {{ form_widget(delete_form) }}
+        <button class="btn" type="submit">Delete</button>
+    </form>
 {% endblock %}

@@ -5,7 +5,7 @@ namespace EE\TYSBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use EE\TYSBundle\Validator\Constrains\Files as Files;
-
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * AudioItem
@@ -19,8 +19,8 @@ class AudioItem extends FileItem
      * Dummy property used to generate form based on entity
      *
      * @Files(
-     *     maxSize = "600k",
-     *     maxTotalSize = "800k",
+     *     maxSize = "10M",
+     *     maxTotalSize = "10M",
      *     mimeTypes = {"audio/mpeg"}
      * )
      * @var array

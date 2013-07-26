@@ -3,79 +3,96 @@
 {% block content %}
     <h1>Item list</h1>
 
-    <table class="records_list">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Createdat</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% import _self as macro_list %}
-        {% for entity in entities %}
-            {# use macro depending on item type #}
-            {{ attribute(macro_list, entity.type, [entity]) }}
-        {% endfor %}
-        </tbody>
-    </table>
-
+    {% import _self as macro_list %}
+    {% for entity in entities %}
+        <hr>
+        {# use macro depending on item type #}
+        {{ attribute(macro_list, entity.type, [entity]) }}
+    {% endfor %}
 {% endblock %}
 
-
-
 {% macro audio(entity) %}
-    <tr>
-        <td>audio</td>
-        <td>{{ entity.name }}</td>
-        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>
-
-        </td>
-    </tr>
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                {% for filekey in entity.files %}
+                    <object type="application/x-shockwave-flash" data="{{ asset('bundles/eetys/flash/dewplayer.swf') }}"
+                            width="620" height="20" id="dewplayer" name="dewplayer">
+                        <param name="wmode" value="transparent"/>
+                        <param name="movie" value="dewplayer.swf"/>
+                        <param name="flashvars" value="mp3=/uploads/{{ filekey }}"/>
+                    </object>
+                {% endfor %}
+            </div>
+            <div>
+                {{ entity.description }}
+            </div>
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro file(entity) %}
-    <tr>
-        <td>file</td>
-        <td>{{ entity.name }}</td>
-        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>
-
-        </td>
-    </tr>
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                {% for filekey in entity.files %}
+                <a href="/uploads/{{ filekey }}">{{ filekey }}</div>
+            {% endfor %}
+        </div>
+        <div>
+            {{ entity.description }}
+        </div>
+    </div>
+    </div>
 {% endmacro %}
 
 {% macro text(entity) %}
-    <tr>
-        <td>text</td>
-        <td>{{ entity.name }}</td>
-        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>
-            {% if entity.url is defined %}URL{% endif %}
-        </td>
-    </tr>
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+
+            <div>
+                {{ entity.body | nl2br }}
+            </div>
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro url(entity) %}
-    <tr>
-        <td>url</td>
-        <td>{{ entity.name }}</td>
-        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>
-            {% if entity.url is defined %}URL{% endif %}
-        </td>
-    </tr>
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                <a href="{{ entity.url }}">{{ entity.url }}</a>
+            </div>
+        </div>
+    </div>
 {% endmacro %}
 
 {% macro video(entity) %}
-    <tr>
-        <td>video</td>
-        <td>{{ entity.name }}</td>
-        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        <td>
-            {% if entity.url is defined %}URL{% endif %}
-        </td>
-    </tr>
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                <a href="{{ entity.url }}">{{ entity.url }}</a>
+            </div>
+        </div>
+    </div>
 {% endmacro %}

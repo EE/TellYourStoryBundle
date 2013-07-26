@@ -3,20 +3,15 @@
 {% block content %}
     <h1>Story creation</h1>
 
-    <form action="{{ path('story_create') }}" method="post" {{ form_enctype(form) }}>
+    <form class="form-horizontal" action="{{ path('story_create') }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
 
         {{ form_widget(form) }}
-        <p>
+        <div class="form-actions">
             <button type="submit" class="btn">Create</button>
-        </p>
+            <a class="btn" href="{{ path('story') }}">
+                Back to the list
+            </a>
+        </div>
     </form>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('story') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
 {% endblock %}

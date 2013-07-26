@@ -3,7 +3,7 @@
 namespace EE\TYSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * UrlItem
@@ -17,8 +17,19 @@ class UrlItem extends Item
      * @var string
      *
      * @ORM\Column(name="url", type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"get"})
      */
     private $url;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"get"})
+     */
+    private $description;
 
     /**
      * @param string $url
@@ -38,6 +49,26 @@ class UrlItem extends Item
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**

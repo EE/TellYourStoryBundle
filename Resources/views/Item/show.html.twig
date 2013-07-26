@@ -25,14 +25,6 @@
             <td>{{ entity.name }}</td>
         </tr>
         <tr>
-            <th>Files</th>
-            <td>
-                {% for filekey in entity.files %}
-                    <a href="/uploads/{{ filekey }}">{{ filekey }}</a>
-                {% endfor %}
-            </td>
-        </tr>
-        <tr>
             <th>Createdat</th>
             <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
         </tr>

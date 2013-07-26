@@ -5,6 +5,7 @@ namespace EE\TYSBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * FileItem
@@ -14,13 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class FileItem extends Item
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="filename", type="string")
-     */
-    private $filename;
-
     /**
      * @var array
      *
@@ -36,32 +30,19 @@ class FileItem extends Item
     public $uploadedFiles;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string")
+     */
+    private $description;
+
+    /**
      * FileItem Constructor
      */
     public function __construct()
     {
         parent::__construct();
         $this->files = new ArrayCollection();
-    }
-
-    /**
-     * @param string $filename
-     *
-     * @return FileItem
-     */
-    public function setFilename($filename)
-    {
-        $this->filename = $filename;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilename()
-    {
-        return $this->filename;
     }
 
     /**
@@ -109,6 +90,26 @@ class FileItem extends Item
     }
 
     /**
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Returns unique type for item, e.g. 'url' or 'video'
      * In most cases it's the same as discriminator column value
      *
@@ -118,6 +119,4 @@ class FileItem extends Item
     {
         return 'file';
     }
-
-
 }

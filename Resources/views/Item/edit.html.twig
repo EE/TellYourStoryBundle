@@ -1,7 +1,7 @@
 {% extends 'EETYSBundle::base.html.twig' %}
 
 {% block content %}
-    <form action="{{ path('item_update', {id: entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
+    <form class="form-horizontal"  action="{{ path('item_update', {id: entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
         {{ form_row(edit_form.name) }}
         {% if entity.type in ['audio', 'file'] %}
 

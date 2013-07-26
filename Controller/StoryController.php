@@ -88,7 +88,8 @@ class StoryController extends Controller
 
         return $this->render('EETYSBundle:Story:show.html.twig', array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'delete_form' => $deleteForm->createView()
+            ));
     }
 
     /**
