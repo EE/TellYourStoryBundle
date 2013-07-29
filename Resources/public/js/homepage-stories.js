@@ -37,7 +37,7 @@
 
                 $circle
                     .addClass('circle')
-                    .text($(this).context.tagline)
+                    .html($('<span>').addClass('tagline').text($(this).context.tagline))
                     .css({
                         'position': 'relative',
                         'top': (imageHeight - columnWidth)/2

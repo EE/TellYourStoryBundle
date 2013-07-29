@@ -1,5 +1,13 @@
 <header>
     <div class="container">
-        <h1>Tell Your Story</h1>
+        <div class="row">
+            <div class="span6">
+                <h1><a href="{{ path('eetys_default_homepage') }}">{{ 'header.logo.title' | trans | raw }}</a></h1>
+                <h2>{{ 'header.logo.slogan' | trans | raw }}</h2>
+            </div>
+            <div class="span6">
+                {% include "EETYSBundle:Component:top_menu.html.twig" %}
+            </div>
+        </div>
     </div>
 </header>

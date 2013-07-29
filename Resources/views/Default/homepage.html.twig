@@ -1,16 +1,17 @@
-{%  extends 'EETYSBundle::base.html.twig' %}
+{% extends 'EETYSBundle::base.html.twig' %}
 
 {% block content %}
-<div class="row">
-    <div class="span4"><div class="well" style="min-height: 100px;"><h4>1. Tell the story from your city, neighbourhood, family...</h4></div></div>
-    <div class="span4"><div class="well" style="min-height: 100px;"><h4>2. Add photos, audio or video files</h4></div></div>
-    <div class="span4"><div class="well" style="min-height: 100px;"><h4>3. Invite others and collaborate</h4><a class="btn" href="{{ path('story_new') }}">Add new story</a></div></div>
-</div>
-
+    <div class="container">
+        {% include 'EETYSBundle:Component:search.html.twig' %}
+        {% include 'EETYSBundle:Component:recently_added.html.twig' %}
+    </div>
 {% endblock %}
 
 {% block stories %}
-<div id="masonry-container">
+    <div id="masonry-container"></div>
+    {% include 'EETYSBundle:Component:bottom.html.twig' %}
+{% endblock %}
 
-</div>
+{% block subheader %}
+    {% include "EETYSBundle:Component:step_by_step.html.twig" %}
 {% endblock %}

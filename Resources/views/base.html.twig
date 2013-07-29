@@ -3,11 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{% block title %}Tell Your Story{% endblock %}</title>
+    <title>{% block title %}{{ 'default.page.title' | trans | raw }}{% endblock %}</title>
+    {% block stylesheets %}
     {% stylesheets filter='less,cssrewrite'
-    '@EETYSBundle/Resources/public/css/style.less' %}
-    <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
+        '@EETYSBundle/Resources/public/css/style.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
     {% endstylesheets %}
+    {% endblock %}
     <script type="text/javascript">
         {# if this gets bigger we can replace this with FOSRoutingBundle #}
         var Routing = {
@@ -18,15 +20,18 @@
 <body>
 {# div.page-wrap is used by sticky footer trick #}
 <div class="page-wrap">
-{% include "EETYSBundle:Component:header.html.twig" %}
+    {% include "EETYSBundle:Component:header.html.twig" %}
+    {% block subheader %}{% endblock %}
+
     {# remove div.container if you want full screen app #}
     <div class="container">
         {% block content %}{% endblock %}
-        <div id="footer-push"></div>
     </div>
     {% block stories %}{% endblock %}
-    {% include "EETYSBundle:Component:footer.html.twig" %}
+    <div id="footer-push"></div>
+
 </div>
+{% include "EETYSBundle:Component:footer.html.twig" %}
 {% javascripts
 '@EETYSBundle/Resources/public/js/vendor/jquery-2.0.3.js'
 '@EETYSBundle/Resources/public/js/vendor/masonry.pkgd.min.js'

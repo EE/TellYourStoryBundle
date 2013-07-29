@@ -1,0 +1,17 @@
+default:
+    homepage:
+        step_by_step:
+            tell: "1. Tell the story from your city, neighbourhood, family..."
+            add: "2. Add photos, audio or video files"
+            invite: "3. Invite others and collaborate"
+        button:
+            add_story: "Add new story"
+header:
+    logo:
+        title: "Tell your story"
+        slogan: "because all stories are worth telling"
+    menu:
+        blog: "Blog"
+        add_story: "Add story"
+        login:
+            facebook: "Login with facebook"
