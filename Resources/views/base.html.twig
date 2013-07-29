@@ -10,12 +10,6 @@
         <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
     {% endstylesheets %}
     {% endblock %}
-    <script type="text/javascript">
-        {# if this gets bigger we can replace this with FOSRoutingBundle #}
-        var Routing = {
-            get_stories: "{{ path('get_stories') }}"
-        }
-    </script>
 </head>
 <body>
 {# div.page-wrap is used by sticky footer trick #}
@@ -32,6 +26,10 @@
 
 </div>
 {% include "EETYSBundle:Component:footer.html.twig" %}
+
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
 {% javascripts
 '@EETYSBundle/Resources/public/js/vendor/jquery-2.0.3.js'
 '@EETYSBundle/Resources/public/js/vendor/masonry.pkgd.min.js'

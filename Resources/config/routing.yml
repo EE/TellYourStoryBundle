@@ -6,6 +6,8 @@ EETYSBundle_api:
     type: rest
     resource: "@EETYSBundle/Resources/config/routing/api.yml"
     prefix: /api
+    options:
+        expose: true
 
 EETYSBundle_story:
     resource: "@EETYSBundle/Resources/config/routing/story.yml"
@@ -14,3 +16,6 @@ EETYSBundle_story:
 EETYSBundle_item:
     resource: "@EETYSBundle/Resources/config/routing/item.yml"
     prefix:   /item
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

@@ -5,6 +5,7 @@ story:
 story_show:
     pattern:  /{id}/show
     defaults: { _controller: "EETYSBundle:Story:show" }
+    options: {expose: true}
 
 story_new:
     pattern:  /new
