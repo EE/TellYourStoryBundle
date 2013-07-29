@@ -52,6 +52,13 @@ abstract class Item implements ItemInterface
     private $createdAt;
 
     /**
+     * @var
+     *
+     * @ORM\ManyToOne(targetEntity="EE\TYSBundle\Entity\Story", inversedBy="items")
+     */
+    private $story;
+
+    /**
      * Item Constructor
      */
     public function __construct()
@@ -116,4 +123,25 @@ abstract class Item implements ItemInterface
     {
         return $this->createdAt;
     }
+
+    /**
+     * @param mixed $story
+     *
+     * @return $this
+     */
+    public function setStory($story)
+    {
+        $this->story = $story;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStory()
+    {
+        return $this->story;
+    }
+
 }

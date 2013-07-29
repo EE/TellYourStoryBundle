@@ -47,7 +47,7 @@ class StoryController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('story_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('item_select_type', array('storyId' => $entity->getId())));
         }
 
         return $this->render('EETYSBundle:Story:new.html.twig', array(
@@ -68,6 +68,24 @@ class StoryController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
+    }
+
+    /**
+     *
+     */
+    public function addItemAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $story = $em->getRepository('EETYSBundle:Story')->find($id);
+
+        if (!$story) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        return $this->render('EETYSBundle:Story:add_item.html.twig', array(
+                'story' => $story
+            ));
     }
 
     /**
@@ -145,7 +163,7 @@ class StoryController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('story_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('item_select_type', array('storyId' => $id)));
         }
 
         return $this->render('EETYSBundle:Story:edit.html.twig', array(
@@ -200,11 +218,13 @@ class StoryController extends Controller
     {
         if ($entity->file) {
             $uploadsAdapter = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
-            try {
-                $uploadsAdapter->delete($entity->getBackgroundFilename());
-            } catch (\RuntimeException $e) {
-                // file didn't exist on server, don't do anything
-            };
+            if ($entity->getBackgroundFilename() !== null){
+                try {
+                    $uploadsAdapter->delete($entity->getBackgroundFilename());
+                } catch (\RuntimeException $e) {
+                    // file didn't exist on server, don't do anything
+                };
+            }
 
             $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $entity->file->guessExtension();
             $uploadsAdapter->write($key, file_get_contents($entity->file));

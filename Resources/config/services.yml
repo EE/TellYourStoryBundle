@@ -20,9 +20,11 @@ services:
           - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -128  }
 
     ee_tys.doctrine.item_subscriber:
-            class: EE\TYSBundle\EventListener\Doctrine\ItemSubscriber
-            tags:
-                - { name: doctrine.event_subscriber, connection: default }
+        class: EE\TYSBundle\EventListener\Doctrine\ItemSubscriber
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
 
     liip_imagine.data.loader.stream.uploads:
         class: "%liip_imagine.data.loader.stream.class%"

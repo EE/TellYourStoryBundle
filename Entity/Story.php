@@ -95,6 +95,12 @@ class Story
      */
     public $file;
 
+    /**
+     * @var
+     *
+     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="story")
+     */
+    public $items;
 
     public function __construct()
     {
@@ -260,5 +266,24 @@ class Story
         return $this->tagline;
     }
 
+    /**
+     * @param mixed $items
+     *
+     * @return $this
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
 
 }

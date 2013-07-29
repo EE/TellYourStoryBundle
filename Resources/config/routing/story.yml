@@ -25,6 +25,10 @@ story_update:
     defaults: { _controller: "EETYSBundle:Story:update" }
     requirements: { _method: post|put }
 
+story_publish:
+    pattern:  /{id}/publish
+    defaults: { _controller: "EETYSBundle:Story:show" }
+
 story_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "EETYSBundle:Story:delete" }

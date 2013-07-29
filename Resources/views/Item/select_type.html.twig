@@ -1,10 +1,11 @@
 {% extends 'EETYSBundle::base.html.twig' %}
 
 {% block content %}
-    <h1>Item list</h1>
+
+    {% include 'EETYSBundle::Item/Component/item_types.html.twig' %}
 
     {% import 'EETYSBundle::Item/Component/macro.html.twig' as macro %}
-    {% for entity in entities %}
+    {% for entity in story.items %}
         <hr>
         {# use macro depending on item type #}
         {{ attribute(macro, entity.type, [entity]) }}

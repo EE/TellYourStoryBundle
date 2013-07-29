@@ -1,0 +1,88 @@
+
+{% macro audio(entity) %}
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                {% for filekey in entity.files %}
+                    <object type="application/x-shockwave-flash" data="{{ asset('bundles/eetys/flash/dewplayer.swf') }}"
+                            width="620" height="20" id="dewplayer" name="dewplayer">
+                        <param name="wmode" value="transparent"/>
+                        <param name="movie" value="dewplayer.swf"/>
+                        <param name="flashvars" value="mp3=/uploads/{{ filekey }}"/>
+                    </object>
+                {% endfor %}
+            </div>
+            <div>
+                {{ entity.description }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro file(entity) %}
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                {% for filekey in entity.files %}
+                <a href="/uploads/{{ filekey }}">{{ filekey }}</div>
+            {% endfor %}
+        </div>
+        <div>
+            {{ entity.description }}
+        </div>
+    </div>
+    </div>
+{% endmacro %}
+
+{% macro text(entity) %}
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                {{ entity.body | nl2br }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro url(entity) %}
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                <a href="{{ entity.url }}">{{ entity.url }}</a>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro video(entity) %}
+    <div class="row">
+        <div class="span4">
+            <h3>{{ entity.name }}</h3>
+            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+        </div>
+        <div class="span8">
+            <div>
+                {{ entity.embedCode | raw }}
+            </div>
+            <div>
+                <a href="{{ entity.url }}">{{ entity.url }}</a>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

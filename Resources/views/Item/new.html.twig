@@ -1,8 +1,13 @@
 {% extends 'EETYSBundle::base.html.twig' %}
 
 {% block content %}
-    <form class="form-horizontal" action="{{ path('item_create', {type: app.request.get('type')}) }}" method="post" {{ form_enctype(form) }}>
-        {{ form_row(form.name) }}
+
+    {% include 'EETYSBundle::Item/Component/item_types.html.twig' %}
+
+    <form class="form-horizontal" action="{{ path('item_create', {storyId: story.id, type: app.request.get('type')}) }}" method="post" {{ form_enctype(form) }}>
+        {% if entity.type in ['url', 'video'] %}
+        {{ form_row(form.url) }}
+        {% endif %}
         {% if entity.type in ['audio', 'file'] %}
         {{ form_row(form.uploadedFiles, { 'attr': { 'multiple': 'multiple' }, 'full_name': form.uploadedFiles.vars['full_name'] ~ '[]' }) }}
         {% endif %}
@@ -11,4 +16,11 @@
             <button type="submit" class="btn">Create</button>
         </div>
     </form>
+
+    {% import 'EETYSBundle::Item/Component/macro.html.twig' as macro %}
+    {% for entity in story.items %}
+        <hr>
+        {# use macro depending on item type #}
+        {{ attribute(macro, entity.type, [entity]) }}
+    {% endfor %}
 {% endblock %}

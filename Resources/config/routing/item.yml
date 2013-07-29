@@ -6,14 +6,18 @@ item_show:
     pattern:  /{id}/show
     defaults: { _controller: "EETYSBundle:Item:show" }
 
+item_select_type:
+    pattern:  /{storyId}/select-type
+    defaults: { _controller: "EETYSBundle:Item:selectType" }
+
 item_new:
-    pattern:  /{type}/new
+    pattern:  /{storyId}/{type}/new
     defaults: { _controller: "EETYSBundle:Item:new" }
     requirements:
         type:    audio|file|text|url|video
 
 item_create:
-    pattern:  /{type}/create
+    pattern:  /{storyId}/{type}/create
     defaults: { _controller: "EETYSBundle:Item:create" }
     requirements:
         _method: post

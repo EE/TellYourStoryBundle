@@ -8,6 +8,10 @@
         {{ form_errors(edit_form) }}
 
         {{ form_widget(edit_form) }}
+
+        {% if entity.backgroundFilename %}
+            <img src="{{ entity.backgroundFilename | imagine_filter('my_thumb') }}" alt=""/>
+        {% endif %}
         <div class="form-actions">
             <button class="btn" type="submit">Edit</button>
             <a class="btn" href="{{ path('story') }}">

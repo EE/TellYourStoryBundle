@@ -39,6 +39,17 @@ class StoryType extends AbstractType
                 )
             )
             ->add(
+                'tagline',
+                null,
+                array(
+                    'label' => 'tys.form.story.tagline.label',
+                    'help_block' => 'tys.form.story.tagline.help_block',
+                    'attr' => array(
+                        'placeholder' => 'tys.form.story.tagline.placeholder',
+                    )
+                )
+            )
+            ->add(
                 'address',
                 null,
                 array(

@@ -34,22 +34,52 @@ class ItemController extends Controller
     }
 
     /**
+     *
+     * @param integer $storyId
+     * @param string  $type
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function selectTypeAction($storyId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
+
+        if (!$story) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        return $this->render(
+            'EETYSBundle:Item:select_type.html.twig',
+            array(
+                'story' => $story
+            )
+        );
+    }
+
+    /**
      * Creates a new Item entity.
      *
      * @param Request $request
+     * @param integer $storyId
      * @param string  $type
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function createAction(Request $request, $type)
+    public function createAction(Request $request, $storyId, $type)
     {
         $form = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $type));
         $form->submit($request);
-        $entity = $form->getData();
+        $item = $form->getData();
 
+        $em = $this->getDoctrine()->getManager();
+        $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
+
+        if (!$story) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             $data = $request->files->get($form->getName());
 
@@ -62,21 +92,22 @@ class ItemController extends Controller
                     $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
 
                     $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
-                    $entity->addFile($key);
+                    $item->addFile($key);
                 }
             }
+            $item->setStory($story);
 
-
-            $em->persist($entity);
+            $em->persist($item);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('item_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('item_select_type', array('storyId' => $item->getStory()->getId())));
         }
 
         return $this->render(
             'EETYSBundle:Item:new.html.twig',
             array(
-                'entity' => $entity,
+                'story' => $story,
+                'entity' => $item,
                 'form' => $form->createView(),
             )
         );
@@ -85,21 +116,30 @@ class ItemController extends Controller
     /**
      * Displays a form to create a new Item entity.
      *
-     * @param string $type
+     * @param integer $storyId
+     * @param string  $type
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function newAction($type)
+    public function newAction($storyId, $type)
     {
         $form = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $type));
         $form->submit($this->getRequest());
         $entity = $form->getData();
 
+        $em = $this->getDoctrine()->getManager();
+        $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
+
+        if (!$story) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
         return $this->render(
             'EETYSBundle:Item:new.html.twig',
             array(
+                'story' => $story,
                 'entity' => $entity,
-                'form' => $form->createView(),
+                'form' => $form->createView()
             )
         );
     }
@@ -177,14 +217,14 @@ class ItemController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EETYSBundle:Item')->find($id);
+        $item = $em->getRepository('EETYSBundle:Item')->find($id);
 
-        if (!$entity) {
+        if (!$item) {
             throw $this->createNotFoundException('Unable to find Item entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $entity->getType()), $entity);
+        $editForm = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $item->getType()), $item);
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
@@ -199,19 +239,19 @@ class ItemController extends Controller
                 $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
 
                 $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
-                $entity->addFile($key);
+                $item->addFile($key);
             }
 
-            $em->persist($entity);
+            $em->persist($item);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('item_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('item_select_type', array('storyId' => $item->getStory()->getId())));
         }
 
         return $this->render(
             'EETYSBundle:Item:edit.html.twig',
             array(
-                'entity' => $entity,
+                'entity' => $item,
                 'edit_form' => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
             )

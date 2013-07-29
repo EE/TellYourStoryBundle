@@ -1,17 +1,21 @@
 {%  extends 'EETYSBundle::base.html.twig' %}
 
 {% block content %}
-    <h1>Story creation</h1>
-
+    <div class="page-header">
+        <h1>{{ 'story.new.page_header.h1' | trans }}</h1>
+    </div>
     <form class="form-horizontal" action="{{ path('story_create') }}" method="post" {{ form_enctype(form) }}>
         {{ form_errors(form) }}
 
         {{ form_widget(form) }}
         <div class="form-actions">
-            <button type="submit" class="btn">Create</button>
-            <a class="btn" href="{{ path('story') }}">
-                Back to the list
+            <a class="btn btn-tys" href="{{ path('story') }}">
+                {{ 'btn.back.name' | trans }}
             </a>
+            <button type="submit" class="btn btn-tys pull-right">
+                {{ 'btn.save_and_proceed.name' | trans }}
+            </button>
+
         </div>
     </form>
 {% endblock %}

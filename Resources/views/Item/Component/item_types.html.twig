@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="span2">
+        <a href="{{ path('item_new', {'storyId': story.id, 'type': 'audio'}) }}">
+            <img src="http://placehold.it/140x140" alt="Placeholder"/>
+            {{ 'story.addItem.types.audio' | trans }}
+        </a>
+    </div>
+    <div class="span2">
+        <a href="{{ path('item_new', {'storyId': story.id, 'type': 'video'}) }}">
+            <img src="http://placehold.it/140x140" alt="Placeholder"/>
+            {{ 'story.addItem.types.video' | trans }}
+        </a>
+    </div>
+    <div class="span2">
+        <a href="{{ path('item_new', {'storyId': story.id, 'type': 'file'}) }}">
+            <img src="http://placehold.it/140x140" alt="Placeholder"/>
+            {{ 'story.addItem.types.files' | trans }}
+        </a>
+    </div>
+    <div class="span2">
+        <a href="{{ path('item_new', {'storyId': story.id, 'type': 'text'}) }}">
+            <img src="http://placehold.it/140x140" alt="Placeholder"/>
+            {{ 'story.addItem.types.text' | trans }}
+        </a></div>
+    <div class="span2">
+        <a href="{{ path('item_new', {'storyId': story.id, 'type': 'url'}) }}">
+            <img src="http://placehold.it/140x140" alt="Placeholder"/>
+            {{ 'story.addItem.types.url' | trans }}
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span6">
+        <a href="{{ path('story_edit', {id: story.id}) }}" class="btn btn-tys btn-small pull-left">{{ 'btn.back.name' | trans }}</a>
+    </div>
+    <div class="span6">
+        <a href="{{ path('story_publish', {id: story.id}) }}" class="btn btn-tys btn-small pull-right">{{ 'btn.publish_without_items.name' | trans }}</a>
+    </div>
+</div>
