@@ -19,7 +19,7 @@
     "require": {
         "symfony/symfony": "~2.3",
         "mopa/bootstrap-bundle": "dev-master",
-        "twitter/bootstrap": "2.3.*",
+        "twbs/bootstrap": "2.3.*",
         "doctrine/doctrine-fixtures-bundle": "~2.0",
         "embedly/embedly-php": "dev-master"
     }
