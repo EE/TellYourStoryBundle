@@ -21,7 +21,7 @@
         "mopa/bootstrap-bundle": "dev-master",
         "twbs/bootstrap": "2.3.*",
         "doctrine/doctrine-fixtures-bundle": "~2.0",
-        "embedly/embedly-php": "dev-master"
+        "ee/embedly-bundle": "dev-master"
     }
 
 }
