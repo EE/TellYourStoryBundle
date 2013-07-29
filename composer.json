@@ -21,7 +21,8 @@
         "mopa/bootstrap-bundle": "dev-master",
         "twbs/bootstrap": "2.3.*",
         "doctrine/doctrine-fixtures-bundle": "~2.0",
-        "ee/embedly-bundle": "dev-master"
+        "ee/embedly-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "~1.1"
     }
 
 }
