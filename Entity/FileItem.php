@@ -20,14 +20,14 @@ class FileItem extends Item
      *
      * @ORM\Column(name="files", type="json_array")
      */
-    public $files;
+    private $files;
 
     /**
      * Dummy property used to generate form based on entity
      *
      * @var array
      */
-    public $uploadedFiles;
+    private $uploadedFiles;
 
     /**
      * @var string
@@ -87,6 +87,26 @@ class FileItem extends Item
         $this->files->removeElement($file);
 
         return $this;
+    }
+
+    /**
+     * @param array $uploadedFiles
+     *
+     * @return $this
+     */
+    public function setUploadedFiles($uploadedFiles)
+    {
+        $this->uploadedFiles = $uploadedFiles;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUploadedFiles()
+    {
+        return $this->uploadedFiles;
     }
 
     /**

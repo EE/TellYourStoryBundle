@@ -25,7 +25,27 @@ class AudioItem extends FileItem
      * )
      * @var array
      */
-    public $uploadedFiles;
+    private $uploadedFiles;
+
+    /**
+     * @param array $uploadedFiles
+     *
+     * @return $this
+     */
+    public function setUploadedFiles($uploadedFiles)
+    {
+        $this->uploadedFiles = $uploadedFiles;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUploadedFiles()
+    {
+        return $this->uploadedFiles;
+    }
 
     /**
      * Returns unique type for item, e.g. 'url' or 'video'

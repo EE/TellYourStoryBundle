@@ -93,14 +93,14 @@ class Story
      *     maxSize = "32M"
      * )
      */
-    public $file;
+    private $file;
 
     /**
      * @var
      *
      * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="story")
      */
-    public $items;
+    private $items;
 
     public function __construct()
     {
@@ -284,6 +284,26 @@ class Story
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * @param mixed $file
+     *
+     * @return $this
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 
 }
