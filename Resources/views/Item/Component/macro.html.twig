@@ -1,9 +1,24 @@
 
-{% macro audio(entity) %}
-    <div class="row">
+{% macro map(story) %}
+    <div class="row item">
+        <div class="span12"><i class="icon-map-marker"></i>{{ 'story.show.added.by' | trans | raw }}: {#{{ story.creator }}#}</div>
         <div class="span4">
-            <h3>{{ entity.name }}</h3>
-            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+            <h3>{{ story.address }}</h3>
+        </div>
+        <div class="span8">
+            <img
+                src="http://maps.googleapis.com/maps/api/staticmap?{{
+                {
+                'zoom': '13',
+                'size': '600x200',
+                'sensor': 'false',
+                'center': story.address
+                }|url_encode }}&markers=size:mid%7Ccolor:red%7C{{ story.address | url_encode }}"
+                id="item-map" />
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro audio(item) %}
     <div class="row item item-audio">
         <div class="span12"><i class="icon-music"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
