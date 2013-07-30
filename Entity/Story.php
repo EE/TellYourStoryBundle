@@ -214,7 +214,11 @@ class Story
      */
     public function getBackgroundFilenameForSerialization()
     {
-        return new Filename($this->backgroundFilename);
+        if ($this->backgroundFilename) {
+            return new Filename($this->backgroundFilename);
+        } else {
+            return null;
+        }
     }
 
     /**

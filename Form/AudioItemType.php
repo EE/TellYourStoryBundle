@@ -29,7 +29,7 @@ class AudioItemType extends AbstractType
             )
             ->add(
                 'description',
-                null,
+                'textarea',
                 array(
                     'label' => 'tys.form.audioItem.description.label',
                     'help_block' => 'tys.form.audioItem.description.help_block',

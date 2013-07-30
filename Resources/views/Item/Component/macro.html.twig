@@ -1,6 +1,6 @@
 
 {% macro map(story) %}
-    <div class="row item">
+    <div class="row item item-map">
         <div class="span12"><i class="icon-map-marker"></i>{{ 'story.show.added.by' | trans | raw }}: {#{{ story.creator }}#}</div>
         <div class="span4">
             <h3>{{ story.address }}</h3>
@@ -10,7 +10,7 @@
                 src="http://maps.googleapis.com/maps/api/staticmap?{{
                 {
                 'zoom': '13',
-                'size': '600x200',
+                'size': '620x200',
                 'sensor': 'false',
                 'center': story.address
                 }|url_encode }}&markers=size:mid%7Ccolor:red%7C{{ story.address | url_encode }}"
@@ -24,7 +24,7 @@
         <div class="span12"><i class="icon-music"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
-            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
+            <a class="btn btn-tys btn-small" href="{{ path('item_edit', {id: item.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
         </div>
         <div class="span8">
             <div>
@@ -49,7 +49,7 @@
         <div class="span12"><i class="icon-file"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
-            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
+            <a class="btn btn-tys btn-small" href="{{ path('item_edit', {id: item.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
         </div>
         <div class="span8">
             <div>
@@ -68,7 +68,7 @@
         <div class="span12"><i class="icon-align-left"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
-            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
+            <a class="btn btn-tys btn-small" href="{{ path('item_edit', {id: item.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
         </div>
         <div class="span8">
             <div>
@@ -80,10 +80,10 @@
 
 {% macro url(item) %}
     <div class="row item item-url">
-        <div class="span12"><i class="icon-align-left"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
+        <div class="span12"><i class="icon-globe"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
-            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
+            <a class="btn btn-tys btn-small" href="{{ path('item_edit', {id: item.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
         </div>
         <div class="span8">
             <div>
@@ -98,7 +98,7 @@
         <div class="span12"><i class="icon-play"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
-            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
+            <a class="btn btn-tys btn-small" href="{{ path('item_edit', {id: item.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
         </div>
         <div class="span8">
             <div>

@@ -29,7 +29,7 @@ class StoryType extends AbstractType
             )
             ->add(
                 'description',
-                null,
+                'text',
                 array(
                     'label' => 'tys.form.story.description.label',
                     'help_block' => 'tys.form.story.description.help_block',

@@ -2,6 +2,13 @@
 
 {% block content %}
 
+
+    {% include 'EETYSBundle::Item/Component/steps.html.twig' %}
+
+    <div class="page-header">
+        <h1>{{ 'story.addItem.page_header.h1' | trans | raw }}</h1>
+    </div>
+
     {% include 'EETYSBundle::Item/Component/item_types.html.twig' %}
 
     {% import 'EETYSBundle::Item/Component/macro.html.twig' as macro %}

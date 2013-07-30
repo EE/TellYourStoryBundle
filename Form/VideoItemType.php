@@ -40,7 +40,7 @@ class VideoItemType extends AbstractType
             )
             ->add(
                 'description',
-                null,
+                'textarea',
                 array(
                     'label' => 'tys.form.videoItem.description.label',
                     'help_block' => 'tys.form.videoItem.description.help_block',
