@@ -4,8 +4,16 @@ parameters:
     eetys.form.type.text.class:  EE\TYSBundle\Form\TextItemType
     eetys.form.type.url.class:   EE\TYSBundle\Form\UrlItemType
     eetys.form.type.video.class: EE\TYSBundle\Form\VideoItemType
+    eetys.user_provider.class:   EE\TYSBundle\Security\Core\User\TYSUserProvider
+    ee_tys.user_provider.class:  EE\TYSBundle\Security\Core\User\TYSUserProvider
+    ee_tys.entity.user.class:    EE\TYSBundle\Entity\User
 
 services:
+    ee_tys.user_provider:
+        class: "%ee_tys.user_provider.class%"
+        #this is the place where the properties are passed to the UserProvider - see config.yml
+        arguments: ["@ee_light_user.user_manager"]
+
     ee_tys.story_voter:
         class: EE\TYSBundle\Security\Authorization\Voter\StoryVoter
         arguments: [@service_container]

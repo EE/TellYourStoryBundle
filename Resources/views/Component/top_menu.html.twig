@@ -1,4 +1,4 @@
 <ul class="nav nav-tabs pull-right">
     <li><i class="icon-add-small"></i>{{ 'header.menu.add_story' | trans | raw }}</li>
-    <li><i class="icon-login-small"></i>{{ 'header.menu.login.facebook' | trans | raw }}</li>
+    <li><a href="{{ path('hwi_oauth_service_redirect', {service: 'facebook'})  }}"><i class="icon-login-small"></i>{{ 'header.menu.login.facebook' | trans | raw }}</a></li>
 </ul>
