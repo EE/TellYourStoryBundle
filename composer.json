@@ -22,7 +22,8 @@
         "twbs/bootstrap": "2.3.*",
         "doctrine/doctrine-fixtures-bundle": "~2.0",
         "ee/embedly-bundle": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "~1.1"
+        "friendsofsymfony/jsrouting-bundle": "~1.1",
+        "hwi/oauth-bundle": "0.3.*@dev"
     }
 
 }
