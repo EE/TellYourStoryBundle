@@ -4,10 +4,16 @@
         <div class="span4">
             <h3>{{ entity.name }}</h3>
             <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+{% macro audio(item) %}
+    <div class="row item item-audio">
+        <div class="span12"><i class="icon-music"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
+        <div class="span4">
+            <h3>{{ item.name }}</h3>
+            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
         </div>
         <div class="span8">
             <div>
-                {% for filekey in entity.files %}
+                {% for filekey in item.files %}
                     <object type="application/x-shockwave-flash" data="{{ asset('bundles/eetys/flash/dewplayer.swf') }}"
                             width="620" height="20" id="dewplayer" name="dewplayer">
                         <param name="wmode" value="transparent"/>
@@ -17,71 +23,74 @@
                 {% endfor %}
             </div>
             <div>
-                {{ entity.description }}
+                {{ item.description }}
             </div>
         </div>
     </div>
 {% endmacro %}
 
-{% macro file(entity) %}
-    <div class="row">
+{% macro file(item) %}
+    <div class="row item item-file">
+        <div class="span12"><i class="icon-file"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
-            <h3>{{ entity.name }}</h3>
-            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+            <h3>{{ item.name }}</h3>
+            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
         </div>
         <div class="span8">
             <div>
-                {% for filekey in entity.files %}
+                {% for filekey in item.files %}
                 <a href="/uploads/{{ filekey }}">{{ filekey }}</div>
             {% endfor %}
         </div>
         <div>
-            {{ entity.description }}
+            {{ item.description }}
         </div>
-    </div>
     </div>
 {% endmacro %}
 
-{% macro text(entity) %}
-    <div class="row">
+{% macro text(item) %}
+    <div class="row item item-text">
+        <div class="span12"><i class="icon-align-left"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
-            <h3>{{ entity.name }}</h3>
-            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+            <h3>{{ item.name }}</h3>
+            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
         </div>
         <div class="span8">
             <div>
-                {{ entity.body | nl2br }}
+                {{ item.body | nl2br }}
             </div>
         </div>
     </div>
 {% endmacro %}
 
-{% macro url(entity) %}
-    <div class="row">
+{% macro url(item) %}
+    <div class="row item item-url">
+        <div class="span12"><i class="icon-align-left"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
-            <h3>{{ entity.name }}</h3>
-            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+            <h3>{{ item.name }}</h3>
+            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
         </div>
         <div class="span8">
             <div>
-                <a href="{{ entity.url }}">{{ entity.url }}</a>
+                <a href="{{ item.url }}">{{ item.url }}</a>
             </div>
         </div>
     </div>
 {% endmacro %}
 
-{% macro video(entity) %}
-    <div class="row">
+{% macro video(item) %}
+    <div class="row item item-video">
+        <div class="span12"><i class="icon-play"></i>{{ 'story.show.added.by' | trans | raw }}:</div>
         <div class="span4">
-            <h3>{{ entity.name }}</h3>
-            <a href="{{ path('item_edit', {id: entity.id}) }}">Edit</a>
+            <h3>{{ item.name }}</h3>
+            <a href="{{ path('item_edit', {id: item.id}) }}">Edit</a>
         </div>
         <div class="span8">
             <div>
-                {{ entity.embedCode | raw }}
+                {{ item.embedCode | raw }}
             </div>
             <div>
-                <a href="{{ entity.url }}">{{ entity.url }}</a>
+                <a href="{{ item.url }}">{{ item.url }}</a>
             </div>
         </div>
     </div>

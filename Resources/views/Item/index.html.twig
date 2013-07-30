@@ -4,9 +4,9 @@
     <h1>Item list</h1>
 
     {% import 'EETYSBundle::Item/Component/macro.html.twig' as macro %}
-    {% for entity in entities %}
+    {% for item in entities %}
         <hr>
         {# use macro depending on item type #}
-        {{ attribute(macro, entity.type, [entity]) }}
+        {{ attribute(macro, item.type, [item]) }}
     {% endfor %}
 {% endblock %}
