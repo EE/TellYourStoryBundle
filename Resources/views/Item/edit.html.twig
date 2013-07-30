@@ -1,20 +1,7 @@
 {% extends 'EETYSBundle::base.html.twig' %}
 
 {% block content %}
-    <form class="form-horizontal"  action="{{ path('item_update', {id: entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
-        {{ form_row(edit_form.name) }}
-        {% if entity.type in ['audio', 'file'] %}
 
-        {% for filekey in entity.files %}
-            <div>
-                {{ filekey }}
-            </div>
-        {% endfor %}
-        {{ form_row(edit_form.uploadedFiles, { 'attr': { 'multiple': 'multiple' }, 'full_name': edit_form.uploadedFiles.vars['full_name'] ~ '[]' }) }}
-        {% endif %}
-        {{ form_rest(edit_form) }}
-        <div class="form-actions">
-            <button type="submit" class="btn">Update</button>
-        </div>
-    </form>
+    {% include 'EETYSBundle:Item/Component:edit_form.html.twig' with {'entity': entity} %}
+
 {% endblock %}

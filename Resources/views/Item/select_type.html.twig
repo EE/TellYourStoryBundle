@@ -2,7 +2,6 @@
 
 {% block content %}
 
-
     {% include 'EETYSBundle::Item/Component/steps.html.twig' %}
 
     <div class="page-header">
@@ -13,8 +12,17 @@
 
     {% import 'EETYSBundle::Item/Component/macro.html.twig' as macro %}
     {% for item in story.items %}
-        <hr>
-        {# use macro depending on item type #}
-        {{ attribute(macro, item.type, [item]) }}
+        {% if (edited_item is defined and (item.id == edited_item.id)) %}
+            <div class="row item">
+                {% include 'EETYSBundle::Item/Component/edit_form.html.twig' with {
+                    'entity': edited_item,
+                    'edit_form': edited_item_edit_form,
+                    'delete_form': edited_item_delete_form
+                } %}
+            </div>
+        {% else %}
+            {# use macro depending on item type #}
+            {{ attribute(macro, item.type, [item]) }}
+        {% endif %}
     {% endfor %}
 {% endblock %}

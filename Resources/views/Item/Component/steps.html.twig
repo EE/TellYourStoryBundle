@@ -4,6 +4,8 @@
     {% set active = 'two' %}
 {% elseif app.request.attributes.get('_route') == 'story_summary' %}
     {% set active = 'three' %}
+{% else %}
+    {% set active = null %}
 {% endif %}
 
 <div class="row steps">
