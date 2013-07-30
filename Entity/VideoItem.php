@@ -16,7 +16,7 @@ class VideoItem extends UrlItem
     /**
      * @var string
      *
-     * @ORM\Column(name="embed_code", type="string")
+     * @ORM\Column(name="embed_code", type="text")
      * @Serializer\Expose
      * @Serializer\Groups({"get"})
      */
