@@ -1,10 +1,10 @@
 parameters:
-    eetys.form.type.audio.class: EE\TYSBundle\Form\AudioItemType
-    eetys.form.type.file.class:  EE\TYSBundle\Form\FileItemType
-    eetys.form.type.text.class:  EE\TYSBundle\Form\TextItemType
-    eetys.form.type.url.class:   EE\TYSBundle\Form\UrlItemType
-    eetys.form.type.video.class: EE\TYSBundle\Form\VideoItemType
-    eetys.user_provider.class:   EE\TYSBundle\Security\Core\User\TYSUserProvider
+    ee_tys.form.type.audio.class: EE\TYSBundle\Form\AudioItemType
+    ee_tys.form.type.file.class:  EE\TYSBundle\Form\FileItemType
+    ee_tys.form.type.text.class:  EE\TYSBundle\Form\TextItemType
+    ee_tys.form.type.url.class:   EE\TYSBundle\Form\UrlItemType
+    ee_tys.form.type.video.class: EE\TYSBundle\Form\VideoItemType
+    ee_tys.user_provider.class:   EE\TYSBundle\Security\Core\User\TYSUserProvider
     ee_tys.user_provider.class:  EE\TYSBundle\Security\Core\User\TYSUserProvider
     ee_tys.entity.user.class:    EE\TYSBundle\Entity\User
 
@@ -21,11 +21,18 @@ services:
         tags:
           - { name: security.voter }
 
-    ee_tys.voter_listener:
-        class: EE\TYSBundle\EventListener\VoterListener
+    ee_tys.item_voter:
+        class: EE\TYSBundle\Security\Authorization\Voter\ItemVoter
         arguments: [@service_container]
+        public: false
         tags:
-          - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -128  }
+          - { name: security.voter }          
+
+#    ee_tys.voter_listener:
+#        class: EE\TYSBundle\EventListener\VoterListener
+#        arguments: [@service_container]
+#        tags:
+#          - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -128  }
 
     ee_tys.doctrine.item_subscriber:
         class: EE\TYSBundle\EventListener\Doctrine\ItemSubscriber
@@ -50,26 +57,26 @@ services:
             - { name: 'jms_serializer.handler', type: Filename, format: json}
 
     ee_tys.form.type.audio:
-        class: "%eetys.form.type.audio.class%"
+        class: "%ee_tys.form.type.audio.class%"
         tags:
             - { name: form.type, alias: ee_tysbundle_audioitemtype }
 
     ee_tys.form.type.file:
-        class: "%eetys.form.type.file.class%"
+        class: "%ee_tys.form.type.file.class%"
         tags:
             - { name: form.type, alias: ee_tysbundle_fileitemtype }
 
     ee_tys.form.type.text:
-        class: "%eetys.form.type.text.class%"
+        class: "%ee_tys.form.type.text.class%"
         tags:
             - { name: form.type, alias: ee_tysbundle_textitemtype }
 
     ee_tys.form.type.url:
-        class: "%eetys.form.type.url.class%"
+        class: "%ee_tys.form.type.url.class%"
         tags:
             - { name: form.type, alias: ee_tysbundle_urlitemtype }
 
     ee_tys.form.type.video:
-        class: "%eetys.form.type.video.class%"
+        class: "%ee_tys.form.type.video.class%"
         tags:
             - { name: form.type, alias: ee_tysbundle_videoitemtype }

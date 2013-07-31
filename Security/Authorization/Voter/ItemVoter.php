@@ -6,14 +6,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use EE\TYSBundle\Entity\Story;
+use EE\TYSBundle\Entity\Item;
 
 /**
- * Class StoryVoter
+ * Class ItemVoter
  *
  * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
-class StoryVoter implements VoterInterface
+class ItemVoter implements VoterInterface
 {
 
     private $container;
@@ -21,8 +21,7 @@ class StoryVoter implements VoterInterface
         'NEW',
         'EDIT',
         'SHOW',
-        'DELETE',
-        'PUBLISH'
+        'DELETE'
     );
 
     public function __construct($container)
@@ -51,7 +50,7 @@ class StoryVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        if ($class instanceof Story) {
+        if ($class instanceof Item) {
             return true;
         }
 
@@ -85,11 +84,7 @@ class StoryVoter implements VoterInterface
                     break;
                 case 'DELETE':
 
-                    return $this->deleteAccess($object);
-                    break;
-                case 'PUBLISH':
-
-                    return $this->publishAccess($object);
+                    return $this->showAccess($object);
                     break;
                 default:
                     break;
@@ -99,32 +94,33 @@ class StoryVoter implements VoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function newAccess(Story $object)
+    private function newAccess(Item $object)
+    {
+
+        if (!$object->getStory()) {
+            throw new \RuntimeException('Missing reference to Story entity. Remember to $item->setStory($story) before calling is_granted NEW ');
+        }
+
+        return VoterInterface::ACCESS_GRANTED;
+    }
+
+    private function editAccess(Item $object)
     {
 
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function editAccess(Story $object)
+    private function showAccess(Item $object)
     {
 
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function showAccess(Story $object)
+    private function deleteAccess(Item $object)
     {
 
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function deleteAccess(Story $object)
-    {
 
-        return VoterInterface::ACCESS_GRANTED;
-    }
-
-    private function publishAccess(Story $object){
-
-        return VoterInterface::ACCESS_GRANTED;
-    }
 }
