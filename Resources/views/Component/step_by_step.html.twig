@@ -15,7 +15,12 @@
                 <div>
                     <h4>{{ 'default.homepage.step_by_step.invite' | trans | raw }}</h4>
                 </div>
-                <a class="btn btn-tys btn-block" href="{{ path('story_new') }}">
+                <a class="btn btn-tys btn-block{% if not(is_granted('IS_AUTHENTICATED_FULLY')) %} disabled{% endif %}"
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        href="{{ path('story_new') }}"
+                    {% else %}
+                        href="#" data-toggle="tooltip" title="{{ 'btn.error.login_first' | trans | raw }}" data-placement="bottom"
+                    {% endif %}>
                     <i class="icon-plus-sign"></i>
                     <span>{{ 'default.homepage.button.add_story.name' | trans | raw }}</span>
                 </a>
