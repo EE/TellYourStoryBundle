@@ -27,7 +27,18 @@ story_update:
 
 story_publish:
     pattern:  /{id}/publish
-    defaults: { _controller: "EETYSBundle:Story:show" }
+    defaults: { _controller: "EETYSBundle:Story:publish" }
+
+story_preview:
+    pattern:  /{id}/preview
+    defaults: { _controller: "EETYSBundle:Story:preview" }
+
+story_set_coeditability:
+    pattern:  /{id}/colaborate/{isCoeditable}
+    defaults: { _controller: "EETYSBundle:Story:setCoeditability" }
+    requirements:
+        isCoeditable: "[0,1]"
+
 
 story_delete:
     pattern:  /{id}/delete

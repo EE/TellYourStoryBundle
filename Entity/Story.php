@@ -110,6 +110,28 @@ class Story
      */
     private $createdBy;
 
+    /**
+     * Is it enabled to add new items by other users?
+     *
+     * @var boolean
+     *
+     * @ORM\Column(name="is_coeditable", type="boolean")
+     */
+    private $coeditable;
+
+    /**
+     * Is it visible?
+     *
+     * @var boolean
+     *
+     * @ORM\Column(name="is_published", type="boolean")
+     */
+    private $published;
+
+
+
+
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -316,6 +338,61 @@ class Story
     public function getFile()
     {
         return $this->file;
+    }
+
+
+    /**
+     * @param boolean $coeditable
+     */
+    public function setCoeditable($coeditable)
+    {
+        $this->coeditable = $coeditable;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCoeditable()
+    {
+        return $this->coeditable;
+    }
+
+    /**
+     * @param \EE\TYSBundle\Entity\User $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * @return \EE\TYSBundle\Entity\User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param boolean $published
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
     }
 
 }

@@ -1,11 +1,13 @@
+{% if active is not defined %}
+  {% set active = null %}
+{% endif %}
+
 {% if app.request.attributes.get('_route') == 'story_new' or app.request.attributes.get('_route') == 'story_edit' %}
     {% set active = 'one' %}
 {% elseif app.request.attributes.get('_route') == 'item_select_type' or app.request.attributes.get('_route') == 'item_new' %}
     {% set active = 'two' %}
-{% elseif app.request.attributes.get('_route') == 'story_summary' %}
+{% elseif app.request.attributes.get('_route') == 'story_show' %}
     {% set active = 'three' %}
-{% else %}
-    {% set active = null %}
 {% endif %}
 
 <div class="row steps">

@@ -2,6 +2,7 @@
 
 namespace EE\TYSBundle\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -108,6 +109,74 @@ class StoryController extends Controller
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView()
             ));
+    }
+
+
+    /**
+     * Finds and displays a Story entity.
+     *
+     */
+    public function previewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        return $this->render('EETYSBundle:Story:show.html.twig', array(
+            'entity'      => $entity,
+        ));
+    }
+
+
+    /**
+     * Sets Story::coeditable property
+     *
+     */
+    public function setCoeditabilityAction($id, $isCoeditable)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        $entity->setCoeditable($isCoeditable);
+
+        $em->persist($entity);
+        $em->flush();
+
+        return new RedirectResponse($this->getRequest()->headers->get("referer"));
+    }
+
+    /**
+     * Sets Story::published property
+     *
+     */
+    public function publishAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        $entity->setPublished(1);
+
+        $em->persist($entity);
+        $em->flush();
+
+        $flash = $this->get('translator')->trans('story.publish.banner');
+        $this->get('session')->getFlashBag()->add('notice', $flash);
+
+        return new RedirectResponse($this->generateUrl('story_show', array('id' => $id)));
     }
 
     /**
