@@ -1,4 +1,3 @@
-
 {% macro map(story) %}
     <div class="row item item-map">
         <div class="span12"><i class="icon-map-marker"></i>{{ 'story.show.added.by' | trans | raw }}: {{ story.createdBy.getRealName() }}</div>
@@ -72,7 +71,7 @@
         </div>
         <div class="span8">
             <div>
-                {{ item.body | nl2br }}
+                {{ item.body | raw }}
             </div>
         </div>
     </div>

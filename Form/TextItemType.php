@@ -35,6 +35,7 @@ class TextItemType extends AbstractType
                     'help_block' => 'tys.form.textItem.body.help_block',
                     'attr' => array(
                         'placeholder' => 'tys.form.textItem.body.placeholder',
+                        'class' => 'tinymce',
                     )
                 )
             );
