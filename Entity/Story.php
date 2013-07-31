@@ -102,6 +102,14 @@ class Story
      */
     private $items;
 
+    /**
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="EE\TYSBundle\Entity\User", inversedBy="stories")
+     *
+     */
+    private $createdBy;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();

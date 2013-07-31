@@ -216,7 +216,7 @@ class StoryController extends Controller
      */
     private function handleUpload(&$entity)
     {
-        if ($entity->file) {
+        if ($entity->getFile()) {
             $uploadsAdapter = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
             if ($entity->getBackgroundFilename() !== null){
                 try {
@@ -226,8 +226,8 @@ class StoryController extends Controller
                 };
             }
 
-            $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $entity->file->guessExtension();
-            $uploadsAdapter->write($key, file_get_contents($entity->file));
+            $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $entity->getFile()->guessExtension();
+            $uploadsAdapter->write($key, file_get_contents($entity->getFile()));
 
             $entity->setBackgroundFilename($key);
         }

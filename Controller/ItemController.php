@@ -97,6 +97,8 @@ class ItemController extends Controller
             }
             $item->setStory($story);
 
+            $item->setCreatedBy($this->get('security.context')->getToken()->getUser());
+
             $em->persist($item);
             $em->flush();
 

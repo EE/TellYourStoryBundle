@@ -3,6 +3,7 @@
 namespace EE\TYSBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use EE\LightUserBundle\Entity\User as BaseUser;
 
@@ -27,6 +28,22 @@ class User extends BaseUser
 
     /** @ORM\Column(name="facebook_real_name", type="string", length=255) */
     protected $facebookRealName;
+
+    /**
+     * @var
+     *
+     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="user")
+     */
+    protected $items;
+
+    /**
+     * @var
+     *
+     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Story", mappedBy="user")
+     */
+    protected $stories;
+
+
 
 
     /**
@@ -106,6 +123,60 @@ class User extends BaseUser
     public function getFacebookRealName()
     {
         return $this->facebookRealName;
+    }
+
+    /**
+     * Proxy for view
+     *
+     * @return string
+     */
+    public function getRealName()
+    {
+        return $this->facebookRealName;
+    }
+
+    /**
+     * Sets Item collection
+     *
+     * @param Collection $items
+     *
+     * @return $this
+     */
+    public function setItems(Collection $items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Sets Story collection
+     *
+     * @param Collection $stories
+     *
+     * @return $this
+     */
+    public function setStories(Collection $stories)
+    {
+        $this->stories = $stories;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getStories()
+    {
+        return $this->stories;
     }
 
 
