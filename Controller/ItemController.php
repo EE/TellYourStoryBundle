@@ -229,17 +229,19 @@ class ItemController extends Controller
 
         if ($editForm->isValid()) {
 
-            $data = $request->files->get($editForm->getName());
+            if ($data = $request->files->get($editForm->getName())) {
 
-            $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
+                $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
 
-            foreach ($data['uploadedFiles'] as $uploadedFile) {
-                // Symfony\Component\HttpFoundation\File\UploadedFile
+                foreach ($data['uploadedFiles'] as $uploadedFile) {
+                    // Symfony\Component\HttpFoundation\File\UploadedFile
 
-                $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
+                    $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
 
-                $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
-                $item->addFile($key);
+                    $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
+                    $item->addFile($key);
+                }
+
             }
 
             $em->persist($item);
