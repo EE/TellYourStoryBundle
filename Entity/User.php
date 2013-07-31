@@ -25,6 +25,10 @@ class User extends BaseUser
     /** @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true) */
     protected $facebookAccessToken;
 
+    /** @ORM\Column(name="facebook_real_name", type="string", length=255) */
+    protected $facebookRealName;
+
+
     /**
      * @param mixed $id
      *
@@ -84,5 +88,25 @@ class User extends BaseUser
     {
         return $this->facebookId;
     }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setFacebookRealName($name)
+    {
+        $this->facebookRealName = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookRealName()
+    {
+        return $this->facebookRealName;
+    }
+
 
 }
