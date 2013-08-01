@@ -248,8 +248,10 @@ class ItemController extends Controller
 
                 $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
 
+
                 foreach ($data['uploadedFiles'] as $uploadedFile) {
                     // Symfony\Component\HttpFoundation\File\UploadedFile
+
 
                     $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
 
