@@ -5,6 +5,7 @@ namespace EE\TYSBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use EE\TYSBundle\Validator\Constrains\Files as Files;
 
 /**
  * Story
@@ -90,7 +91,10 @@ class Story
 
     /**
      * @Assert\File(
-     *     maxSize = "32M"
+     *     maxSize = "32M",
+     *     mimeTypes = {"image/png", "image/jpeg", "image/gif"},
+     *     maxSizeMessage = "story.backgroundFilename.too.big.file",
+     *     mimeTypesMessage = "story.backgroundFilename.mime.incorrect"
      * )
      */
     private $file;
@@ -135,6 +139,8 @@ class Story
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->coeditable = false;
+        $this->published = false;
     }
 
     /**

@@ -12,6 +12,10 @@
     {% include 'EETYSBundle::Item/Component/item_types.html.twig' %}
 
     {% import 'EETYSBundle::Item/Component/macro.html.twig' as macro %}
+
+    {{ attribute(macro, 'map', [story]) }}
+
+
     {% for item in story.items %}
         {% if (edited_item is defined and (item.id == edited_item.id)) %}
             <div class="row item">

@@ -1,8 +1,9 @@
 {% macro map(story) %}
     <div class="row item item-map">
-        <div class="span12"><i class="icon-map-marker"></i>{{ 'story.show.added.by' | trans | raw }}: {{ story.createdBy.getRealName() }}</div>
+        <div class="span12"><i class="icon-map-marker"></i>{%  if story.createdBy is not null %}{{ 'story.show.added.by' | trans | raw }}: {{ story.createdBy.getRealName() }}{% endif %}</div>
         <div class="span4">
             <h3>{{ story.address }}</h3>
+            <a class="btn btn-tys btn-small" href="{{ path('story_edit', {id: story.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
         </div>
         <div class="span8">
             <img

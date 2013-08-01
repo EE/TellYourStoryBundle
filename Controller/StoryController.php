@@ -37,13 +37,14 @@ class StoryController extends Controller
     public function createAction(Request $request)
     {
         $entity  = new Story();
-        $form = $this->createForm(new StoryType(), $entity);
+        $form = $this->createForm(new StoryType($this->get('validator')), $entity);
         $form->submit($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $this->handleUpload($entity);
+            $entity->setCreatedBy($this->getUser());
 
             $em->persist($entity);
             $em->flush();
@@ -63,7 +64,7 @@ class StoryController extends Controller
     public function newAction()
     {
         $entity = new Story();
-        $form   = $this->createForm(new StoryType(), $entity);
+        $form   = $this->createForm(new StoryType($this->get('validator')), $entity);
 
         return $this->render('EETYSBundle:Story:new.html.twig', array(
             'entity' => $entity,
@@ -193,7 +194,7 @@ class StoryController extends Controller
             throw $this->createNotFoundException('Unable to find Story entity.');
         }
 
-        $editForm = $this->createForm(new StoryType(), $entity);
+        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EETYSBundle:Story:edit.html.twig', array(
@@ -222,7 +223,7 @@ class StoryController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new StoryType(), $entity, array('method'=>'PUT'));
+        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity, array('method'=>'PUT'));
         $editForm->submit($request);
 
         if ($editForm->isValid()) {

@@ -4,7 +4,11 @@ namespace EE\TYSBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Validator;
 
 /**
  * Class StoryType
@@ -13,6 +17,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class StoryType extends AbstractType
 {
+    /**
+     * @var Validator
+     */
+    protected $validator;
+
+    function __construct(Validator $validator)
+    {
+        $this->validator = $validator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -62,10 +76,15 @@ class StoryType extends AbstractType
             )
             ->add(
                 'file',
-                null,
+                new ImageType(),
                 array(
                     'label' => 'tys.form.story.file.label',
-                    'help_block' => 'tys.form.story.file.help_block'
+                    'help_block' => 'tys.form.story.file.help_block',
+                    'attr' => $this->addHtml5Validation(
+                        array(),
+                        'file',
+                        new \ReflectionClass($options['data_class'])
+                    )
                 )
             );
     }
@@ -82,5 +101,30 @@ class StoryType extends AbstractType
     public function getName()
     {
         return 'ee_tysbundle_storytype';
+    }
+
+    /**
+     * @param array            $attr
+     * @param                  $property
+     * @param \ReflectionClass $class
+     *
+     * @return array
+     */
+    public function addHtml5Validation(array $attr, $property, \ReflectionClass $class)
+    {
+        $validatedProperties = $this->validator
+            ->getMetadataFor(new $class->name())
+            ->properties;
+
+
+        if ($property === 'file') {
+            foreach ($validatedProperties[$property]->constraints as $constraint) {
+                if ($constraint instanceof File) {
+                    $attr['accept'] = implode(',', $constraint->mimeTypes);
+                }
+            }
+        }
+
+        return $attr;
     }
 }

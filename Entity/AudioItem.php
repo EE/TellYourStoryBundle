@@ -21,7 +21,9 @@ class AudioItem extends FileItem
      * @Files(
      *     maxSize = "10M",
      *     maxTotalSize = "10M",
-     *     mimeTypes = {"audio/mpeg"}
+     *     mimeTypes = {"audio/mpeg"},
+     *     maxSizeMessage = "item.audio.uploadedFiles.too.big.file",
+     *     mimeTypesMessage = "item.audio.uploadedFiles.mime.incorrect"
      * )
      * @var array
      */

@@ -15,7 +15,8 @@
         {{ form_widget(edit_form) }}
 
         {% if entity.backgroundFilename %}
-            <img src="{{ entity.backgroundFilename | imagine_filter('my_thumb') }}" alt=""/>
+            <label class="control-label"><small>{{ 'tys.form.story.file.current' | trans | raw }}</small></label>
+            <img src="{{ entity.backgroundFilename | imagine_filter('story_header_preview') }}" alt=""/>
         {% endif %}
         <div class="form-actions">
             <button class="btn btn-tys btn-small" type="submit">{{ 'btn.save.name' | trans }}</button>
