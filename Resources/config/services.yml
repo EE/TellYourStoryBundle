@@ -1,4 +1,5 @@
 parameters:
+    ee_tys.form.type.story.class: EE\TYSBundle\Form\StoryType
     ee_tys.form.type.audio.class: EE\TYSBundle\Form\AudioItemType
     ee_tys.form.type.file.class:  EE\TYSBundle\Form\FileItemType
     ee_tys.form.type.text.class:  EE\TYSBundle\Form\TextItemType
@@ -56,13 +57,24 @@ services:
         tags:
             - { name: 'jms_serializer.handler', type: Filename, format: json}
 
+    ee_tys.form.type.story:
+        class: "%ee_tys.form.type.story.class%"
+        arguments:
+            - "@validator"
+        tags:
+            - { name: form.type, alias: ee_tysbundle_storytype }
+
     ee_tys.form.type.audio:
         class: "%ee_tys.form.type.audio.class%"
+        arguments:
+            - "@validator"
         tags:
             - { name: form.type, alias: ee_tysbundle_audioitemtype }
 
     ee_tys.form.type.file:
         class: "%ee_tys.form.type.file.class%"
+        arguments:
+            - "@validator"
         tags:
             - { name: form.type, alias: ee_tysbundle_fileitemtype }
 

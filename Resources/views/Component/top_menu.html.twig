@@ -1,4 +1,11 @@
 <ul class="nav nav-tabs pull-right">
-    <li><i class="icon-add-small"></i>{{ 'header.menu.add_story' | trans | raw }}</li>
-    <li><a href="{{ path('hwi_oauth_service_redirect', {service: 'facebook'})  }}"><i class="icon-login-small"></i>{{ 'header.menu.login.facebook' | trans | raw }}</a></li>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li><a href="{{ path('story_new') }}"><i class="icon-add-small"></i> {{ 'header.menu.add_story' | trans | raw }}</a></li>
+        <li><a href="{{ path('eetys_default_logout')  }}"><i class="icon-login-small"></i>header.menu.logout' | trans | raw{ '' }}</a></li>
+    {% else %}
+        <li><a href="#" class="disabled" href="#" data-toggle="tooltip" title="{{ 'btn.error.login_first' | trans | raw }}" data-placement="bottom"><i class="icon-add-small"></i> {{ 'header.menu.add_story' | trans | raw }}</a></li>
+        <li><i class="icon-add-small"></i>{{ 'header.menu.add_story' | trans | raw }}</li>
+        <li><a href="{{ path('hwi_oauth_service_redirect', {service: 'facebook'})  }}"><i class="icon-login-small"></i>{{ 'header.menu.login.facebook' | trans | raw }}</a></li>
+    {% endif %}
 </ul>

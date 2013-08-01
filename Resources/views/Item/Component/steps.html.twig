@@ -1,0 +1,18 @@
+{% if active is not defined %}
+  {% set active = null %}
+{% endif %}
+
+{% if app.request.attributes.get('_route') == 'story_new' or app.request.attributes.get('_route') == 'story_edit' %}
+    {% set active = 'one' %}
+{% elseif app.request.attributes.get('_route') == 'item_select_type' or app.request.attributes.get('_route') == 'item_new' %}
+    {% set active = 'two' %}
+{% elseif app.request.attributes.get('_route') == 'story_show' %}
+    {% set active = 'three' %}
+{% endif %}
+
+<div class="row steps">
+    <div class="span4 grid-paper{% if active == 'one' %} active{% endif %}"><h4>{{ 'story.steps.one.name' | trans | raw }}</h4></div>
+    <div class="span4 grid-paper{% if active == 'two' %} active{% endif %}"><h4>{{ 'story.steps.two.name' | trans | raw }}</h4></div>
+    <div class="span4 grid-paper{% if active == 'three' %} active{% endif %}"><h4>{{ 'story.steps.three.name' | trans | raw }}</h4></div>
+</div>
+

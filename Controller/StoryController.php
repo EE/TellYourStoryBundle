@@ -2,6 +2,7 @@
 
 namespace EE\TYSBundle\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -36,13 +37,14 @@ class StoryController extends Controller
     public function createAction(Request $request)
     {
         $entity  = new Story();
-        $form = $this->createForm(new StoryType(), $entity);
+        $form = $this->createForm(new StoryType($this->get('validator')), $entity);
         $form->submit($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $this->handleUpload($entity);
+            $entity->setCreatedBy($this->getUser());
 
             $em->persist($entity);
             $em->flush();
@@ -62,7 +64,7 @@ class StoryController extends Controller
     public function newAction()
     {
         $entity = new Story();
-        $form   = $this->createForm(new StoryType(), $entity);
+        $form   = $this->createForm(new StoryType($this->get('validator')), $entity);
 
         return $this->render('EETYSBundle:Story:new.html.twig', array(
             'entity' => $entity,
@@ -110,6 +112,74 @@ class StoryController extends Controller
             ));
     }
 
+
+    /**
+     * Finds and displays a Story entity.
+     *
+     */
+    public function previewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        return $this->render('EETYSBundle:Story:show.html.twig', array(
+            'entity'      => $entity,
+        ));
+    }
+
+
+    /**
+     * Sets Story::coeditable property
+     *
+     */
+    public function setCoeditabilityAction($id, $isCoeditable)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        $entity->setCoeditable($isCoeditable);
+
+        $em->persist($entity);
+        $em->flush();
+
+        return new RedirectResponse($this->getRequest()->headers->get("referer"));
+    }
+
+    /**
+     * Sets Story::published property
+     *
+     */
+    public function publishAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        $entity->setPublished(1);
+
+        $em->persist($entity);
+        $em->flush();
+
+        $flash = $this->get('translator')->trans('story.publish.banner');
+        $this->get('session')->getFlashBag()->add('notice', $flash);
+
+        return new RedirectResponse($this->generateUrl('story_show', array('id' => $id)));
+    }
+
     /**
      * Displays a form to edit an existing Story entity.
      *
@@ -124,7 +194,7 @@ class StoryController extends Controller
             throw $this->createNotFoundException('Unable to find Story entity.');
         }
 
-        $editForm = $this->createForm(new StoryType(), $entity);
+        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EETYSBundle:Story:edit.html.twig', array(
@@ -153,7 +223,7 @@ class StoryController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new StoryType(), $entity, array('method'=>'PUT'));
+        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity, array('method'=>'PUT'));
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
@@ -216,7 +286,7 @@ class StoryController extends Controller
      */
     private function handleUpload(&$entity)
     {
-        if ($entity->file) {
+        if ($entity->getFile()) {
             $uploadsAdapter = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
             if ($entity->getBackgroundFilename() !== null){
                 try {
@@ -226,8 +296,8 @@ class StoryController extends Controller
                 };
             }
 
-            $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $entity->file->guessExtension();
-            $uploadsAdapter->write($key, file_get_contents($entity->file));
+            $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $entity->getFile()->guessExtension();
+            $uploadsAdapter->write($key, file_get_contents($entity->getFile()));
 
             $entity->setBackgroundFilename($key);
         }

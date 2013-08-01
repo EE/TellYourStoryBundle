@@ -47,7 +47,7 @@ abstract class Item implements ItemInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
@@ -57,6 +57,15 @@ abstract class Item implements ItemInterface
      * @ORM\ManyToOne(targetEntity="EE\TYSBundle\Entity\Story", inversedBy="items")
      */
     private $story;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="EE\TYSBundle\Entity\User", inversedBy="items")
+     */
+    private $createdBy;
+
+
 
     /**
      * Item Constructor
@@ -142,6 +151,30 @@ abstract class Item implements ItemInterface
     public function getStory()
     {
         return $this->story;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param User $createdBy
+     *
+     * @return Item
+     */
+    public function setCreatedBy(User $createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
     }
 
 }

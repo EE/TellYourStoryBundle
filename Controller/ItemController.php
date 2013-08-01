@@ -97,6 +97,8 @@ class ItemController extends Controller
             }
             $item->setStory($story);
 
+            $item->setCreatedBy($this->getUser());
+
             $em->persist($item);
             $em->flush();
 
@@ -194,14 +196,27 @@ class ItemController extends Controller
         $editForm = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $entity->getType()), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render(
-            'EETYSBundle:Item:edit.html.twig',
+
+        $story = $em->getRepository('EETYSBundle:Story')->findOneBy(
             array(
-                'entity' => $entity,
-                'edit_form' => $editForm->createView(),
-                'delete_form' => $deleteForm->createView(),
+                'id' => $entity->getStory()->getId()
             )
         );
+
+        if (!$story) {
+            throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        return $this->render(
+            'EETYSBundle:Item:select_type.html.twig',
+            array(
+                'story' => $story,
+                'edited_item' => $entity,
+                'edited_item_edit_form' => $editForm->createView(),
+                'edited_item_delete_form' => $deleteForm->createView(),
+            )
+        );
+
     }
 
     /**
@@ -233,8 +248,10 @@ class ItemController extends Controller
 
                 $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
 
+
                 foreach ($data['uploadedFiles'] as $uploadedFile) {
                     // Symfony\Component\HttpFoundation\File\UploadedFile
+
 
                     $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
 

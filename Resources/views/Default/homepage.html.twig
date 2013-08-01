@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="container">
+        {# TODO: enable search #}
         {% include 'EETYSBundle:Component:search.html.twig' %}
         {% include 'EETYSBundle:Component:recently_added.html.twig' %}
     </div>
@@ -9,7 +10,6 @@
 
 {% block stories %}
     <div id="masonry-container"></div>
-    {% include 'EETYSBundle:Component:bottom.html.twig' %}
 {% endblock %}
 
 {% block subheader %}

@@ -1,0 +1,16 @@
+<form class="form-horizontal form-tys"  action="{{ path('item_update', {id: entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
+    {{ form_row(edit_form.name) }}
+    {% if entity.type in ['audio', 'file'] %}
+
+        {% for filekey in entity.files %}
+            <div>
+                {{ filekey }}
+            </div>
+        {% endfor %}
+        {{ form_row(edit_form.uploadedFiles, { 'attr': { 'multiple': 'multiple' }, 'full_name': edit_form.uploadedFiles.vars['full_name'] ~ '[]' }) }}
+    {% endif %}
+    {{ form_rest(edit_form) }}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-small btn-tys pull-right">{{ 'btn.update.name' | trans | raw }}</button>
+    </div>
+</form>

@@ -17,40 +17,39 @@
             var current = elements[i],
                 background = new Image();
 
-            background.src = current.background_uri;
+            if (current.hasOwnProperty('background_uri')) {
+                background.src = current.background_uri;
 
-            //hack
-            background.story = current;
+                //hack
+                background.story = current;
 
-            $(background).on('load', function() {
+                $(background).on('load', function() {
 
-                var imageHeight = Math.max($(this).context.height, 300),
-                    $elem = $(document.createElement('a')),
-                    $circle = $(document.createElement('div'));
+                    var imageHeight = Math.max($(this).context.height, 300),
+                        $elem = $(document.createElement('a')),
+                        $circle = $(document.createElement('div'));
 
-                $elem
-                    .attr('href', Routing.generate('story_show', {id: $(this).context.story.id}, true))
-                    .css({
-                        "background-image": "url('" + $(this).context.src + "')",
-                        'height': imageHeight - 2*padding
-                    })
-                    .addClass('story-item');
+                    $elem
+                        .attr('href', Routing.generate('story_show', {id: $(this).context.story.id}, true))
+                        .css({
+                            "background-image": "url('" + $(this).context.src + "')",
+                            'height': imageHeight - 2*padding
+                        })
+                        .addClass('story-item');
 
-                $circle
-                    .addClass('circle')
-                    .html($('<span>').addClass('tagline').text($(this).context.story.tagline))
-                    .css({
-                        'position': 'relative',
-                        'top': (imageHeight - columnWidth)/2
-                    })
-                    .appendTo($elem);
+                    $circle
+                        .addClass('circle')
+                        .html($('<span>').addClass('tagline').text($(this).context.story.tagline))
+                        .css({
+                            'position': 'relative',
+                            'top': (imageHeight - columnWidth)/2
+                        })
+                        .appendTo($elem);
 
-                $container.append($elem);
-                $container.masonry('appended', $elem).masonry();
-            });
-
-
-
+                    $container.append($elem);
+                    $container.masonry('appended', $elem).masonry();
+                });
+            }
 
         }
 

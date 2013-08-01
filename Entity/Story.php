@@ -5,6 +5,7 @@ namespace EE\TYSBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use EE\TYSBundle\Validator\Constrains\Files as Files;
 
 /**
  * Story
@@ -90,7 +91,10 @@ class Story
 
     /**
      * @Assert\File(
-     *     maxSize = "32M"
+     *     maxSize = "32M",
+     *     mimeTypes = {"image/png", "image/jpeg", "image/gif"},
+     *     maxSizeMessage = "story.backgroundFilename.too.big.file",
+     *     mimeTypesMessage = "story.backgroundFilename.mime.incorrect"
      * )
      */
     private $file;
@@ -102,9 +106,41 @@ class Story
      */
     private $items;
 
+    /**
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="EE\TYSBundle\Entity\User", inversedBy="stories")
+     *
+     */
+    private $createdBy;
+
+    /**
+     * Is it enabled to add new items by other users?
+     *
+     * @var boolean
+     *
+     * @ORM\Column(name="is_coeditable", type="boolean")
+     */
+    private $coeditable;
+
+    /**
+     * Is it visible?
+     *
+     * @var boolean
+     *
+     * @ORM\Column(name="is_published", type="boolean")
+     */
+    private $published;
+
+
+
+
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->coeditable = false;
+        $this->published = false;
     }
 
     /**
@@ -214,7 +250,11 @@ class Story
      */
     public function getBackgroundFilenameForSerialization()
     {
-        return new Filename($this->backgroundFilename);
+        if ($this->backgroundFilename) {
+            return new Filename($this->backgroundFilename);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -304,6 +344,61 @@ class Story
     public function getFile()
     {
         return $this->file;
+    }
+
+
+    /**
+     * @param boolean $coeditable
+     */
+    public function setCoeditable($coeditable)
+    {
+        $this->coeditable = $coeditable;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCoeditable()
+    {
+        return $this->coeditable;
+    }
+
+    /**
+     * @param \EE\TYSBundle\Entity\User $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * @return \EE\TYSBundle\Entity\User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param boolean $published
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
     }
 
 }
