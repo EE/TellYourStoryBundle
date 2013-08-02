@@ -111,10 +111,10 @@ class ItemVoter implements VoterInterface
             ||
             (true === $object->getStory()->getCoeditable())
         ) {
-            throw new \RuntimeException('Missing reference to Story entity. Remember to $item->setStory($story) before calling is_granted NEW ');
+            return VoterInterface::ACCESS_GRANTED;
         }
 
-        return VoterInterface::ACCESS_GRANTED;
+        return VoterInterface::ACCESS_DENIED;
     }
 
     private function editAccess(Item $object, $user)

@@ -73,15 +73,17 @@ class ItemController extends Controller
         $form->submit($request);
         $item = $form->getData();
 
-        if (false === $this->isGranted('NEW', $item)) {
-            throw new AccessDeniedException();
-        }
-
         $em = $this->getDoctrine()->getManager();
         $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
 
         if (!$story) {
             throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        $item->setStory($story);
+
+        if (false === $this->isGranted('NEW', $item)) {
+            throw new AccessDeniedException();
         }
 
         if ($form->isValid()) {
@@ -134,15 +136,16 @@ class ItemController extends Controller
         $form->submit($this->getRequest());
         $entity = $form->getData();
 
-        if (false === $this->isGranted('NEW', $entity)) {
-            throw new AccessDeniedException();
-        }
-
         $em = $this->getDoctrine()->getManager();
         $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
 
         if (!$story) {
             throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        $entity->setStory($story);
+        if (false === $this->isGranted('NEW', $entity)) {
+            throw new AccessDeniedException();
         }
 
         return $this->render(
