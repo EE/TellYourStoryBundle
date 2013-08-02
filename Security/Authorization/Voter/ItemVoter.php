@@ -64,6 +64,12 @@ class ItemVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
+        $user = $token->getUser();
+
+        if ($this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
         foreach ($attributes as $attribute) {
             if (!$this->supportsAttribute($attribute)) {
                 continue;
@@ -72,11 +78,11 @@ class ItemVoter implements VoterInterface
             switch ($attribute) {
                 case 'NEW':
 
-                    return $this->newAccess($object);
+                    return $this->newAccess($object, $user);
                     break;
                 case 'EDIT':
 
-                    return $this->editAccess($object);
+                    return $this->editAccess($object, $user);
                     break;
                 case 'SHOW':
 
@@ -84,7 +90,7 @@ class ItemVoter implements VoterInterface
                     break;
                 case 'DELETE':
 
-                    return $this->showAccess($object);
+                    return $this->showAccess($object, $user);
                     break;
                 default:
                     break;
@@ -94,20 +100,30 @@ class ItemVoter implements VoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function newAccess(Item $object)
+    private function newAccess(Item $object, UserInterface $user)
     {
-
         if (!$object->getStory()) {
+            throw new \RuntimeException('Missing reference to Story entity. Remember to $item->setStory($story) before calling is_granted NEW ');
+        }
+
+        if (
+            ($user === $object->getStory()->getCreatedBy())
+            ||
+            (true === $object->getStory()->getCoeditable())
+        ) {
             throw new \RuntimeException('Missing reference to Story entity. Remember to $item->setStory($story) before calling is_granted NEW ');
         }
 
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function editAccess(Item $object)
+    private function editAccess(Item $object, UserInterface $user)
     {
+        if ($user instanceof UserInterface && $user === $object->getCreatedBy() && null !== $object->getStory()) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
 
-        return VoterInterface::ACCESS_GRANTED;
+        return VoterInterface::ACCESS_DENIED;
     }
 
     private function showAccess(Item $object)
@@ -116,11 +132,12 @@ class ItemVoter implements VoterInterface
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function deleteAccess(Item $object)
+    private function deleteAccess(Item $object, UserInterface $user)
     {
+        if ($user instanceof UserInterface && $user === $object->getCreatedBy() && null !== $object->getStory()) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
 
-        return VoterInterface::ACCESS_GRANTED;
+        return VoterInterface::ACCESS_DENIED;
     }
-
-
 }

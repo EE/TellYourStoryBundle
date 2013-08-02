@@ -44,11 +44,14 @@
                 Back to the list
             </a>
         </li>
+        {% if true == is_granted('EDIT', entity) %}
         <li>
             <a href="{{ path('story_edit', { 'id': entity.id }) }}">
                 Edit
             </a>
         </li>
+        {% endif %}
+        {% if true == is_granted('DELETE', entity) %}
         <li>
             <form action="{{ path('story_delete', { 'id': entity.id }) }}" method="post">
                 <input type="hidden" name="_method" value="DELETE"/>
@@ -56,5 +59,6 @@
                 <button type="submit">Delete</button>
             </form>
         </li>
+        {% endif %}
     </ul>
 {% endblock %}
