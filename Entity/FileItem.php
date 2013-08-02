@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use EE\TYSBundle\Validator\Constrains\Files as Files;
 
 /**
  * FileItem
@@ -26,6 +27,14 @@ class FileItem extends Item
      * Dummy property used to generate form based on entity
      *
      * @var array
+     *
+     * @Files(
+     *     maxSize = "4M",
+     *     maxTotalSize = "100M",
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png"},
+     *     maxSizeMessage = "item.audio.uploadedFiles.too.big.file",
+     *     mimeTypesMessage = "item.audio.uploadedFiles.mime.incorrect"
+     * )
      */
     private $uploadedFiles;
 

@@ -19,7 +19,7 @@
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         href="{{ path('story_new') }}"
                     {% else %}
-                        href="#" data-toggle="tooltip" title="{{ 'btn.error.login_first' | trans | raw }}" data-placement="bottom"
+                        href="#" data-toggle="tooltip" title="{{ 'btn.error.login_first' | trans | raw }}" data-placement="top"
                     {% endif %}>
                     <i class="icon-plus-sign"></i>
                     {{ 'default.homepage.button.add_story.name' | trans | raw }}

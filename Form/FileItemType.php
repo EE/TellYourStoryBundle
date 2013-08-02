@@ -2,9 +2,11 @@
 
 namespace EE\TYSBundle\Form;
 
+use EE\TYSBundle\Validator\Constrains\Files;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Validator;
 
 /**
  * Class FileItemType
@@ -13,6 +15,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class FileItemType extends AbstractType
 {
+
+    /**
+     * @var Validator
+     */
+    protected $validator;
+
+    function __construct(Validator $validator)
+    {
+        $this->validator = $validator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -41,8 +54,14 @@ class FileItemType extends AbstractType
             ->add('uploadedFiles', 'file', array(
                     'label' => 'tys.form.fileItem.uploadedFiles.label',
                     'help_block' => 'tys.form.fileItem.uploadedFiles.help_block',
-                    'attr' => array(
-                        'placeholder' => 'tys.form.fileItem.uploadedFiles.placeholder',
+                    'attr' => $this->addHtml5Validation(
+                        array(
+                            'placeholder' => 'tys.form.fileItem.uploadedFiles.placeholder',
+                            'title' => 'tys.form.fileItem.uploadedFiles.label',
+                            'class' => 'btn-tys'
+                        ),
+                        'uploadedFiles',
+                        new \ReflectionClass($options['data_class'])
                     )
                 ));
     }
@@ -59,5 +78,30 @@ class FileItemType extends AbstractType
     public function getName()
     {
         return 'ee_tysbundle_fileitemtype';
+    }
+
+    /**
+     * @param array            $attr
+     * @param                  $property
+     * @param \ReflectionClass $class
+     *
+     * @return array
+     */
+    public function addHtml5Validation(array $attr, $property, \ReflectionClass $class)
+    {
+        $validatedProperties = $this->validator
+            ->getMetadataFor(new $class->name())
+            ->properties;
+
+
+        if ($property === 'uploadedFiles') {
+            foreach ($validatedProperties[$property]->constraints as $constraint) {
+                if ($constraint instanceof Files) {
+                    $attr['accept'] = implode(',', $constraint->mimeTypes);
+                }
+            }
+        }
+
+        return $attr;
     }
 }
