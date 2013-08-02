@@ -1,0 +1,7 @@
+{% extends 'EETYSBundle:Default:homepage.html.twig' %}
+
+{% block subheader %}{% endblock %}
+{% block content %}
+    {% include 'EETYSBundle::User/Component/name.html.twig' %}
+    {% include 'EETYSBundle:Component:stories_header.html.twig' with {text: 'user.dashboard.masonry.header'} %}
+{% endblock %}

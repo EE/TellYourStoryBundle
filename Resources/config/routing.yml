@@ -2,6 +2,14 @@ EETYSBundle_default:
     resource: "@EETYSBundle/Resources/config/routing/default.yml"
     prefix: /
 
+EETYSBundle_admin:
+    resource: "@EETYSBundle/Resources/config/routing/admin.yml"
+    prefix: /admin
+
+EETYSBundle_user:
+    resource: "@EETYSBundle/Resources/config/routing/user.yml"
+    prefix: /user
+
 EETYSBundle_api:
     type: rest
     resource: "@EETYSBundle/Resources/config/routing/api.yml"
