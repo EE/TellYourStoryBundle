@@ -65,6 +65,12 @@ class StoryVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
+        $user = $token->getUser();
+
+        if ($this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
         foreach ($attributes as $attribute) {
             if (!$this->supportsAttribute($attribute)) {
                 continue;
@@ -77,19 +83,19 @@ class StoryVoter implements VoterInterface
                     break;
                 case 'EDIT':
 
-                    return $this->editAccess($object);
+                    return $this->editAccess($object, $user);
                     break;
                 case 'SHOW':
 
-                    return $this->showAccess($object);
+                    return $this->showAccess($object, $user);
                     break;
                 case 'DELETE':
 
-                    return $this->deleteAccess($object);
+                    return $this->deleteAccess($object, $user);
                     break;
                 case 'PUBLISH':
 
-                    return $this->publishAccess($object);
+                    return $this->publishAccess($object, $user);
                     break;
                 default:
                     break;
@@ -105,26 +111,44 @@ class StoryVoter implements VoterInterface
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function editAccess(Story $object)
+    private function editAccess(Story $object, UserInterface $user)
     {
+        if ($user instanceof UserInterface && $user === $object->getCreatedBy()) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
+        return VoterInterface::ACCESS_DENIED;
+    }
+
+    private function showAccess(Story $object, UserInterface $user)
+    {
+
+        if (
+            (true === $object->getPublished())
+            ||
+            ($user instanceof UserInterface && $user === $object->getCreatedBy())
+        ) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
 
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function showAccess(Story $object)
+    private function deleteAccess(Story $object, UserInterface $user)
     {
+        if ($user instanceof UserInterface && $user === $object->getCreatedBy()) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
 
-        return VoterInterface::ACCESS_GRANTED;
+        return VoterInterface::ACCESS_DENIED;
     }
 
-    private function deleteAccess(Story $object)
+    private function publishAccess(Story $object, UserInterface $user)
     {
+        if ($user instanceof UserInterface && $user === $object->getCreatedBy()) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
 
-        return VoterInterface::ACCESS_GRANTED;
-    }
-
-    private function publishAccess(Story $object){
-
-        return VoterInterface::ACCESS_GRANTED;
+        return VoterInterface::ACCESS_DENIED;
     }
 }

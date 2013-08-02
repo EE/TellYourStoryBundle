@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use EE\TYSBundle\Entity\Story;
 use EE\TYSBundle\Form\StoryType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Story controller.
@@ -37,6 +38,11 @@ class StoryController extends Controller
     public function createAction(Request $request)
     {
         $entity  = new Story();
+
+        if (false === $this->isGranted('NEW', $entity)) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->createForm(new StoryType($this->get('validator')), $entity);
         $form->submit($request);
 
@@ -64,6 +70,11 @@ class StoryController extends Controller
     public function newAction()
     {
         $entity = new Story();
+
+        if (false === $this->isGranted('NEW', $entity)) {
+            throw new AccessDeniedException();
+        }
+
         $form   = $this->createForm(new StoryType($this->get('validator')), $entity);
 
         return $this->render('EETYSBundle:Story:new.html.twig', array(
@@ -102,6 +113,10 @@ class StoryController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        if (false === $this->isGranted('SHOW', $entity)) {
+            throw new AccessDeniedException();
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -169,6 +184,10 @@ class StoryController extends Controller
             throw $this->createNotFoundException('Unable to find Story entity.');
         }
 
+        if (false === $this->isGranted('PUBLISH', $entity)) {
+            throw new AccessDeniedException();
+        }
+
         $entity->setPublished(1);
 
         $em->persist($entity);
@@ -192,6 +211,10 @@ class StoryController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        if (false === $this->isGranted('EDIT', $entity)) {
+            throw new AccessDeniedException();
         }
 
         $editForm = $this->createForm(new StoryType($this->get('validator')), $entity);
@@ -220,6 +243,10 @@ class StoryController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Story entity.');
+        }
+
+        if (false === $this->isGranted('EDIT', $entity)) {
+            throw new AccessDeniedException();
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -257,6 +284,10 @@ class StoryController extends Controller
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Story entity.');
+            }
+
+            if (false === $this->isGranted('DELETE', $entity)) {
+                throw new AccessDeniedException();
             }
 
             $em->remove($entity);
@@ -301,5 +332,16 @@ class StoryController extends Controller
 
             $entity->setBackgroundFilename($key);
         }
+    }
+
+    /**
+     * @param string    $permission
+     * @param null      $domainObject
+     *
+     * @return bool
+     */
+    public function isGranted($permission, $domainObject = null)
+    {
+        return $this->container->get('security.context')->isGranted($permission, $domainObject);
     }
 }

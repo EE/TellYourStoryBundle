@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use EE\TYSBundle\Entity\FileItem;
 use EE\TYSBundle\Form\FileItemType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Item controller.
@@ -72,6 +73,10 @@ class ItemController extends Controller
         $form->submit($request);
         $item = $form->getData();
 
+        if (false === $this->isGranted('NEW', $item)) {
+            throw new AccessDeniedException();
+        }
+
         $em = $this->getDoctrine()->getManager();
         $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
 
@@ -129,6 +134,10 @@ class ItemController extends Controller
         $form->submit($this->getRequest());
         $entity = $form->getData();
 
+        if (false === $this->isGranted('NEW', $entity)) {
+            throw new AccessDeniedException();
+        }
+
         $em = $this->getDoctrine()->getManager();
         $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
 
@@ -159,6 +168,10 @@ class ItemController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('EETYSBundle:Item')->find($id);
+
+        if (false === $this->isGranted('SHOW', $entity)) {
+            throw new AccessDeniedException();
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Item entity.');
@@ -191,6 +204,10 @@ class ItemController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Item entity.');
+        }
+
+        if (false === $this->isGranted('EDIT', $entity)) {
+            throw new AccessDeniedException();
         }
 
         $editForm = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $entity->getType()), $entity);
@@ -236,6 +253,10 @@ class ItemController extends Controller
 
         if (!$item) {
             throw $this->createNotFoundException('Unable to find Item entity.');
+        }
+
+        if (false === $this->isGranted('EDIT', $item)) {
+            throw new AccessDeniedException();
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -299,6 +320,10 @@ class ItemController extends Controller
                 throw $this->createNotFoundException('Unable to find Item entity.');
             }
 
+            if (false === $this->isGranted('DELETE', $entity)) {
+                throw new AccessDeniedException();
+            }
+
             $em->remove($entity);
             $em->flush();
         }
@@ -318,5 +343,16 @@ class ItemController extends Controller
         return $this->createFormBuilder(array('id' => $id))
             ->add('id', 'hidden')
             ->getForm();
+    }
+
+    /**
+     * @param string    $permission
+     * @param null      $domainObject
+     *
+     * @return bool
+     */
+    public function isGranted($permission, $domainObject = null)
+    {
+        return $this->container->get('security.context')->isGranted($permission, $domainObject);
     }
 }

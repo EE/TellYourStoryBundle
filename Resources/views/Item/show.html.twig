@@ -36,10 +36,14 @@
             <a class="btn" href="{{ path('item') }}">
                 Back to the list
             </a>
+            {% if true == is_granted('EDIT', entity) %}
             <a class="btn" href="{{ path('item_edit', { 'id': entity.id }) }}">
                 Edit
             </a>
+            {% endif %}
+            {% if true == is_granted('DELETE', entity) %}
             <button class="btn btn-danger" type="submit">Delete</button>
+            {% endif %}
         </form>
     </div>
 
