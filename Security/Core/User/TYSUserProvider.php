@@ -37,6 +37,7 @@ class TYSUserProvider extends UserProvider implements OAuthAwareUserProviderInte
             $setterRealName = $setter . 'RealName';
 
             $user->setUsername($serviceUsername);
+            $user->setActive(true);
 
             $user->$setterId($username);
             $user->$setterToken($response->getAccessToken());

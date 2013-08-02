@@ -30,20 +30,32 @@ class User extends BaseUser
     protected $facebookRealName;
 
     /**
-     * @var
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="user")
      */
     protected $items;
 
     /**
-     * @var
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Story", mappedBy="user")
      */
     protected $stories;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="organization", type="string", length=255, nullable=true)
+     */
+    protected $organization;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    protected $active;
 
 
     /**
@@ -180,4 +192,35 @@ class User extends BaseUser
     }
 
 
+    /**
+     * @param string $organization
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 }

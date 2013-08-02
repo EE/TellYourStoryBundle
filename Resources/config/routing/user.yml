@@ -1,0 +1,3 @@
+eetys_user_dashboard:
+    pattern:  /dashboard
+    defaults: { _controller: EETYSBundle:User:dashboard }
