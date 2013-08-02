@@ -4,10 +4,18 @@
     var $container = $('#masonry-container'),
         columnWidth = 300,
         gutter = 20,
-        padding = 0.15*columnWidth;
+        padding = 0.15*columnWidth,
+        route = Routing.generate('get_stories', {}, true);
 
 
-    $.get(Routing.generate('get_stories', {}, true), function(elements){
+    if ($container.filter('[data-user]'))
+    {
+        route = Routing.generate('get_stories_by_user', {
+            user_id: $container.attr('data-user')
+        })
+    }
+
+    $.get(route, function(elements){
         $container.masonry({
             columnWidth: columnWidth,
             gutter:      gutter

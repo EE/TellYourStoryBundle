@@ -1,3 +1,7 @@
 eetys_user_dashboard:
     pattern:  /dashboard
     defaults: { _controller: EETYSBundle:User:dashboard }
+eetys_user_set_organization:
+    pattern:  /me/set/organization
+    defaults: { _controller: EETYSBundle:User:setOrganization }
+    requirements: { _method: post|put }

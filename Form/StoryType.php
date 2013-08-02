@@ -83,7 +83,7 @@ class StoryType extends AbstractType
                     'attr' => $this->addHtml5Validation(
                         array(
                             'class' => 'btn-tys',
-                            'title' => 'tys.form.story.file.label'
+                            'title' => 'tys.form.story.file.browse'
                         ),
                         'file',
                         new \ReflectionClass($options['data_class'])

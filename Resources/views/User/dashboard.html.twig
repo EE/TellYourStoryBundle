@@ -3,5 +3,13 @@
 {% block subheader %}{% endblock %}
 {% block content %}
     {% include 'EETYSBundle::User/Component/name.html.twig' %}
+
+    {% if app.user.organization is null %}
+    <div class="add_organization">
+        {% include 'EETYSBundle::User/Component/add_organization.html.twig' %}
+        {% include 'EETYSBundle::User/Component/organization_form.html.twig' %}
+    </div>
+    {% endif %}
+
     {% include 'EETYSBundle:Component:stories_header.html.twig' with {text: 'user.dashboard.masonry.header'} %}
 {% endblock %}

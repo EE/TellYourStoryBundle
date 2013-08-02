@@ -1,1 +1,3 @@
-{{ app.user.facebookRealName }}{% if app.user.organization is not null %} / {{ app.user.organization }}{% endif %}
+<div class="page-header user">
+    <h1>{{ app.user.facebookRealName }}{% if app.user.organization is not null %} / {{ app.user.organization }}{% endif %}</h1>
+</div>

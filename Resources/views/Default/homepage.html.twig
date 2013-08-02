@@ -8,8 +8,9 @@
     </div>
 {% endblock %}
 
+
 {% block stories %}
-    <div id="masonry-container"></div>
+    <div id="masonry-container"{% if app.user.id is defined %} data-user="{{ app.user.id }}"{% endif %}></div>
 {% endblock %}
 
 {% block subheader %}

@@ -29,6 +29,21 @@ class StoryController extends ResourceController
     }
 
     /**
+     * Get collection of resource objects
+     *
+     * @REST\Route("/stories/by/{user_id}", requirements={"_format"="json|xml"})
+     * @REST\View(serializerGroups={"cget"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cgetByUserAction(Request $request, $user_id)
+    {
+        return $this->getResourceRepository()->findBy(array(
+            'createdBy' => $user_id
+        ));
+    }
+
+    /**
      * Create a new resource
      *
      * @param Request $request

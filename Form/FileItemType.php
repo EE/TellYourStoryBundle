@@ -57,7 +57,7 @@ class FileItemType extends AbstractType
                     'attr' => $this->addHtml5Validation(
                         array(
                             'placeholder' => 'tys.form.fileItem.uploadedFiles.placeholder',
-                            'title' => 'tys.form.fileItem.uploadedFiles.label',
+                            'title' => 'tys.form.fileItem.uploadedFiles.browse',
                             'class' => 'btn-tys'
                         ),
                         'uploadedFiles',

@@ -21,11 +21,17 @@ class StoryController extends Controller
      * Lists all Story entities.
      *
      */
-    public function indexAction()
+    public function indexAction($by = null)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('EETYSBundle:Story')->findAll();
+        $repository = $em->getRepository('EETYSBundle:Story');
+
+        if ($by) {
+            $entities = $repository->findBy(array('created_by' => $by));
+        } else {
+            $entities = $repository->findAll();
+        }
 
         return $this->render('EETYSBundle:Story:index.html.twig', array(
             'entities' => $entities,

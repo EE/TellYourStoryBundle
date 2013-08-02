@@ -1,6 +1,14 @@
 {% macro map(story) %}
     <div class="row item item-map">
-        <div class="span12"><i class="icon-map-marker"></i>{%  if story.createdBy is not null %}{{ 'story.show.added.by' | trans | raw }}: {{ story.createdBy.getRealName() }}{% endif %}</div>
+        <div class="span12">
+            <i class="icon-map-marker"></i>
+            {% if story.createdBy is not null %}
+                {{ 'story.show.added.by' | trans | raw }}: {{ story.createdBy.getRealName() }}
+            {% endif %}
+            {% if story.createdBy.organization is not null %}
+                / {{ story.createdBy.organization }}
+            {% endif %}
+        </div>
         <div class="span4">
             <h3>{{ story.address }}</h3>
             {% if true == is_granted('EDIT', story) %}
@@ -23,7 +31,15 @@
 
 {% macro audio(item) %}
     <div class="row item item-audio">
-        <div class="span12"><i class="icon-music"></i>{% if item.createdBy is not null %}{{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}{% endif %}</div>
+        <div class="span12">
+            <i class="icon-music"></i>
+            {% if item.createdBy is not null %}
+                {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
+            {% endif %}
+            {% if item.createdBy.organization is not null %}
+                / {{ item.createdBy.organization }}
+            {% endif %}
+        </div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
             {% if true == is_granted('EDIT', item) %}
@@ -50,7 +66,15 @@
 
 {% macro file(item) %}
     <div class="row item item-file">
-        <div class="span12"><i class="icon-file"></i>{% if item.createdBy is not null %}{{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}{% endif %}</div>
+        <div class="span12">
+            <i class="icon-file"></i>
+            {% if item.createdBy is not null %}
+                {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
+            {% endif %}
+            {% if item.createdBy.organization is not null %}
+                / {{ item.createdBy.organization }}
+            {% endif %}
+        </div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
             {% if true == is_granted('EDIT', item) %}
@@ -71,7 +95,15 @@
 
 {% macro text(item) %}
     <div class="row item item-text">
-        <div class="span12"><i class="icon-align-left"></i>{% if item.createdBy is not null %}{{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}{% endif %}</div>
+        <div class="span12">
+            <i class="icon-align-left"></i>
+            {% if item.createdBy is not null %}
+                {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
+            {% endif %}
+            {% if item.createdBy.organization is not null %}
+                / {{ item.createdBy.organization }}
+            {% endif %}
+        </div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
             {% if true == is_granted('EDIT', item) %}
@@ -88,7 +120,15 @@
 
 {% macro url(item) %}
     <div class="row item item-url">
-        <div class="span12"><i class="icon-globe"></i>{% if item.createdBy is not null %}{{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}{% endif %}</div>
+        <div class="span12">
+            <i class="icon-globe"></i>
+            {% if item.createdBy is not null %}
+                {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
+            {% endif %}
+            {% if item.createdBy.organization is not null %}
+                / {{ item.createdBy.organization }}
+            {% endif %}
+        </div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
             {% if true == is_granted('EDIT', item) %}
@@ -105,7 +145,15 @@
 
 {% macro video(item) %}
     <div class="row item item-video">
-        <div class="span12"><i class="icon-play"></i>{% if item.createdBy is not null %}{{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}{% endif %}</div>
+        <div class="span12">
+            <i class="icon-play"></i>
+            {% if item.createdBy is not null %}
+                {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
+            {% endif %}
+            {% if item.createdBy.organization is not null %}
+                / {{ item.createdBy.organization }}
+            {% endif %}
+        </div>
         <div class="span4">
             <h3>{{ item.name }}</h3>
             {% if true == is_granted('EDIT', item) %}
