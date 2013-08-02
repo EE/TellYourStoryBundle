@@ -111,7 +111,7 @@ class StoryVoter implements VoterInterface
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function editAccess(Story $object, UserInterface $user)
+    private function editAccess(Story $object, $user)
     {
         if ($user instanceof UserInterface && $user === $object->getCreatedBy()) {
             return VoterInterface::ACCESS_GRANTED;
@@ -120,7 +120,7 @@ class StoryVoter implements VoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function showAccess(Story $object, UserInterface $user)
+    private function showAccess(Story $object, $user)
     {
 
         if (
@@ -134,7 +134,7 @@ class StoryVoter implements VoterInterface
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function deleteAccess(Story $object, UserInterface $user)
+    private function deleteAccess(Story $object, $user)
     {
         if ($user instanceof UserInterface && $user === $object->getCreatedBy()) {
             return VoterInterface::ACCESS_GRANTED;
@@ -143,7 +143,7 @@ class StoryVoter implements VoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function publishAccess(Story $object, UserInterface $user)
+    private function publishAccess(Story $object, $user)
     {
         if ($user instanceof UserInterface && $user === $object->getCreatedBy()) {
             return VoterInterface::ACCESS_GRANTED;

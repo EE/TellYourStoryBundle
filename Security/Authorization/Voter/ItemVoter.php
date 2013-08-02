@@ -100,7 +100,7 @@ class ItemVoter implements VoterInterface
         return VoterInterface::ACCESS_DENIED;
     }
 
-    private function newAccess(Item $object, UserInterface $user)
+    private function newAccess(Item $object, $user)
     {
         if (!$object->getStory()) {
             throw new \RuntimeException('Missing reference to Story entity. Remember to $item->setStory($story) before calling is_granted NEW ');
@@ -117,7 +117,7 @@ class ItemVoter implements VoterInterface
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function editAccess(Item $object, UserInterface $user)
+    private function editAccess(Item $object, $user)
     {
         if ($user instanceof UserInterface && $user === $object->getCreatedBy() && null !== $object->getStory()) {
             return VoterInterface::ACCESS_GRANTED;
@@ -132,7 +132,7 @@ class ItemVoter implements VoterInterface
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    private function deleteAccess(Item $object, UserInterface $user)
+    private function deleteAccess(Item $object, $user)
     {
         if ($user instanceof UserInterface && $user === $object->getCreatedBy() && null !== $object->getStory()) {
             return VoterInterface::ACCESS_GRANTED;
