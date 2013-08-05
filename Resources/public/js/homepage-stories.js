@@ -1,4 +1,3 @@
-
 (function($){
     "use strict";
     var $container = $('#masonry-container'),
@@ -7,8 +6,7 @@
         padding = 0.15*columnWidth,
         route = Routing.generate('get_stories', {}, true);
 
-
-    if ($container.filter('[data-user]'))
+    if ($container.filter('[data-user]').length)
     {
         route = Routing.generate('get_stories_by_user', {
             user_id: $container.attr('data-user')
@@ -26,10 +24,8 @@
                 background = new Image();
 
             if (current.hasOwnProperty('background_uri')) {
-                background.src = current.background_uri;
-
-                //hack
                 background.story = current;
+                background.src = current.background_uri;
 
                 $(background).on('load', function() {
 
@@ -55,13 +51,10 @@
                         .appendTo($elem);
 
                     $container.append($elem);
+
                     $container.masonry('appended', $elem).masonry();
                 });
             }
-
         }
-
     });
-
-
 })(jQuery);
