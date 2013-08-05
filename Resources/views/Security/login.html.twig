@@ -1,0 +1,33 @@
+{% extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="page-header green">
+        <h1>{{ 'admin.header.login.name' | trans | raw }}</h1>
+    </div>
+
+    {% if error %}
+        <div>{{ error.message }}</div>
+    {% endif %}
+
+    <form class="form-horizontal form-tys" action="{{ path('login_check') }}" method="post">
+        <fieldset>
+            <div class="control-group">
+                <label for="username" class="control-label">{{ 'admin.login.username' | trans | raw }}:</label>
+                <div class="controls">
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="{{ 'tys.form.admin.login.placeholder' | trans | raw }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="password" class="control-label">{{ 'admin.login.password' | trans | raw }}:</label>
+                <div class="controls">
+                    <input type="password" id="password" name="_password" />
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-tys btn-small pull-right">{{ 'btn.login.name' | trans | raw }}<i class="icon-user icon-white"></i></button>
+        </div>
+    </form>
+{% endblock %}
+{% block bottom %}{% endblock %}

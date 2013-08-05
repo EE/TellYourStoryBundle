@@ -1,0 +1,5 @@
+login:
+    pattern:   /admin
+    defaults:  { _controller: EETYSBundle:Security:login }
+login_check:
+    pattern:   /login_check

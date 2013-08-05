@@ -1,10 +1,23 @@
 {% extends 'EETYSBundle:Default:homepage.html.twig' %}
+{% if user is not defined %}
+    {%  set user = app.user %}
+{% endif %}
 
 {% block subheader %}{% endblock %}
 {% block content %}
     {% include 'EETYSBundle::User/Component/name.html.twig' %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <form action="{{ path('eetys_admin_user_ban', { 'id': user.id }) }}" method="post">
+            {{ form_widget(ban_form) }}
+            {% if user.active %}
+                <button class="btn btn-tys btn-small" type="submit">{{ 'btn.ban.add.name' | trans }} <i class="icon-ban-circle icon-white"></i></button>
+            {% else %}
+                <button class="btn btn-tys btn-small" type="submit">{{ 'btn.ban.remove.name' | trans }} <i class="icon-ok-circle icon-white"></i></button>
+            {% endif %}
+        </form>
+    {% endif %}
 
-    {% if app.user.organization is null %}
+    {% if user.organization is null %}
     <div class="add_organization">
         {% include 'EETYSBundle::User/Component/add_organization.html.twig' %}
         {% include 'EETYSBundle::User/Component/organization_form.html.twig' %}

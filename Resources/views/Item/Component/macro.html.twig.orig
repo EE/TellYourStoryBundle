@@ -115,8 +115,12 @@
         <div class="span8">
             {% for filekey in item.files %}
             <div>
+<<<<<<< Updated upstream
+                <a href="/uploads/{{ filekey }}">{{ filekey }}<a/>
+=======
                 {% for filekey in item.files %}
                 <a href="/uploads/{{ filekey }}">{{ filekey }}</a>
+>>>>>>> Stashed changes
             </div>
             {% endfor %}
             <div>

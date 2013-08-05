@@ -1,0 +1,64 @@
+{% extends 'EETYSBundle::base.html.twig' %}
+
+
+{% block content %}
+
+    <div class="page-header green">
+        <h1>{{ 'admin.header.users.name' | trans | raw }}</h1>
+    </div>
+
+    <table class="table table-tys">
+        <tr>
+            <th colspan="2">{{ 'user.list.realname' | trans | raw }}</th>
+            <th>{{ 'user.list.organization' | trans | raw }}</th>
+            <th>{{ 'user.list.stories' | trans | raw }}</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>
+                    <a href="{{ path('eetys_admin_user', { 'id': user.id }) }}">
+                        {{ user.getRealName() }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('eetys_admin_user', { 'id': user.id }) }}" class="btn btn-tys btn-small">
+                        {{ 'btn.edit.name' | trans | raw }}
+                        <i class="icon-wrench icon-white"></i>
+                    </a>
+                </td>
+                <td>{{ user.organization }}</td>
+                <td>
+                    {% if (user.stories | length > 0) %}
+                        <a href="{{ path('eetys_admin_user', {id: user.id}) }}">{{ (user.stories | length) }}</a>
+                    {% else %}
+                        {{ 'user.stories.none' | trans | raw }}
+
+                        {#{% if user.stories | length > 3 %}#}
+                            {#{% for i in 0..2 %}#}
+                                {#<li>#}
+                                    {#{% if user.stories[i].backgroundFilename %}#}
+                                        {#<img src="{{ user.stories[i].backgroundFilename | imagine_filter('story_header_admin') }}" alt=""/>#}
+                                    {#{% endif %}#}
+                                    {#{{ user.stories[i].name }}#}
+                                {#</li>#}
+                            {#{% endfor %}#}
+                            {#<a href="{{ path('eetys_admin_user', {id: user.id}) }}">{{ (user.stories | length) - 3 }}{{ 'more' | trans | raw }}</a>#}
+                        {#{% else %}#}
+                            {#<ul>#}
+                                {#{% for story in user.stories  %}#}
+                                    {#<li>#}
+                                        {#{% if story.backgroundFilename %}#}
+                                            {#<img src="{{ story.backgroundFilename | imagine_filter('story_header_admin') }}" alt=""/>#}
+                                        {#{% endif %}#}
+                                        {#{{ story.name }}#}
+                                    {#</li>#}
+                                {#{% endfor %}#}
+                            {#</ul>#}
+                        {#{% endif %}#}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+

@@ -10,6 +10,9 @@ EETYSBundle_user:
     resource: "@EETYSBundle/Resources/config/routing/user.yml"
     prefix: /user
 
+EETYSBundle_security:
+    resource: "@EETYSBundle/Resources/config/routing/security.yml"
+
 EETYSBundle_api:
     type: rest
     resource: "@EETYSBundle/Resources/config/routing/api.yml"

@@ -298,9 +298,11 @@ class StoryController extends Controller
 
             $em->remove($entity);
             $em->flush();
+        } else {
+            die(var_dump($form->getErrorsAsString()));
         }
+        return new RedirectResponse($this->getRequest()->headers->get("referer"));
 
-        return $this->redirect($this->generateUrl('story'));
     }
 
     /**

@@ -32,14 +32,14 @@ class User extends BaseUser
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="createdBy")
      */
     protected $items;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Story", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Story", mappedBy="createdBy")
      */
     protected $stories;
 
@@ -56,6 +56,12 @@ class User extends BaseUser
      * @ORM\Column(name="is_active", type="boolean")
      */
     protected $active;
+
+    function __construct()
+    {
+        $this->items = new ArrayCollection();
+        $this->stories = new ArrayCollection();
+    }
 
 
     /**

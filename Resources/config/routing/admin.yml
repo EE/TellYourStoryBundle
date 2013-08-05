@@ -1,3 +1,17 @@
-eetys_admin_homepage:
-    pattern:  /
-    defaults: { _controller: EETYSBundle:Admin:homepage }
+eetys_admin_users:
+    pattern:  /users
+    defaults: { _controller: EETYSBundle:Admin:users }
+eetys_admin_user:
+    pattern:  /user/{id}
+    defaults: { _controller: EETYSBundle:Admin:user }
+eetys_admin_user_edit:
+    pattern:  /user/{id}/edit
+    defaults: { _controller: EETYSBundle:Admin:userEdit }
+eetys_admin_user_ban:
+    pattern:  /user/{id}/ban
+    defaults: { _controller: EETYSBundle:Admin:userBan }
+    requirements:
+        _method: post
+eetys_admin_stories:
+    pattern:  /stories
+    defaults: { _controller: EETYSBundle:Admin:stories }

@@ -1,0 +1,45 @@
+{% extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+    <div class="page-header green">
+        <h1>{{ 'admin.header.stories.name' | trans | raw }}</h1>
+    </div>
+
+    <table class="table table-tys">
+        <tr>
+            <th>{{ 'story.list.date' | trans | raw }}</th>
+            <th colspan="3">{{ 'story.list.title' | trans | raw }}</th>
+            <th>{{ 'story.list.user' | trans | raw }}</th>
+        </tr>
+        {% for story in stories %}
+            <tr>
+                <td title="{{ story.createdAt|date('d-m-Y H:i:s') }}">{{ story.createdAt|date('d/m/Y') }}</td>
+                <td>
+                    {% if story.backgroundFilename %}
+                        <img src="{{ story.backgroundFilename | imagine_filter('story_header_admin') }}" alt=""/>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ story.name }}
+                </td>
+                <td>
+                    <a href="{{ path('story_edit', { 'id': story.id }) }}" class="btn btn-small btn-tys">
+                        {{ 'btn.edit.name' | trans | raw  }}
+                        <i class="icon-wrench icon-white"></i>
+                    </a>
+                </td>
+                <td>
+                    {% if story.createdBy is not null %}
+                        <a href="{{ path('eetys_admin_user', {id: story.createdBy.id}) }}">
+                            {{ story.createdBy.getRealName() }}
+                        </a>
+                        {% if story.createdBy.organization is not null %}
+                            / {{ story.createdBy.organization }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
