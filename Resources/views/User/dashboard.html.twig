@@ -11,5 +11,9 @@
     </div>
     {% endif %}
 
-    {% include 'EETYSBundle:Component:stories_header.html.twig' with {text: 'user.dashboard.masonry.header'} %}
+    {% include 'EETYSBundle:Component:stories_header.html.twig' with {text: 'admin.dashboard.masonry.header'} %}
+{% endblock %}
+
+{% block stories %}
+    <div id="masonry-container"{% if app.user.id is defined %} data-user="{{ app.user.id }}"{% endif %}></div>
 {% endblock %}
