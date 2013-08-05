@@ -40,21 +40,20 @@
         </{{ tag }}>
     </div>
     <div class="span2 choose-images">
-        {# TODO: swotch file to images when it's done #}
         {% if (
             app.request.attributes.get('_route') == 'item_new'
             and
             (
                 app.request.attributes.get('_route_params').type is defined
                 and
-                app.request.attributes.get('_route_params').type == 'file'
+                app.request.attributes.get('_route_params').type == 'image'
             )
         ) %}
             {% set tag = 'span' %}
             <{{ tag }}>
         {% else %}
             {% set tag = 'a' %}
-            <{{ tag }} href="{{ path('item_new', {'storyId': story.id, 'type': 'file'}) }}">
+            <{{ tag }} href="{{ path('item_new', {'storyId': story.id, 'type': 'image'}) }}">
         {% endif %}
             <figure><i class="icon"></i></figure>
             {{ 'story.addItem.types.images' | trans }}

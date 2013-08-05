@@ -8,12 +8,12 @@ use EE\TYSBundle\Validator\Constrains\Files as Files;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * AudioItem
+ * ImageItem
  *
  * @ORM\Entity
  * @author Konrad Podgórski <konrad.podgorski@gmail.com>
  */
-class AudioItem extends FileItem
+class ImageItem extends FileItem
 {
     /**
      * Dummy property used to generate form based on entity
@@ -21,7 +21,7 @@ class AudioItem extends FileItem
      * @Files(
      *     maxSize = "32M",
      *     maxTotalSize = "32M",
-     *     mimeTypes = {"audio/mpeg"}
+     *     mimeTypes ={"image/jpeg", "image/gif", "image/png"}
      * )
      * @var array
      */
@@ -55,7 +55,7 @@ class AudioItem extends FileItem
      */
     public function getType()
     {
-        return 'audio';
+        return 'image';
     }
 
 }

@@ -28,13 +28,6 @@ class FileItem extends Item
      *
      * @var array
      *
-     * @Files(
-     *     maxSize = "4M",
-     *     maxTotalSize = "100M",
-     *     mimeTypes = {"image/jpeg", "image/gif", "image/png"},
-     *     maxSizeMessage = "item.audio.uploadedFiles.too.big.file",
-     *     mimeTypesMessage = "item.audio.uploadedFiles.mime.incorrect"
-     * )
      */
     private $uploadedFiles;
 
@@ -51,7 +44,7 @@ class FileItem extends Item
     public function __construct()
     {
         parent::__construct();
-        $this->files = new ArrayCollection();
+        $this->files = array();
     }
 
     /**

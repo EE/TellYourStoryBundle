@@ -5,10 +5,11 @@
     {% include 'EETYSBundle::Item/Component/item_types.html.twig' %}
 
     <form class="form-horizontal form-tys" action="{{ path('item_create', {storyId: story.id, type: app.request.get('type')}) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
         {% if entity.type in ['url', 'video'] %}
         {{ form_row(form.url) }}
         {% endif %}
-        {% if entity.type in ['audio', 'file'] %}
+        {% if entity.type in ['audio', 'file', 'image'] %}
         {{ form_row(form.uploadedFiles, { 'attr': { 'multiple': 'multiple' }, 'full_name': form.uploadedFiles.vars['full_name'] ~ '[]' }) }}
         {% endif %}
         {{ form_rest(form) }}

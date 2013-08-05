@@ -1,6 +1,6 @@
 <form class="form-horizontal form-tys"  action="{{ path('item_update', {id: entity.id}) }}" method="post" {{ form_enctype(edit_form) }}>
     {{ form_row(edit_form.name) }}
-    {% if entity.type in ['audio', 'file'] %}
+    {% if entity.type in ['audio', 'file', 'image'] %}
 
         {% for filekey in entity.files %}
             <div>

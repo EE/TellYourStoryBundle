@@ -14,14 +14,14 @@ item_new:
     pattern:  /{storyId}/{type}/new
     defaults: { _controller: "EETYSBundle:Item:new" }
     requirements:
-        type:    audio|file|text|url|video
+        type:    audio|image|text|url|video
 
 item_create:
     pattern:  /{storyId}/{type}/create
     defaults: { _controller: "EETYSBundle:Item:create" }
     requirements:
         _method: post
-        type:    audio|file|text|url|video
+        type:    audio|image|text|url|video
 
 item_edit:
     pattern:  /{id}/edit

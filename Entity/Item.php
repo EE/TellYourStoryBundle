@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\DiscriminatorMap({
  *      "video" = "VideoItem",
  *      "text"  = "TextItem",
+ *      "image"  = "ImageItem",
  *      "file"  = "FileItem",
  *      "audio" = "AudioItem",
  *      "url"   = "UrlItem"

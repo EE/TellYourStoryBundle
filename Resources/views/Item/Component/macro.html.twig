@@ -64,6 +64,37 @@
     </div>
 {% endmacro %}
 
+{% macro image(item) %}
+    <div class="row item item-image">
+        <div class="span12">
+            <i class="icon-image"></i>
+            {% if item.createdBy is not null %}
+                {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
+            {% endif %}
+            {% if item.createdBy.organization is not null %}
+                / {{ item.createdBy.organization }}
+            {% endif %}
+        </div>
+        <div class="span4">
+            <h3>{{ item.name }}</h3>
+            {% if true == is_granted('EDIT', item) %}
+                <a class="btn btn-tys btn-small" href="{{ path('item_edit', {id: item.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
+            {% endif %}
+        </div>
+        <div class="span8">
+            {% for filekey in item.files %}
+            <div>
+                <a href="/uploads/{{ filekey }}">{{ filekey }}</a>
+            </div>
+            {% endfor %}
+            <div>
+                {{ item.description }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+
 {% macro file(item) %}
     <div class="row item item-file">
         <div class="span12">
@@ -82,14 +113,16 @@
             {% endif %}
         </div>
         <div class="span8">
+            {% for filekey in item.files %}
             <div>
-                {% for filekey in item.files %}
-                <a href="/uploads/{{ filekey }}">{{ filekey }}</div>
+                <a href="/uploads/{{ filekey }}">{{ filekey }}<a/>
+            </div>
             {% endfor %}
+            <div>
+                {{ item.description }}
+            </div>
         </div>
-        <div>
-            {{ item.description }}
-        </div>
+
     </div>
 {% endmacro %}
 

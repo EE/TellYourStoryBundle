@@ -42,6 +42,18 @@ class LoadStoryData implements FixtureInterface, ContainerAwareInterface
         }
         $FileItemAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
 
+        $userManager = $this->container->get('ee_light_user.user_manager');
+
+        $user = $userManager->createUser();
+
+        $user->setOrganization('Laboratorium EE');
+        $user->setUsername('johnsmith');
+        $user->setFacebookRealName('John Smith');
+
+        $user->setActive(false);
+
+        $userManager->updateUser($user);
+
         foreach ($filehandles as $index => $handle) {
 
             $s = new Story();
@@ -52,6 +64,7 @@ class LoadStoryData implements FixtureInterface, ContainerAwareInterface
             $key = sha1(uniqid() . mt_rand(0, 99999)) . '.jpeg';
             $FileItemAdapted->write($key, $handle);
             $s->setBackgroundFilename($key);
+            $s->setCreatedBy($user);
 
             $manager->persist($s);
         }
