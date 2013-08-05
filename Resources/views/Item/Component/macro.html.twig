@@ -81,11 +81,11 @@
                 <a class="btn btn-tys btn-small" href="{{ path('item_edit', {id: item.id}) }}">{{ 'btn.edit.name' | trans | raw}} <i class="icon-wrench icon-white"></i></a>
             {% endif %}
         </div>
-        <div class="span8">
+        <div class="span8 gallery">
             {% for filekey in item.files %}
-            <div>
-                <a href="/uploads/{{ filekey }}">{{ filekey }}</a>
-            </div>
+            <figure>
+                <a href="{{ filekey | imagine_filter('item_image') }}" class="colorbox" rel="gallery-{{ item.id }}"><img src="{{ filekey | imagine_filter('item_image_thumbnail') }}" /></a>
+            </figure>
             {% endfor %}
             <div>
                 {{ item.description }}
@@ -115,7 +115,6 @@
         <div class="span8">
             {% for filekey in item.files %}
             <div>
-                {% for filekey in item.files %}
                 <a href="/uploads/{{ filekey }}">{{ filekey }}</a>
             </div>
             {% endfor %}
