@@ -30,7 +30,17 @@ class StoryController extends Controller
         if ($by) {
             $entities = $repository->findBy(array('created_by' => $by));
         } else {
-            $entities = $repository->findAll();
+            if ($this->isGranted('ROLE_ADMIN')) {
+                $entities = $repository->findAll();
+            } else {
+                if ($this->getUser()) {
+                    $entities = $this->getResourceRepository()
+                        ->getPublishedOrOwnedQuery($this->getUser()->getId())
+                        ->execute();
+                } else {
+                    $entities = $this->getResourceRepository()->getPublishedQuery()->execute();
+                }
+            }
         }
 
         return $this->render('EETYSBundle:Story:index.html.twig', array(

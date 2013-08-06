@@ -51,17 +51,23 @@ class AudioItemType extends AbstractType
                     )
                 )
             )
-            ->add('uploadedFiles', 'file', array(
+            ->add(
+                'uploadedFiles',
+                new UploadType(),
+                array(
                     'label' => 'tys.form.audioItem.uploadedFiles.label',
                     'help_block' => 'tys.form.audioItem.uploadedFiles.help_block',
                     'attr' => $this->addHtml5Validation(
                         array(
                             'placeholder' => 'tys.form.audioItem.uploadedFiles.placeholder',
+                            'title' => 'tys.form.audioItem.uploadedFiles.browse',
+                            'class' => 'btn-tys'
                         ),
                         'uploadedFiles',
                         new \ReflectionClass($options['data_class'])
                     )
-                ));
+                )
+            );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -84,7 +90,7 @@ class AudioItemType extends AbstractType
             ->getMetadataFor(new $class->name())
             ->properties;
 
-        if ($property === 'uploadedFiles') {
+        if ($property === 'uploadedFiles' && array_key_exists('uploadedFiles', $validatedProperties)) {
             foreach ($validatedProperties[$property]->constraints as $constraint) {
                 if ($constraint instanceof Files) {
                     $attr['accept'] = implode(',', $constraint->mimeTypes);

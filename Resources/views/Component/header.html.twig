@@ -6,7 +6,7 @@
                 <h2>{{ 'header.logo.slogan' | trans | raw }}</h2>
             </div>
             <div class="span7">
-                {% include "EETYSBundle:Component:top_menu.html.twig" %}
+                {% block topmenu %}{% include "EETYSBundle:Component:top_menu.html.twig" %}{% endblock %}
             </div>
         </div>
     </div>

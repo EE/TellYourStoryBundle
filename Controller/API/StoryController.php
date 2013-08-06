@@ -34,6 +34,9 @@ class StoryController extends ResourceController
      * @REST\Route("/stories/by/{user_id}", requirements={"_format"="json|xml"})
      * @REST\View(serializerGroups={"cget"})
      *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param                                           $user_id
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function cgetByUserAction(Request $request, $user_id)
@@ -41,6 +44,27 @@ class StoryController extends ResourceController
         return $this->getResourceRepository()->findBy(array(
             'createdBy' => $user_id
         ));
+    }
+
+    /**
+     * Get collection of resource objects
+     *
+     * @REST\Route(requirements={"_format"="json|xml"})
+     * @REST\View(serializerGroups={"cget"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cgetAction()
+    {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->getResourceRepository()->findAll();
+        } else {
+            if ($this->getUser()) {
+                return $this->getResourceRepository()->getPublishedOrOwnedQuery($this->getUser()->getId())->execute();
+            } else {
+                return $this->getResourceRepository()->getPublishedQuery()->execute();
+            }
+        }
     }
 
     /**

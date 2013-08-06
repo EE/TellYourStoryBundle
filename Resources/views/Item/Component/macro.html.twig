@@ -4,9 +4,9 @@
             <i class="icon-map-marker"></i>
             {% if story.createdBy is not null %}
                 {{ 'story.show.added.by' | trans | raw }}: {{ story.createdBy.getRealName() }}
-            {% endif %}
-            {% if story.createdBy.organization is not null %}
-                / {{ story.createdBy.organization }}
+                {% if story.createdBy.organization is not null %}
+                    / {{ story.createdBy.organization }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="span4">
@@ -35,9 +35,9 @@
             <i class="icon-music"></i>
             {% if item.createdBy is not null %}
                 {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
-            {% endif %}
-            {% if item.createdBy.organization is not null %}
-                / {{ item.createdBy.organization }}
+                {% if item.createdBy.organization is not null %}
+                    / {{ item.createdBy.organization }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="span4">
@@ -50,7 +50,7 @@
             <div>
                 {% for filekey in item.files %}
                     <object type="application/x-shockwave-flash" data="{{ asset('bundles/eetys/flash/dewplayer.swf') }}"
-                            width="620" height="20" id="dewplayer" name="dewplayer">
+                            width="620" height="20" id="dewplayer-{{ item.id }}" name="dewplayer">
                         <param name="wmode" value="transparent"/>
                         <param name="movie" value="dewplayer.swf"/>
                         <param name="flashvars" value="mp3=/uploads/{{ filekey }}"/>
@@ -70,9 +70,9 @@
             <i class="icon-image"></i>
             {% if item.createdBy is not null %}
                 {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
-            {% endif %}
-            {% if item.createdBy.organization is not null %}
-                / {{ item.createdBy.organization }}
+                {% if item.createdBy.organization is not null %}
+                    / {{ item.createdBy.organization }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="span4">
@@ -94,16 +94,15 @@
     </div>
 {% endmacro %}
 
-
 {% macro file(item) %}
     <div class="row item item-file">
         <div class="span12">
             <i class="icon-file"></i>
             {% if item.createdBy is not null %}
                 {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
-            {% endif %}
-            {% if item.createdBy.organization is not null %}
-                / {{ item.createdBy.organization }}
+                {% if item.createdBy.organization is not null %}
+                    / {{ item.createdBy.organization }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="span4">
@@ -132,9 +131,9 @@
             <i class="icon-align-left"></i>
             {% if item.createdBy is not null %}
                 {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
-            {% endif %}
-            {% if item.createdBy.organization is not null %}
-                / {{ item.createdBy.organization }}
+                {% if item.createdBy.organization is not null %}
+                    / {{ item.createdBy.organization }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="span4">
@@ -157,9 +156,9 @@
             <i class="icon-globe"></i>
             {% if item.createdBy is not null %}
                 {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
-            {% endif %}
-            {% if item.createdBy.organization is not null %}
-                / {{ item.createdBy.organization }}
+                {% if item.createdBy.organization is not null %}
+                    / {{ item.createdBy.organization }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="span4">
@@ -182,9 +181,9 @@
             <i class="icon-play"></i>
             {% if item.createdBy is not null %}
                 {{ 'story.show.added.by' | trans | raw }}: {{ item.createdBy.getRealName() }}
-            {% endif %}
-            {% if item.createdBy.organization is not null %}
-                / {{ item.createdBy.organization }}
+                {% if item.createdBy.organization is not null %}
+                    / {{ item.createdBy.organization }}
+                {% endif %}
             {% endif %}
         </div>
         <div class="span4">

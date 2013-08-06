@@ -94,7 +94,10 @@ class ItemController extends Controller
 
             $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
 
-            if (isset($data['uploadedFiles'])) {
+            if (isset(
+                $data['uploadedFiles']) &&
+                !(count($data['uploadedFiles']) === 1 && is_null($data['uploadedFiles'][0]))
+            ) {
                 foreach ((array) $data['uploadedFiles'] as $uploadedFile) {
                     // Symfony\Component\HttpFoundation\File\UploadedFile
 
@@ -140,6 +143,8 @@ class ItemController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $story = $em->getRepository('EETYSBundle:Story')->find($storyId);
+
+        $form = $this->createForm(sprintf('ee_tysbundle_%sitemtype', $type));
 
         if (!$story) {
             throw $this->createNotFoundException('Unable to find Story entity.');
@@ -278,15 +283,19 @@ class ItemController extends Controller
 
                 $uploadsAdapted = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
 
+                if (isset(
+                    $data['uploadedFiles']) &&
+                    !(count($data['uploadedFiles']) === 1 && is_null($data['uploadedFiles'][0]))
+                ) {
+                    foreach ($data['uploadedFiles'] as $uploadedFile) {
+                        // Symfony\Component\HttpFoundation\File\UploadedFile
 
-                foreach ($data['uploadedFiles'] as $uploadedFile) {
-                    // Symfony\Component\HttpFoundation\File\UploadedFile
 
+                        $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
 
-                    $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $uploadedFile->guessExtension();
-
-                    $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
-                    $item->addFile($key);
+                        $uploadsAdapted->write($key, file_get_contents($uploadedFile->getPathName()));
+                        $item->addFile($key);
+                    }
                 }
 
             }

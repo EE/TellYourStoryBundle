@@ -1,6 +1,6 @@
 {% if user is not defined %}
     {% set user = app.user %}
 {% endif %}
-<div class="page-header user">
+<div class="page-header user green">
     <h1>{{ user.getRealName() }}{% if user.organization is not null %} / {{ user.organization }}{% endif %}</h1>
 </div>

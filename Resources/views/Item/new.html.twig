@@ -20,7 +20,6 @@
 
     {% import 'EETYSBundle::Item/Component/macro.html.twig' as macro %}
     {% for item in story.items %}
-        <hr>
         {# use macro depending on item type #}
         {{ attribute(macro, item.type, [item]) }}
     {% endfor %}

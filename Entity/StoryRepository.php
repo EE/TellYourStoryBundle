@@ -12,4 +12,50 @@ use Doctrine\ORM\EntityRepository;
  */
 class StoryRepository extends EntityRepository
 {
+    /**
+     * Returns published stories
+     *
+     * @return Query
+     */
+    public function getPublishedQuery()
+    {
+        return $this->getPublishedQb()->getQuery();
+    }
+
+    /**
+     * Returns stories that are both published and owned by user
+     *
+     * @param Integer       $user_id
+     *
+     * @return Query
+     */
+    public function getPublishedOrOwnedQuery($user_id)
+    {
+        return $this->getPublishedQb()
+            ->orWhere('s.createdBy = :user')
+            ->setParameter(':user', $user_id)
+            ->getQuery();
+    }
+
+    /**
+     * Returns stories that are both published and owned by user
+     *
+     * @param Integer       $user_id
+     *
+     * @return Query
+     */
+    public function getPublishedAndOwnedQuery($user_id)
+    {
+        return $this->getPublishedQb()
+            ->andWhere('s.createdBy = :user')
+            ->setParameter(':user', $user_id)
+            ->getQuery();
+    }
+
+    private function getPublishedQb()
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.published = :published')
+            ->setParameter(':published', true);
+    }
 }

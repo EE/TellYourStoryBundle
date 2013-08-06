@@ -87,4 +87,14 @@ class ResourceController extends FOSRestController implements ClassResourceInter
         return $this->resourceName;
     }
 
+    /**
+     * @param string    $permission
+     * @param null      $domainObject
+     *
+     * @return bool
+     */
+    public function isGranted($permission, $domainObject = null)
+    {
+        return $this->container->get('security.context')->isGranted($permission, $domainObject);
+    }
 }

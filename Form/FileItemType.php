@@ -51,7 +51,10 @@ class FileItemType extends AbstractType
                     )
                 )
             )
-            ->add('uploadedFiles', 'file', array(
+            ->add(
+                'uploadedFiles',
+                new UploadType(),
+                array(
                     'label' => 'tys.form.fileItem.uploadedFiles.label',
                     'help_block' => 'tys.form.fileItem.uploadedFiles.help_block',
                     'attr' => $this->addHtml5Validation(
@@ -63,7 +66,8 @@ class FileItemType extends AbstractType
                         'uploadedFiles',
                         new \ReflectionClass($options['data_class'])
                     )
-                ));
+                )
+            );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -94,7 +98,7 @@ class FileItemType extends AbstractType
             ->properties;
 
 
-        if ($property === 'uploadedFiles') {
+        if ($property === 'uploadedFiles' && array_key_exists('uploadedFiles', $validatedProperties)) {
             foreach ($validatedProperties[$property]->constraints as $constraint) {
                 if ($constraint instanceof Files) {
                     $attr['accept'] = implode(',', $constraint->mimeTypes);

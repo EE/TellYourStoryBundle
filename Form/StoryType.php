@@ -75,8 +75,24 @@ class StoryType extends AbstractType
                 )
             )
             ->add(
+                'published',
+                null,
+                array(
+                    'label' => 'tys.form.story.published.label',
+                    'help_block' => 'tys.form.story.published.help_block',
+                )
+            )
+            ->add(
+                'coeditable',
+                null,
+                array(
+                    'label' => 'tys.form.story.coeditable.label',
+                    'help_block' => 'tys.form.story.coeditable.help_block',
+                )
+            )
+            ->add(
                 'file',
-                new ImageType(),
+                new UploadType(),
                 array(
                     'label' => 'tys.form.story.file.label',
                     'help_block' => 'tys.form.story.file.help_block',
