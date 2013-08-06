@@ -4,7 +4,7 @@ namespace EE\TYSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use EE\TYSBundle\Validator\Constrains\Files as Files;
+use EE\TYSBundle\Validator\Constraints\Files as Files;
 use JMS\Serializer\Annotation as Serializer;
 
 /**

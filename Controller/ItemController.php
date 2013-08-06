@@ -50,6 +50,10 @@ class ItemController extends Controller
             throw $this->createNotFoundException('Unable to find Story entity.');
         }
 
+        if (!$this->isGranted('SELECT_TYPE', $story)) {
+            throw new AccessDeniedException("Cannot add items to this story");
+        }
+
         return $this->render(
             'EETYSBundle:Item:select_type.html.twig',
             array(

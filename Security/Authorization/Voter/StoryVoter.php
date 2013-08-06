@@ -23,7 +23,8 @@ class StoryVoter implements VoterInterface
         'SHOW',
         'DELETE',
         'PUBLISH',
-        'OWNER'
+        'OWNER',
+        'SELECT_TYPE'
     );
 
     public function __construct($container)
@@ -102,6 +103,10 @@ class StoryVoter implements VoterInterface
 
                     return $this->ownerAccess($object, $user);
                     break;
+                case 'SELECT_TYPE':
+
+                    return $this->selectTypeAccess($object, $user);
+                    break;
                 default:
                     break;
             }
@@ -160,6 +165,18 @@ class StoryVoter implements VoterInterface
     private function ownerAccess(Story $object, $user)
     {
         if ($user instanceof UserInterface && $user === $object->getCreatedBy()) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
+        return VoterInterface::ACCESS_DENIED;
+    }
+
+    private function selectTypeAccess(Story $object, $user)
+    {
+        if ($user instanceof UserInterface && $user === $object->getCreatedBy()
+            ||
+            $object->getCoeditable() === true
+        ) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

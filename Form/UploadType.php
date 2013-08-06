@@ -47,7 +47,12 @@ class UploadType extends AbstractType
         FormInterface $form,
         array $options
     ) {
-        if ($form->getParent()->getData()->getId()) {
+        if ((
+                is_object($form->getParent()->getData())
+            ) && (
+                !is_null($form->getParent()->getData()->getId())
+            )
+        ) {
             // this is not new, so make it not required
             $view->vars['required'] = false;
         }

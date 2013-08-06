@@ -2,7 +2,7 @@
 
 namespace EE\TYSBundle\Form;
 
-use EE\TYSBundle\Validator\Constrains\Files;
+use EE\TYSBundle\Validator\Constraints\Files;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

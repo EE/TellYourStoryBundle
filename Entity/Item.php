@@ -135,11 +135,11 @@ abstract class Item implements ItemInterface
     }
 
     /**
-     * @param mixed $story
+     * @param Story $story
      *
      * @return $this
      */
-    public function setStory($story)
+    public function setStory(Story $story)
     {
         $this->story = $story;
 
@@ -147,7 +147,7 @@ abstract class Item implements ItemInterface
     }
 
     /**
-     * @return mixed
+     * @return Story
      */
     public function getStory()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace EE\TYSBundle\Validator\Constrains;
+namespace EE\TYSBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\File;
