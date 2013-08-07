@@ -4,6 +4,7 @@ namespace EE\TYSBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class DefaultController
@@ -15,6 +16,10 @@ class UserController extends Controller
 {
     public function dashboardAction()
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedException("You have to be logged in");
+        }
+
         return $this->render('EETYSBundle:User:dashboard.html.twig', array(
             'organizationForm' =>  $this->createOrganizationForm(
                 $this->getUser()->getId()
@@ -68,6 +73,17 @@ class UserController extends Controller
                 )
             )
             ->getForm();
+    }
+
+    /**
+     * @param string    $permission
+     * @param null      $domainObject
+     *
+     * @return bool
+     */
+    public function isGranted($permission, $domainObject = null)
+    {
+        return $this->container->get('security.context')->isGranted($permission, $domainObject);
     }
 
 
