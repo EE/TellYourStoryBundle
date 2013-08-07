@@ -44,9 +44,6 @@ class UserController extends Controller
 
             $em->persist($user);
             $em->flush();
-        } else {
-            die(var_dump($form->getErrorsAsString(9)));
-
         }
 
         return $this->redirect($this->generateUrl('eetys_user_dashboard'));

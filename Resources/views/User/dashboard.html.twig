@@ -17,11 +17,11 @@
         </form>
     {% endif %}
 
-    {% if user.organization is null %}
-    <div class="add_organization">
-        {% include 'EETYSBundle::User/Component/add_organization.html.twig' %}
-        {% include 'EETYSBundle::User/Component/organization_form.html.twig' %}
-    </div>
+    {% if user.organization is null and organizationForm is defined %}
+        <div class="add_organization">
+            {% include 'EETYSBundle::User/Component/add_organization.html.twig' %}
+            {% include 'EETYSBundle::User/Component/organization_form.html.twig' %}
+        </div>
     {% endif %}
 
     {% include 'EETYSBundle:Component:stories_header.html.twig' with {text: 'admin.dashboard.masonry.header'} %}
