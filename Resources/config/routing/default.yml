@@ -6,3 +6,11 @@ eetys_default_logout:
     pattern: /logout
     defaults: { _controller: EETYSBundle:Default:homepage }
 
+privacy_policy:
+    pattern:  /privacy-policy
+    defaults: { _controller: EETYSBundle:Default:privacypolicy }
+
+regulations:
+    pattern:  /regulations
+    defaults: { _controller: EETYSBundle:Default:regulations }
+

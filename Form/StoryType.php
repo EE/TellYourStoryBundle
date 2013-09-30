@@ -78,8 +78,8 @@ class StoryType extends AbstractType
                 'published',
                 null,
                 array(
-                    'label' => 'tys.form.story.published.label',
-                    'help_block' => 'tys.form.story.published.help_block',
+                    'label' => 'tys.form.story.publish.label',
+                    'help_block' => 'tys.form.story.publish.help_block',
                 )
             )
             ->add(
