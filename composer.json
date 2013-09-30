@@ -18,7 +18,7 @@
     "target-dir": "EE/TYSBundle",
     "require": {
         "symfony/symfony": "~2.3",
-        "mopa/bootstrap-bundle": "dev-master",
+        "mopa/bootstrap-bundle": "2.3.x-dev",
         "twbs/bootstrap": "2.3.*",
         "doctrine/doctrine-fixtures-bundle": "~2.0",
         "ee/embedly-bundle": "dev-master",
