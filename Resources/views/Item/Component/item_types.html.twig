@@ -108,18 +108,13 @@
     </div>
     <div class="span6">
         {% if (story.items|length > 0) %}
-            {% if story.published %}
-                <a href="{{ path('story_show', {id: story.id}) }}" class="btn btn-tys btn-small pull-right">{{ 'btn.show.name' | trans }} <i class="icon-chevron-right icon-white"></i></a>
-            {% else %}
-                <a href="{{ path('story_preview', {id: story.id}) }}" class="btn btn-tys btn-small pull-right">{{ 'btn.publish.name' | trans }} <i class="icon-chevron-right icon-white"></i></a>
-            {% endif %}
-
+            <a href="{{ path('story_preview', {id: story.id}) }}" class="btn btn-tys btn-small pull-right">{{ 'btn.show.name' | trans }} <i class="icon-chevron-right icon-white"></i></a>
         {% else %}
-            <a href="{{ path('story_preview', {id: story.id}) }}" class="btn btn-tys btn-small pull-right">{{ 'btn.publish_without_items.name' | trans }} <i class="icon-chevron-right icon-white"></i></a>
+            <a href="{{ path('story_preview', {id: story.id}) }}" class="btn btn-tys btn-small pull-right">{{ 'btn.show_without_items.name' | trans }} <i class="icon-chevron-right icon-white"></i></a>
         {% endif %}
     </div>
     <div class="span6 offset6 text-right">
-        ({{ 'btn.publish_without_items.help' | trans | raw }})
+        ({{ 'btn.show_without_items.help' | trans | raw }})
     </div>
 
 </div>

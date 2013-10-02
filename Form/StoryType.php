@@ -22,7 +22,7 @@ class StoryType extends AbstractType
      */
     protected $validator;
 
-    function __construct(Validator $validator)
+    public function __construct(Validator $validator)
     {
         $this->validator = $validator;
     }
@@ -78,6 +78,7 @@ class StoryType extends AbstractType
                 'published',
                 null,
                 array(
+                    'required' => false,
                     'label' => 'tys.form.story.publish.label',
                     'help_block' => 'tys.form.story.publish.help_block',
                 )
@@ -86,6 +87,7 @@ class StoryType extends AbstractType
                 'coeditable',
                 null,
                 array(
+                    'required' => false,
                     'label' => 'tys.form.story.coeditable.label',
                     'help_block' => 'tys.form.story.coeditable.help_block',
                 )
