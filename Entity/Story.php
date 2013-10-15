@@ -102,7 +102,7 @@ class Story
     /**
      * @var
      *
-     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="story")
+     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\Item", mappedBy="story", cascade={"remove"})
      */
     private $items;
 

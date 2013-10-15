@@ -311,7 +311,13 @@ class StoryController extends Controller
         } else {
             die(var_dump($form->getErrorsAsString()));
         }
-        return new RedirectResponse($this->getRequest()->headers->get("referer"));
+        if ($this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
+            // Admin is supposed to be redirected to story list
+            return new RedirectResponse($this->generateUrl('eetys_admin_stories'));
+        } else {
+            // while user has no story list at all, thus is redirected to dashboard (which is a kind of story list)
+            return new RedirectResponse($this->generateUrl('eetys_user_dashboard'));
+        }
 
     }
 
