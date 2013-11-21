@@ -47,13 +47,14 @@ class StoryController extends Controller
             'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new Story entity.
      *
      */
     public function createAction(Request $request)
     {
-        $entity  = new Story();
+        $entity = new Story();
 
         if (false === $this->isGranted('NEW', $entity)) {
             throw new AccessDeniedException();
@@ -76,7 +77,7 @@ class StoryController extends Controller
 
         return $this->render('EETYSBundle:Story:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -91,11 +92,11 @@ class StoryController extends Controller
             throw new AccessDeniedException();
         }
 
-        $form   = $this->createForm(new StoryType($this->get('validator')), $entity);
+        $form = $this->createForm(new StoryType($this->get('validator')), $entity);
 
         return $this->render('EETYSBundle:Story:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -113,8 +114,8 @@ class StoryController extends Controller
         }
 
         return $this->render('EETYSBundle:Story:add_item.html.twig', array(
-                'story' => $story
-            ));
+            'story' => $story
+        ));
     }
 
     /**
@@ -138,9 +139,9 @@ class StoryController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EETYSBundle:Story:show.html.twig', array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView()
-            ));
+        ));
     }
 
 
@@ -152,14 +153,23 @@ class StoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        /* @var Story $entity */
         $entity = $em->getRepository('EETYSBundle:Story')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Story entity.');
         }
 
+        $flash = $this
+            ->get('translator')
+            ->trans($entity->getPublished() ? 'story.published.banner' : 'story.publish_to_share.banner', array(
+                '%url%' => $entity->getPublished() ? $this->generateShareUrl($entity)
+                        : $this->generateUrl('story_publish', ["id" => $entity->getId()])
+            ));
+        $this->get('session')->getFlashBag()->add('notice', $flash);
+
         return $this->render('EETYSBundle:Story:show.html.twig', array(
-            'entity'      => $entity,
+            'entity' => $entity,
         ));
     }
 
@@ -209,7 +219,7 @@ class StoryController extends Controller
         $em->persist($entity);
         $em->flush();
 
-        $flash = $this->get('translator')->trans('story.publish.banner');
+        $flash = $this->get('translator')->trans('story.published.banner');
         $this->get('session')->getFlashBag()->add('notice', $flash);
 
         return new RedirectResponse($this->generateUrl('story_show', array('id' => $id)));
@@ -237,8 +247,8 @@ class StoryController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EETYSBundle:Story:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -266,7 +276,7 @@ class StoryController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity, array('method'=>'PUT'));
+        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity, array('method' => 'PUT'));
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
@@ -280,11 +290,12 @@ class StoryController extends Controller
         }
 
         return $this->render('EETYSBundle:Story:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Story entity.
      *
@@ -332,8 +343,7 @@ class StoryController extends Controller
     {
         return $this->createFormBuilder(array('id' => $id))
             ->add('id', 'hidden')
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     /**
@@ -343,7 +353,7 @@ class StoryController extends Controller
     {
         if ($entity->getFile()) {
             $uploadsAdapter = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
-            if ($entity->getBackgroundFilename() !== null){
+            if ($entity->getBackgroundFilename() !== null) {
                 try {
                     $uploadsAdapter->delete($entity->getBackgroundFilename());
                 } catch (\RuntimeException $e) {
@@ -359,13 +369,32 @@ class StoryController extends Controller
     }
 
     /**
-     * @param string    $permission
-     * @param null      $domainObject
+     * @param string $permission
+     * @param null $domainObject
      *
      * @return bool
      */
     public function isGranted($permission, $domainObject = null)
     {
         return $this->container->get('security.context')->isGranted($permission, $domainObject);
+    }
+
+    /**
+     * @param Story $entity
+     * @return string
+     */
+    private function generateShareUrl(Story $entity)
+    {
+        $link = $this->getRequest()->getSchemeAndHttpHost() . $this->generateUrl('story_show', ["id" => $entity->getId()]);
+        $final = [];
+        foreach ([
+                     "link" => $link,
+                     "app_id" => $this->container->getParameter('oauth_facebook_app_id'),
+                     "redirect_uri" => $link
+                 ] as $part => $value) {
+            $final[] = implode('=', [$part, $value]);
+        }
+        $params = implode('&', $final);
+        return 'https://www.facebook.com/dialog/feed?' . $params;
     }
 }
