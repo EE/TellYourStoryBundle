@@ -47,7 +47,8 @@ class FilesValidator extends FileValidator
         $totalSize = 0;
         foreach ((array) $values as $value) {
 
-            $totalSize += $value->getSize();
+            // When updating no file is given and $value id null. We shall not try to sum up its size then.
+            if ($value) $totalSize += $value->getSize();
 
             parent::validate($value, $constraint);
         }
