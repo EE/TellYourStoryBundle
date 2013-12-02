@@ -1,0 +1,8 @@
+{% macro form(entity, delete_form) %}
+    <form class="form-horizontal form-tys" action="{{ path('item_delete', {id: entity.id}) }}" method="post" {{ form_enctype(delete_form) }}>
+        {{ form_rest(delete_form) }}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-small btn-tys pull-right">{{ 'btn.delete.name' | trans | raw }}</button>
+        </div>
+    </form>
+{% endmacro %}

@@ -338,6 +338,8 @@ class ItemController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('EETYSBundle:Item')->find($id);
 
+            $storyId = $entity->getStory()->getId();
+
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Item entity.');
             }
@@ -349,8 +351,10 @@ class ItemController extends Controller
             $em->remove($entity);
             $em->flush();
         }
-
-        return $this->redirect($this->generateUrl('item'));
+        
+        if ($storyId) {
+            return $this->redirect($this->generateUrl('story_show', array('id' => $storyId)));
+        }
     }
 
     /**
