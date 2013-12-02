@@ -164,7 +164,7 @@ class StoryController extends Controller
             ->get('translator')
             ->trans($entity->getPublished() ? 'story.published.banner' : 'story.publish_to_share.banner', array(
                 '%url%' => $entity->getPublished() ? $this->generateShareUrl($entity)
-                        : $this->generateUrl('story_publish', ["id" => $entity->getId()])
+                        : $this->generateUrl('story_publish', array("id" => $entity->getId()))
             ));
         $this->get('session')->getFlashBag()->add('notice', $flash);
 
@@ -385,14 +385,14 @@ class StoryController extends Controller
      */
     private function generateShareUrl(Story $entity)
     {
-        $link = $this->getRequest()->getSchemeAndHttpHost() . $this->generateUrl('story_show', ["id" => $entity->getId()]);
-        $final = [];
-        foreach ([
+        $link = $this->getRequest()->getSchemeAndHttpHost() . $this->generateUrl('story_show', array("id" => $entity->getId()));
+        $final = array();
+        foreach (array(
                      "link" => $link,
                      "app_id" => $this->container->getParameter('oauth_facebook_app_id'),
                      "redirect_uri" => $link
-                 ] as $part => $value) {
-            $final[] = implode('=', [$part, $value]);
+                 ) as $part => $value) {
+            $final[] = implode('=', array($part, $value));
         }
         $params = implode('&', $final);
         return 'https://www.facebook.com/dialog/feed?' . $params;
