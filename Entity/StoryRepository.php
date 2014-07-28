@@ -2,7 +2,15 @@
 
 namespace EE\TYSBundle\Entity;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NativeQuery;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * StoryRepository
@@ -12,6 +20,77 @@ use Doctrine\ORM\EntityRepository;
  */
 class StoryRepository extends EntityRepository
 {
+
+    /**
+     * @param QueryBuilder $qb
+     * @param User $user
+     * @param string $alias
+     * @return QueryBuilder
+     */
+    private function addOwnedOrPublished(QueryBuilder $qb, User $user, $alias = 's')
+    {
+        return $qb
+            ->where($alias . '.published = :published')
+            ->orWhere($alias . '.createdBy = :user')
+            ->setParameter(':user', $user->getId())
+            ->setParameter(':published', true);
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param string $alias
+     * @return QueryBuilder
+     */
+    private function addPublished(QueryBuilder $qb, $alias = 's')
+    {
+        return $qb
+            ->andWhere($alias . '.published = :published')
+            ->setParameter(':published', true);
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @return QueryBuilder
+     */
+    private function addNotInCollections(QueryBuilder $qb)
+    {
+        return $qb->andWhere($qb->expr()->notIn('s.id', $this->tmpGetStoriesInCollections()));
+    }
+
+    /**
+     * @param string $alias
+     * @param User $user
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getOwnedOrPublishedQb(User $user, $alias = 's')
+    {
+        return $this->addOwnedOrPublished($this->createQueryBuilder($alias), $user);
+    }
+
+    /**
+     * @param string $alias
+     * @return QueryBuilder
+     */
+    private function getPublishedQb($alias = 's')
+    {
+        return $this->addPublished($this->createQueryBuilder($alias));
+    }
+
+    /**
+     * @param string $alias
+     * @param $id
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getByCollectionQb($id, $alias = 's')
+    {
+        return $this->createQueryBuilder($alias)
+            ->select('s')
+            ->from('EETYSBundle:Story', 's')
+            ->join('s.storyCollections', 'sc')
+            ->where('sc.id = :storyCollectionId')
+            ->setParameter('storyCollectionId', $id);
+    }
+
     /**
      * Returns published stories
      *
@@ -25,37 +104,95 @@ class StoryRepository extends EntityRepository
     /**
      * Returns stories that are both published and owned by user
      *
-     * @param Integer       $user_id
+     * @param User $user
      *
      * @return Query
      */
-    public function getPublishedOrOwnedQuery($user_id)
+    public function getOwnedOrPublishedQuery(User $user)
     {
-        return $this->getPublishedQb()
-            ->orWhere('s.createdBy = :user')
-            ->setParameter(':user', $user_id)
-            ->getQuery();
+        return $this->getOwnedOrPublishedQb($user)->getQuery();
     }
 
     /**
-     * Returns stories that are both published and owned by user
-     *
-     * @param Integer       $user_id
-     *
-     * @return Query
+     * I found no better way to extract Stories that are connected many-to-many to StoryCollection
+     * this method depends on a fact that joinTable is explicitly given in the entity class.
+     * @todo: find better way
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function getPublishedAndOwnedQuery($user_id)
+    private function tmpGetStoriesInCollections()
     {
-        return $this->getPublishedQb()
-            ->andWhere('s.createdBy = :user')
-            ->setParameter(':user', $user_id)
-            ->getQuery();
+        $reader = new AnnotationReader();
+        $joinTable = $reader
+            ->getPropertyAnnotation(
+                new \ReflectionProperty('EE\TYSBundle\Entity\Story', 'storyCollections'),
+                'Doctrine\ORM\Mapping\JoinTable'
+            );
+
+        $storiesInCollectionsStatement = $this->_em
+            ->getConnection()
+            ->prepare('SELECT DISTINCT story_id FROM ' . $joinTable->name);
+
+        $storiesInCollectionsStatement->execute();
+
+        $storiesInCollections = array();
+        foreach ($storiesInCollectionsStatement->fetchAll() as $v) {
+            $storiesInCollections[] = $v['story_id'];
+        }
+
+        return $storiesInCollections;
     }
 
-    private function getPublishedQb()
+    /**
+     * @return array
+     */
+    public function findAllNotInCollections()
     {
-        return $this->createQueryBuilder('s')
-            ->where('s.published = :published')
-            ->setParameter(':published', true);
+        return $this->addNotInCollections($this->createQueryBuilder('s'), 's')->getQuery()->execute();
+    }
+
+    /**
+     * @return array
+     */
+    public function findPublishedNotInCollections()
+    {
+        return $this->addNotInCollections($this->getPublishedQb('s'), 's')->getQuery()->execute();
+    }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function findOwnedOrPublishedNotInCollections(User $user)
+    {
+        return $this->addNotInCollections($this->getOwnedOrPublishedQb($user, 's'), 's')->getQuery()->execute();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function findAllByCollection($id)
+    {
+        return $this->getByCollectionQb($id)->getQuery()->execute();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function findPublishedByCollection($id)
+    {
+        return $this->addPublished($this->getByCollectionQb($id, 'k'))->getQuery()->execute();
+    }
+
+    /**
+     * @param $id
+     * @param User $user
+     * @return mixed
+     */
+    public function findOwnedOrPublishedByCollection($id, User $user)
+    {
+        return $this->addOwnedOrPublished($this->getByCollectionQb($id, 'k'), $user)->getQuery()->execute();
     }
 }

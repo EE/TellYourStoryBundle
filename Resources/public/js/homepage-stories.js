@@ -1,52 +1,62 @@
-(function($){
+(function ($) {
     "use strict";
     var $container = $('#masonry-container'),
         columnWidth = 300,
         gutter = 20,
-        padding = 0.15*columnWidth,
-        route = Routing.generate('get_stories', {}, true);
+        padding = 0.15 * columnWidth,
+        config = $container.data(),
+        route = Routing.generate('get_stories', config.collection ? {
+            by: 'storyCollections',
+            id: config.collection
+        } : {}, true);
 
-    if ($container.filter('[data-user]').length)
-    {
+    console.log($container.data());
+    if ($container.filter('[data-user]').length) {
         route = Routing.generate('get_stories_by_user', {
             user_id: $container.attr('data-user')
         })
     }
 
-    $.get(route, function(elements){
+    $.get(route, function (elements) {
         $container.masonry({
             columnWidth: columnWidth,
-            gutter:      gutter
+            gutter: gutter
         });
 
-        for (var i=0; i < elements.length; i++) {
+        for (var i = 0; i < elements.length; i++) {
             var current = elements[i],
                 background = new Image();
 
             if (current.hasOwnProperty('background_uri')) {
-                background.story = current;
+                background.element = current;
                 background.src = current.background_uri;
 
-                $(background).on('load', function() {
+                $(background).on('load', function () {
 
-                    var imageHeight = Math.max($(this).context.height, 300),
+                    var ctx = $(this).context,
+                        imageHeight = Math.max(ctx.height, 300),
                         $elem = $(document.createElement('a')),
-                        $circle = $(document.createElement('div'));
+                        $circle = $(document.createElement('div')),
+                        isCollection = ctx.element.hasOwnProperty('organization_name');
 
                     $elem
-                        .attr('href', Routing.generate('story_show', {id: $(this).context.story.id}, true))
+                        .attr('href', isCollection ?
+                            Routing.generate('story_collection_show', {id: ctx.element.id}, true) :
+                            Routing.generate('story_show', {id: ctx.element.id}, true))
                         .css({
-                            "background-image": "url('" + $(this).context.src + "')",
-                            'height': imageHeight - 2*padding
+                            "background-image": "url('" + ctx.src + "')",
+                            'height': imageHeight - 2 * padding
                         })
-                        .addClass('story-item');
+                        .addClass('front-page-item')
+                        .addClass(isCollection ? 'collection-item' : 'story-item');
+
 
                     $circle
                         .addClass('circle')
-                        .html($('<span>').addClass('tagline').text($(this).context.story.tagline))
+                        .html($('<span>').addClass('tagline').text(ctx.element.tagline))
                         .css({
                             'position': 'relative',
-                            'top': (imageHeight - columnWidth)/2
+                            'top': (imageHeight - columnWidth) / 2
                         })
                         .appendTo($elem);
 

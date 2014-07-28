@@ -44,6 +44,13 @@ class User extends BaseUser
     protected $stories;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="EE\TYSBundle\Entity\StoryCollection", mappedBy="createdBy")
+     */
+    protected $storyCollections;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="organization", type="string", length=255, nullable=true)
@@ -228,5 +235,27 @@ class User extends BaseUser
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Sets StoryCollections collection
+     *
+     * @param Collection $storyCollections
+     *
+     * @return $this
+     */
+    public function setStoryCollection(Collection $storyCollections)
+    {
+        $this->storyCollections = $storyCollections;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getStoryCollections()
+    {
+        return $this->storyCollections;
     }
 }

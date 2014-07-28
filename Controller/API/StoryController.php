@@ -2,10 +2,16 @@
 
 namespace EE\TYSBundle\Controller\API;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use EE\TYSBundle\Entity\StoryRepository;
 use FOS\Rest\Util\Codes;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use EE\TYSBundle\Entity\Story;
 
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 use FOS\RestBundle\Controller\Annotations as REST;
@@ -52,19 +58,56 @@ class StoryController extends ResourceController
      * @REST\Route(requirements={"_format"="json|xml"})
      * @REST\View(serializerGroups={"cget"})
      *
+     * @QueryParam(name="by", requirements=".+", description="Criterion type")
+     * @QueryParam(name="id", requirements="\d+", description="Criterion")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function cgetAction()
     {
+        /** @var StoryRepository $storyRepo */
+        $storyRepo = $this->getResourceRepository();
+
+        // Resolve query params
+        /** @var ParameterBag $params */
+        $params = $this->get('request')->query;
+        $by = $params->get('by');
+        $id = $params->get('id');
+        if ($by && $id) {
+            // TODO: this is a workaround. Probably waits for 2.5
+            // SEE: http://www.doctrine-project.org/jira/browse/DDC-2988
+            if ($by === 'storyCollections') {
+                if ($this->isGranted('ROLE_ADMIN')) {
+                    return $storyRepo->findAllByCollection($id);
+                } else {
+                    if ($this->getUser()) {
+                        return $storyRepo->findOwnedOrPublishedByCollection($id, $this->getUser());
+                    } else {
+                        return $storyRepo->findPublishedByCollection($id);
+                    }
+                }
+            }
+//            return $storyRepo->findBy(array($params->get('by') => $params->get('id')));
+        }
+
+        // Collections are always public.
+        $collections = $this->getResourceRepository('StoryCollection')->findAll();
+
         if ($this->isGranted('ROLE_ADMIN')) {
-            return $this->getResourceRepository()->findAll();
+            $stories = $storyRepo->findAllNotInCollections();
         } else {
             if ($this->getUser()) {
-                return $this->getResourceRepository()->getPublishedOrOwnedQuery($this->getUser()->getId())->execute();
+                $stories = $storyRepo->findOwnedOrPublishedNotInCollections($this->getUser());
             } else {
-                return $this->getResourceRepository()->getPublishedQuery()->execute();
+                $stories = $storyRepo->findPublishedNotInCollections();
             }
         }
+
+        $combined = new ArrayCollection(array_merge($collections, $stories));
+
+        return $combined->matching(Criteria::create()->orderBy(array("createdAt" => Criteria::DESC)));
+
+
     }
 
     /**

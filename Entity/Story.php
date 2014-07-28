@@ -2,7 +2,10 @@
 
 namespace EE\TYSBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\JsonSerializationVisitor;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
 use EE\TYSBundle\Validator\Constraints\Files as Files;
@@ -107,8 +110,19 @@ class Story
     private $items;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="EE\TYSBundle\Entity\StoryCollection", inversedBy="stories")
+     * Note: this annotation is required for 2 reasons:
+     * * by default camelCase is used
+     * * StoryRepository::findAllNotInCollections() reads it.
+     * @ORM\JoinTable(name="tys_story_collection_stories")
+     */
+    private $storyCollections;
+
+    /**
      * @var User
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="EE\TYSBundle\Entity\User", inversedBy="stories")
      *
      */
@@ -133,11 +147,9 @@ class Story
     private $published;
 
 
-
-
-
     public function __construct()
     {
+        $this->storyCollections = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->coeditable = false;
         $this->published = false;
@@ -146,7 +158,7 @@ class Story
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -170,7 +182,7 @@ class Story
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -194,7 +206,7 @@ class Story
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -218,7 +230,7 @@ class Story
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
@@ -274,14 +286,15 @@ class Story
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    public function serialize() {
+    public function serialize()
+    {
         return array(
             'name' => $this->getName()
         );
@@ -401,4 +414,24 @@ class Story
         return $this->published;
     }
 
+
+    /**
+     * @param ArrayCollection $storyCollections
+     *
+     * @return $this
+     */
+    public function setStoryCollections(ArrayCollection $storyCollections)
+    {
+        $this->storyCollections = $storyCollections;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStoryCollections()
+    {
+        return $this->storyCollections;
+    }
 }

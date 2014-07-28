@@ -1,0 +1,33 @@
+{% extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>{{ 'story_collection.edit.page_header.h1' | trans }}</h1>
+</div>
+
+<form class="form-horizontal form-tys" action="{{ path('story_collection_update', { 'id': entity.id }) }}"
+      method="post" {{ form_enctype(edit_form) }}>
+<input type="hidden" name="_method" value="PUT"/>
+{{ form_errors(edit_form) }}
+
+{{ form_widget(edit_form) }}
+
+{% if entity.backgroundFilename %}
+<label class="control-label"><small>{{ 'tys.form.story.file.current' | trans | raw }}</small></label>
+<img src="{{ entity.backgroundFilename | imagine_filter('story_collection_header_preview') }}" alt=""/>
+{% endif %}
+<div class="form-actions">
+    <button class="btn btn-tys btn-small" type="submit">{{ 'btn.save.name' | trans }}</button>
+    <a class="btn btn-tys btn-small" href="{{ path('eetys_admin_collections') }}">
+        {{ 'btn.discard.name' | trans }}
+    </a>
+</div>
+</form>
+<form class="pull-right" action="{{ path('story_collection_delete', { 'id': entity.id }) }}" method="post">
+    <input type="hidden" name="_method" value="DELETE"/>
+    {{ form_widget(delete_form) }}
+    <button class="btn btn-tys btn-small" type="submit">{{ 'btn.delete.name' | trans }}</button>
+</form>
+
+{% endblock %}

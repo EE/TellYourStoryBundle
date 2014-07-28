@@ -30,6 +30,17 @@ class AdminController extends Controller
         ));
     }
 
+    public function collectionsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $collections = $em->getRepository('EETYSBundle:StoryCollection')->findAll();
+
+        return $this->render('EETYSBundle:Admin:collections.html.twig', array(
+            'collections' => $collections
+        ));
+    }
+
     public function usersAction()
     {
         $em = $this->getDoctrine()->getManager();

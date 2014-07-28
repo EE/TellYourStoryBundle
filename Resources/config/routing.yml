@@ -28,5 +28,9 @@ EETYSBundle_item:
     resource: "@EETYSBundle/Resources/config/routing/item.yml"
     prefix:   /item
 
+EETYSBundle_story_collection:
+    resource: "@EETYSBundle/Resources/config/routing/story_collection.yml"
+    prefix:   /collection
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

@@ -9,6 +9,9 @@ parameters:
     ee_tys.user_provider.class:   EE\TYSBundle\Security\Core\User\TYSUserProvider
     ee_tys.user_provider.class:  EE\TYSBundle\Security\Core\User\TYSUserProvider
     ee_tys.entity.user.class:    EE\TYSBundle\Entity\User
+    ee_tys.story_voter.class:    EE\TYSBundle\Security\Authorization\Voter\StoryVoter
+    ee_tys.item_voter.class:     EE\TYSBundle\Security\Authorization\Voter\ItemVoter
+    ee_tys.story_collection_voter.class:     EE\TYSBundle\Security\Authorization\Voter\StoryCollectionVoter
 
 services:
     ee_tys.user_provider:
@@ -17,19 +20,25 @@ services:
         arguments: ["@ee_light_user.user_manager"]
 
     ee_tys.story_voter:
-        class: EE\TYSBundle\Security\Authorization\Voter\StoryVoter
+        class: "%ee_tys.story_voter.class%"
         arguments: [@service_container]
         public: false
         tags:
           - { name: security.voter }
 
     ee_tys.item_voter:
-        class: EE\TYSBundle\Security\Authorization\Voter\ItemVoter
+        class: "%ee_tys.item_voter.class%"
         arguments: [@service_container]
         public: false
         tags:
-          - { name: security.voter }          
+          - { name: security.voter }
 
+    ee_tys.story_collection_voter:
+        class: "%ee_tys.story_collection_voter.class%"
+        arguments: [@service_container]
+        public: false
+        tags:
+          - { name: security.voter }
 #    ee_tys.voter_listener:
 #        class: EE\TYSBundle\EventListener\VoterListener
 #        arguments: [@service_container]

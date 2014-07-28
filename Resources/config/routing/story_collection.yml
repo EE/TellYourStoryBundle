@@ -1,0 +1,37 @@
+story_collection:
+    pattern:  /
+    defaults: { _controller: "EETYSBundle:StoryCollection:index" }
+
+story_collection_create:
+    pattern:  /create
+    defaults: { _controller: "EETYSBundle:StoryCollection:create" }
+    requirements: { _method: post }
+
+story_collection_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "EETYSBundle:StoryCollection:show" }
+    options: {expose: true}
+
+story_collection_new:
+    pattern:  /new
+    defaults: { _controller: "EETYSBundle:StoryCollection:new" }
+
+
+story_collection_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "EETYSBundle:StoryCollection:edit" }
+
+story_collection_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "EETYSBundle:StoryCollection:update" }
+    requirements: { _method: post|put }
+
+story_collection_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "EETYSBundle:StoryCollection:delete" }
+    requirements: { _method: post|delete }
+
+story_collection_show_by_slug:
+    pattern:  /{slug}
+    defaults: { _controller: "EETYSBundle:StoryCollection:showBySlug" }
+    options: {expose: true}

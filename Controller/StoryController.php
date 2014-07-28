@@ -2,9 +2,10 @@
 
 namespace EE\TYSBundle\Controller;
 
+use EE\TYSBundle\Entity\StoryRepository;
+use EE\TYSBundle\Form\AdminStoryType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use EE\TYSBundle\Entity\Story;
 use EE\TYSBundle\Form\StoryType;
@@ -14,17 +15,20 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * Story controller.
  *
  */
-class StoryController extends Controller
+class StoryController extends BasicController
 {
 
     /**
      * Lists all Story entities.
      *
+     * @param null|integer $by
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction($by = null)
     {
         $em = $this->getDoctrine()->getManager();
 
+        /** @var StoryRepository $repository */
         $repository = $em->getRepository('EETYSBundle:Story');
 
         if ($by) {
@@ -34,11 +38,10 @@ class StoryController extends Controller
                 $entities = $repository->findAll();
             } else {
                 if ($this->getUser()) {
-                    $entities = $this->getResourceRepository()
-                        ->getPublishedOrOwnedQuery($this->getUser()->getId())
-                        ->execute();
+
+                    $entities = $repository->getOwnedOrPublishedQuery($this->getUser())->execute();
                 } else {
-                    $entities = $this->getResourceRepository()->getPublishedQuery()->execute();
+                    $entities = $repository->getPublishedQuery()->execute();
                 }
             }
         }
@@ -51,6 +54,8 @@ class StoryController extends Controller
     /**
      * Creates a new Story entity.
      *
+     * @param Request $request
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -60,7 +65,7 @@ class StoryController extends Controller
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(new StoryType($this->get('validator')), $entity);
+        $form = $this->createForm($this->getFormType(), $entity);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -83,6 +88,8 @@ class StoryController extends Controller
 
     /**
      * Displays a form to create a new Story entity.
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function newAction()
     {
@@ -92,7 +99,7 @@ class StoryController extends Controller
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(new StoryType($this->get('validator')), $entity);
+        $form = $this->createForm($this->getFormType(), $entity);
 
         return $this->render('EETYSBundle:Story:new.html.twig', array(
             'entity' => $entity,
@@ -102,6 +109,8 @@ class StoryController extends Controller
 
     /**
      *
+     * @param integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addItemAction($id)
     {
@@ -121,6 +130,8 @@ class StoryController extends Controller
     /**
      * Finds and displays a Story entity.
      *
+     * @param integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
     {
@@ -148,6 +159,8 @@ class StoryController extends Controller
     /**
      * Finds and displays a Story entity.
      *
+     * @param integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function previewAction($id)
     {
@@ -177,6 +190,9 @@ class StoryController extends Controller
     /**
      * Sets Story::coeditable property
      *
+     * @param integer $id
+     * @param boolean $isCoeditable
+     * @return RedirectResponse
      */
     public function setCoeditabilityAction($id, $isCoeditable)
     {
@@ -199,6 +215,8 @@ class StoryController extends Controller
     /**
      * Sets Story::published property
      *
+     * @param integer $id
+     * @return RedirectResponse
      */
     public function publishAction($id)
     {
@@ -228,6 +246,8 @@ class StoryController extends Controller
     /**
      * Displays a form to edit an existing Story entity.
      *
+     * @param integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction($id)
     {
@@ -243,7 +263,7 @@ class StoryController extends Controller
             throw new AccessDeniedException();
         }
 
-        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity);
+        $editForm = $this->createForm($this->getFormType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EETYSBundle:Story:edit.html.twig', array(
@@ -276,7 +296,7 @@ class StoryController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new StoryType($this->get('validator')), $entity, array('method' => 'PUT'));
+        $editForm = $this->createForm($this->getFormType(), $entity, array('method' => 'PUT'));
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
@@ -299,6 +319,9 @@ class StoryController extends Controller
     /**
      * Deletes a Story entity.
      *
+     * @param Request $request
+     * @param integer $id
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, $id)
     {
@@ -319,10 +342,9 @@ class StoryController extends Controller
 
             $em->remove($entity);
             $em->flush();
-        } else {
-            die(var_dump($form->getErrorsAsString()));
         }
-        if ($this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
+
+        if ($this->isGranted('ROLE_ADMIN')) {
             // Admin is supposed to be redirected to story list
             return new RedirectResponse($this->generateUrl('eetys_admin_stories'));
         } else {
@@ -333,59 +355,13 @@ class StoryController extends Controller
     }
 
     /**
-     * Creates a form to delete a Story entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm();
-    }
-
-    /**
-     * @param $entity
-     */
-    private function handleUpload(&$entity)
-    {
-        if ($entity->getFile()) {
-            $uploadsAdapter = $this->container->get('knp_gaufrette.filesystem_map')->get('uploads');
-            if ($entity->getBackgroundFilename() !== null) {
-                try {
-                    $uploadsAdapter->delete($entity->getBackgroundFilename());
-                } catch (\RuntimeException $e) {
-                    // file didn't exist on server, don't do anything
-                };
-            }
-
-            $key = sha1(uniqid() . mt_rand(0, 99999)) . '.' . $entity->getFile()->guessExtension();
-            $uploadsAdapter->write($key, file_get_contents($entity->getFile()));
-
-            $entity->setBackgroundFilename($key);
-        }
-    }
-
-    /**
-     * @param string $permission
-     * @param null $domainObject
-     *
-     * @return bool
-     */
-    public function isGranted($permission, $domainObject = null)
-    {
-        return $this->container->get('security.context')->isGranted($permission, $domainObject);
-    }
-
-    /**
      * @param Story $entity
      * @return string
      */
     private function generateShareUrl(Story $entity)
     {
-        $link = $this->getRequest()->getSchemeAndHttpHost() . $this->generateUrl('story_show', array("id" => $entity->getId()));
+        $link = $this->getRequest()->getSchemeAndHttpHost() .
+            $this->generateUrl('story_show', array("id" => $entity->getId()));
         $final = array();
         foreach (array(
                      "link" => $link,
@@ -396,5 +372,16 @@ class StoryController extends Controller
         }
         $params = implode('&', $final);
         return 'https://www.facebook.com/dialog/feed?' . $params;
+    }
+
+    /**
+     * Chooses the right form to be used according to user permissions
+     * @return AdminStoryType|StoryType
+     */
+    private function getFormType()
+    {
+        return $this->isGranted('ROLE_ADMIN') ?
+            new AdminStoryType($this->get('validator')) :
+            new StoryType($this->get('validator'));
     }
 }

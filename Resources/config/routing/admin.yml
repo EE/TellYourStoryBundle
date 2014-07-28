@@ -15,3 +15,6 @@ eetys_admin_user_ban:
 eetys_admin_stories:
     pattern:  /stories
     defaults: { _controller: EETYSBundle:Admin:stories }
+eetys_admin_collections:
+    pattern:  /collections
+    defaults: { _controller: EETYSBundle:Admin:collections }

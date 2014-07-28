@@ -1,0 +1,60 @@
+{% extends 'EETYSBundle::base.html.twig' %}
+
+{% block content %}
+    <div class="page-header green">
+        <h1>{{ 'admin.header.collections.name' | trans | raw }}</h1>
+    </div>
+
+    <a href="{{ path('story_collection_new') }}"
+       class="btn btn-small btn-tys">
+        {{ 'btn.add.name' | trans | raw }}
+    </a>
+
+
+    <table class="table table-tys">
+        <tr>
+            <th>{{ 'story_collection.list.date' | trans | raw }}</th>
+            <th colspan="3">{{ 'story_collection.list.title' | trans | raw }}</th>
+            <th>{{ 'story_collection.list.user' | trans | raw }}</th>
+            <th>{{ 'story_collection.list.elements_count' | trans | raw }}</th>
+        </tr>
+        {% for collection in collections %}
+            <tr>
+                <td title="{{ collection.createdAt|date('d-m-Y H:i:s') }}">{{ collection.createdAt | date('d/m/Y') }}</td>
+                <td>
+                    {% if collection.backgroundFilename %}
+                        <img src="{{ collection.backgroundFilename | imagine_filter('story_header_admin') }}" alt=""/>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ collection.name }}
+                </td>
+                <td>
+                    <a href="{{ path('story_collection_edit', { 'id': collection.id }) }}"
+                       class="btn btn-small btn-tys">
+                        {{ 'btn.edit.name' | trans | raw }}
+                        <i class="icon-wrench icon-white"></i>
+                    </a>
+                </td>
+                <td>
+                    {% if collection.createdBy is not null %}
+                        <a href="{{ path('eetys_admin_user', {id: collection.createdBy.id}) }}">
+                            {{ collection.createdBy.getRealName() }}
+                        </a>
+                        {% if collection.createdBy.organization is not null %}
+                            / {{ collection.createdBy.organization }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if collection.stories is empty %}
+                        {{ 'btn.choose_stories.name' | trans | raw }}
+                    {% else %}
+                        {{ collection.stories | length }}
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
