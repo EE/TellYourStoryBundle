@@ -49,12 +49,16 @@ class StoryRepository extends EntityRepository
     }
 
     /**
+     * Adds "story not in collections" query part safely.
+     * If no stories are included in collections passing empty array to the expression ends up in a server error
+     *
      * @param QueryBuilder $qb
      * @return QueryBuilder
      */
     private function addNotInCollections(QueryBuilder $qb)
     {
-        return $qb->andWhere($qb->expr()->notIn('s.id', $this->tmpGetStoriesInCollections()));
+        $notInCollections = $this->tmpGetStoriesInCollections();
+        return count($notInCollections) === 0 ? $qb : $qb->andWhere($qb->expr()->notIn('s.id', $notInCollections));
     }
 
     /**
