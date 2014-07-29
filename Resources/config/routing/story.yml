@@ -50,3 +50,12 @@ story_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "EETYSBundle:Story:delete" }
     requirements: { _method: post|delete }
+
+story_show_by_slug:
+    pattern:  /{slug}
+    defaults: { _controller: "EETYSBundle:Story:showBySlug" }
+    options: {expose: true}
+
+story_preview_by_slug:
+    pattern:  /preview/{slug}
+    defaults: { _controller: "EETYSBundle:Story:previewBySlug" }

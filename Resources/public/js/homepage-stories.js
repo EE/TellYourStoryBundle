@@ -10,7 +10,6 @@
             id: config.collection
         } : {}, true);
 
-    console.log($container.data());
     if ($container.filter('[data-user]').length) {
         route = Routing.generate('get_stories_by_user', {
             user_id: $container.attr('data-user')
@@ -41,8 +40,8 @@
 
                     $elem
                         .attr('href', isCollection ?
-                            Routing.generate('story_collection_show', {id: ctx.element.id}, true) :
-                            Routing.generate('story_show', {id: ctx.element.id}, true))
+                            Routing.generate('story_collection_show_by_slug', {slug: ctx.element.slug}, true) :
+                            Routing.generate('story_show_by_slug', {slug: ctx.element.slug}, true))
                         .css({
                             "background-image": "url('" + ctx.src + "')",
                             'height': imageHeight - 2 * padding

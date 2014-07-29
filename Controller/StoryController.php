@@ -127,17 +127,12 @@ class StoryController extends BasicController
         ));
     }
 
-    /**
-     * Finds and displays a Story entity.
-     *
-     * @param integer $id
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAction($id)
+    private function show($identifier, $kind = 'id')
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+        $entity = $em->getRepository('EETYSBundle:Story')
+            ->findOneBy($kind === 'id' ? array("id" => $identifier) : array("slug" => $identifier));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Story entity.');
@@ -147,7 +142,7 @@ class StoryController extends BasicController
             throw new AccessDeniedException();
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($entity->getId());
 
         return $this->render('EETYSBundle:Story:show.html.twig', array(
             'entity' => $entity,
@@ -155,19 +150,40 @@ class StoryController extends BasicController
         ));
     }
 
-
     /**
      * Finds and displays a Story entity.
      *
      * @param integer $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function previewAction($id)
+    public function showAction($id)
+    {
+        return $this->show($id);
+    }
+
+    /**
+     * Finds and displays a Story entity by slug
+     *
+     * @param integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showBySlugAction($slug)
+    {
+        return $this->show($slug, 'slug');
+    }
+
+    /**
+     * @param $identifier
+     * @param string $kind
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    private function preview($identifier, $kind = 'id')
     {
         $em = $this->getDoctrine()->getManager();
 
         /* @var Story $entity */
-        $entity = $em->getRepository('EETYSBundle:Story')->find($id);
+        $entity = $em->getRepository('EETYSBundle:Story')
+            ->findOneBy($kind === 'id' ? array("id" => $identifier) : array("slug" => $identifier));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Story entity.');
@@ -177,13 +193,35 @@ class StoryController extends BasicController
             ->get('translator')
             ->trans($entity->getPublished() ? 'story.published.banner' : 'story.publish_to_share.banner', array(
                 '%url%' => $entity->getPublished() ? $this->generateShareUrl($entity)
-                        : $this->generateUrl('story_publish', array("id" => $entity->getId()))
+                    : $this->generateUrl('story_publish', array("id" => $entity->getId()))
             ));
         $this->get('session')->getFlashBag()->add('notice', $flash);
 
         return $this->render('EETYSBundle:Story:show.html.twig', array(
             'entity' => $entity,
         ));
+    }
+
+    /**
+     * Finds and displays a Story entity.
+     *
+     * @param integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function previewAction($id)
+    {
+        return $this->preview($id);
+    }
+
+    /**
+     * Finds and displays a Story entity.
+     *
+     * @param integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function previewBySlugAction($slug)
+    {
+        return $this->preview($slug, 'slug');
     }
 
 
@@ -361,7 +399,7 @@ class StoryController extends BasicController
     private function generateShareUrl(Story $entity)
     {
         $link = $this->getRequest()->getSchemeAndHttpHost() .
-            $this->generateUrl('story_show', array("id" => $entity->getId()));
+            $this->generateUrl('story_show_by_slug', array("slug" => $entity->getSlug()));
         $final = array();
         foreach (array(
                      "link" => $link,

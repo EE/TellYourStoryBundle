@@ -9,6 +9,7 @@ use JMS\Serializer\JsonSerializationVisitor;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
 use EE\TYSBundle\Validator\Constraints\Files as Files;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Story
@@ -20,6 +21,41 @@ use EE\TYSBundle\Validator\Constraints\Files as Files;
  */
 class Story
 {
+    // See: https://github.com/schmittjoh/serializer/issues/313
+    use ORMBehaviors\Sluggable\SluggableMethods;
+
+    /**
+     * @return array
+     */
+    public function getSluggableFields()
+    {
+        return [ 'name', 'address' ];
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getRegenerateSlugOnUpdate()
+    {
+        return false;
+    }
+
+    /**
+     * @var string $slug
+     *
+     * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"get", "cget"})
+     */
+    protected $slug;
+
+    /**
+     * @var string $slug
+     *
+     * @Serializer\Expose
+     * @Serializer\Groups({"get", "cget"})
+     */
+
     /**
      * @var integer
      *

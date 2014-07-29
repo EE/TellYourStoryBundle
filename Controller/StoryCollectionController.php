@@ -47,8 +47,7 @@ class StoryCollectionController extends BasicController
          * @var StoryCollection $entity
          */
         $entity = $em->getRepository('EETYSBundle:StoryCollection')
-            // TODO: use slug when generated
-            ->findOneBy($kind === 'id' ? array("id" => $identifier) : array("name" => $identifier));
+            ->findOneBy($kind === 'id' ? array("id" => $identifier) : array("slug" => $identifier));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Story Collection entity.');

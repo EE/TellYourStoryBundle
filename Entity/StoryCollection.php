@@ -8,16 +8,46 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
 use EE\TYSBundle\Validator\Constraints\Files as Files;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * StoryCollection
  *
  * @ORM\Table(name="tys_story_collection")
  * @ORM\Entity(repositoryClass="EE\TYSBundle\Entity\StoryCollectionRepository")
+ *
  * @Serializer\ExclusionPolicy("all")
  */
 class StoryCollection
 {
+    // See: https://github.com/schmittjoh/serializer/issues/313
+    use ORMBehaviors\Sluggable\SluggableMethods;
+
+    /**
+     * @return array
+     */
+    public function getSluggableFields()
+    {
+        return [ 'organizationName', 'name' ];
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getRegenerateSlugOnUpdate()
+    {
+        return false;
+    }
+
+    /**
+     * @var string $slug
+     *
+     * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"get", "cget"})
+     */
+    protected $slug;
+
     /**
      * @var integer
      *

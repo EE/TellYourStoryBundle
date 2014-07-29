@@ -107,7 +107,6 @@ class StoryController extends ResourceController
 
         return $combined->matching(Criteria::create()->orderBy(array("createdAt" => Criteria::DESC)));
 
-
     }
 
     /**

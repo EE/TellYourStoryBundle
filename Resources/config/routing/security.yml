@@ -1,5 +1,8 @@
 login:
-    pattern:   /admin
+    pattern:   /login
+    defaults:  { _controller: EETYSBundle:Security:login }
+login2:
+    pattern:   /login/
     defaults:  { _controller: EETYSBundle:Security:login }
 login_check:
     pattern:   /login_check
