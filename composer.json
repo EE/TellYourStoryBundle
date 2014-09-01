@@ -25,7 +25,7 @@
         "friendsofsymfony/jsrouting-bundle": "~1.1",
         "hwi/oauth-bundle": "0.3.*@dev",
         "stfalcon/tinymce-bundle": "v0.3.7",
-        "knplabs/doctrine-behaviors": "1.0.1"
+        "knplabs/doctrine-behaviors": "1.0.*@dev"
     }
 
 }
