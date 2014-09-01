@@ -126,7 +126,10 @@ class StoryCollectionController extends BasicController
             $em = $this->getDoctrine()->getManager();
 
             $this->handleUpload($entity);
-            $entity->setCreatedBy($this->getUser());
+            // Note: $this->getUser() is instance of Symfony\Component\Security\Core\User\User.
+            // Only \EE\TYSBundle\Entity\User (a.k.a. database user) makes sense here.
+            // THis line may be uncommented if collections are to be created by non-admin users.
+            // $entity->setCreatedBy($this->getUser());
 
             $em->persist($entity);
             $em->flush();

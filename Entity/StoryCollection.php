@@ -137,7 +137,7 @@ class StoryCollection
     private $createdAt;
 
     /**
-     * @var User
+     * @var User|null
      *
      * @ORM\ManyToOne(targetEntity="EE\TYSBundle\Entity\User", inversedBy="storyCollections")
      */
