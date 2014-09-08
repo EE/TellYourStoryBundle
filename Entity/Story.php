@@ -464,7 +464,29 @@ class Story
     }
 
     /**
-     * @return mixed
+     * @param StoryCollection $storyCollection
+     *
+     * @return $this
+     */
+    public function removeStoryCollection(StoryCollection $storyCollection)
+    {
+        $this->storyCollections->removeElement($storyCollection);
+
+        return $this;
+    }
+
+    /**
+     * @param StoryCollection $storyCollection
+     */
+    public function addStoryCollection(StoryCollection $storyCollection)
+    {
+        $this->storyCollections->add($storyCollection);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
      */
     public function getStoryCollections()
     {

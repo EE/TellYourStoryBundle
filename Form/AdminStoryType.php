@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Validator;
 /**
  * Class StoryType
  *
- * @author Jarek Rencz <jarek.rencz@gmail.com>
+ * @author Jarek Rencz <jarek.rencz@laboratorium.ee>
  */
 class AdminStoryType extends AbstractType
 {

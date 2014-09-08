@@ -1,5 +1,6 @@
 parameters:
     ee_tys.form.type.story.class: EE\TYSBundle\Form\StoryType
+    ee_tys.form.type.story_collection.class: EE\TYSBundle\Form\StoryCollectionType
     ee_tys.form.type.image.class: EE\TYSBundle\Form\ImageItemType
     ee_tys.form.type.audio.class: EE\TYSBundle\Form\AudioItemType
     ee_tys.form.type.file.class:  EE\TYSBundle\Form\FileItemType
@@ -7,7 +8,6 @@ parameters:
     ee_tys.form.type.url.class:   EE\TYSBundle\Form\UrlItemType
     ee_tys.form.type.video.class: EE\TYSBundle\Form\VideoItemType
     ee_tys.user_provider.class:   EE\TYSBundle\Security\Core\User\TYSUserProvider
-    ee_tys.user_provider.class:  EE\TYSBundle\Security\Core\User\TYSUserProvider
     ee_tys.entity.user.class:    EE\TYSBundle\Entity\User
     ee_tys.story_voter.class:    EE\TYSBundle\Security\Authorization\Voter\StoryVoter
     ee_tys.item_voter.class:     EE\TYSBundle\Security\Authorization\Voter\ItemVoter
@@ -73,6 +73,14 @@ services:
             - "@validator"
         tags:
             - { name: form.type, alias: ee_tysbundle_storytype }
+
+    ee_tys.form.type.story_collection:
+        class: "%ee_tys.form.type.story_collection.class%"
+        arguments:
+            - "@validator"
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: ee_tysbundle_story_collectiontype }
 
     ee_tys.form.type.image:
         class: "%ee_tys.form.type.image.class%"

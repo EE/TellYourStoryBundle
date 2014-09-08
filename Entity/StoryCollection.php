@@ -119,7 +119,7 @@ class StoryCollection
     private $backgroundFilename;
 
     /**
-     * @var Story[]
+     * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="EE\TYSBundle\Entity\Story", mappedBy="storyCollections")
      * @Serializer\Expose
@@ -307,11 +307,11 @@ class StoryCollection
     }
 
     /**
-     * @param mixed $stories
+     * @param Collection $stories
      *
      * @return $this
      */
-    public function setStories($stories)
+    public function setStories(Collection $stories)
     {
         $this->stories = $stories;
 
@@ -319,7 +319,33 @@ class StoryCollection
     }
 
     /**
-     * @return mixed
+     * @param Story $story
+     *
+     * @return $this
+     */
+    public function addStory(Story $story)
+    {
+        $story->addStoryCollection($this);
+        $this->stories->add($story);
+
+        return $this;
+    }
+
+    /**
+     * @param Story $story
+     *
+     * @return $this
+     */
+    public function removeStory(Story $story)
+    {
+        $story->removeStoryCollection($this);
+        $this->stories->removeElement($story);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
      */
     public function getStories()
     {

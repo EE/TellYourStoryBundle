@@ -2,16 +2,21 @@
 
 namespace EE\TYSBundle\Form;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Validator;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
 
 /**
  * Class StoryCollectionType
  *
- * @author Jarek Rencz <jarek.rencz@gmail.com>
+ * @author Jarek Rencz <jarek.rencz@laboratorium.ee>
  */
 class StoryCollectionType extends AbstractType
 {
@@ -20,9 +25,19 @@ class StoryCollectionType extends AbstractType
      */
     protected $validator;
 
-    public function __construct(Validator $validator)
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @param Validator $validator
+     * @param ContainerInterface $container
+     */
+    public function __construct(Validator $validator, ContainerInterface $container)
     {
         $this->validator = $validator;
+        $this->container = $container;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -99,7 +114,42 @@ class StoryCollectionType extends AbstractType
                     'multiple' => true,
                     'expanded' => true
                 )
-            );
+            )
+            /**
+             * This is a workaround: Doctrine does not seem to handle cascades on the inverse side of the relationship.
+             * THis way it's handled manually.
+             */
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                $em = $this->container->get('doctrine.orm.entity_manager');
+                $storyCollection = $event->getForm()->getData();
+                $eventData = $event->getData();
+
+                $newStories = array_map(function ($id) {
+                    return (int) $id;
+                }, array_key_exists('stories', $eventData) ? $eventData['stories'] : array());
+                $oldStories = $storyCollection
+                    ->getStories()
+                    ->map(function ($story) {
+                        return $story->getId();
+                    })
+                    ->toArray();
+
+                foreach (array_diff($newStories, $oldStories) as $id) {
+                    $story = $em->getRepository('EETYSBundle:Story')->find($id);
+                    if ($story) {
+                        $storyCollection->getStories()->add($story);
+                        $story->addStoryCollection($storyCollection);
+                    }
+                }
+
+                foreach (array_diff($oldStories, $newStories) as $id) {
+                    $story = $em->getRepository('EETYSBundle:Story')->find($id);
+                    if ($story) {
+                        $storyCollection->getStories()->removeElement($story);
+                        $story->removeStoryCollection($storyCollection);
+                    }
+                }
+            });
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

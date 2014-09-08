@@ -3,8 +3,11 @@
 
 namespace EE\TYSBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use EE\TYSBundle\Entity\StoryCollection;
 use EE\TYSBundle\Form\StoryCollectionType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -98,7 +101,7 @@ class StoryCollectionController extends BasicController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(new StoryCollectionType($this->get('validator')), $entity);
+        $form = $this->createForm($this->get('ee_tys.form.type.story_collection'), $entity);
 
         return $this->render('EETYSBundle:StoryCollection:new.html.twig', array(
             'entity' => $entity,
@@ -119,7 +122,7 @@ class StoryCollectionController extends BasicController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(new StoryCollectionType($this->get('validator')), $entity);
+        $form = $this->createForm($this->get('ee_tys.form.type.story_collection'), $entity);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -135,7 +138,7 @@ class StoryCollectionController extends BasicController
             $em->flush();
 
             // After collection gets created go back to the list. The only list is the admin list.
-            return $this->redirect($this->generateUrl('eetys_admin_collections'));
+            return new RedirectResponse($this->generateUrl('eetys_admin_collections'));
         }
 
         return $this->render('EETYSBundle:StoryCollection:new.html.twig', array(
@@ -156,29 +159,30 @@ class StoryCollectionController extends BasicController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EETYSBundle:StoryCollection')->find($id);
+        /** @var StoryCollection $storyCollection */
+        $storyCollection = $em->getRepository('EETYSBundle:StoryCollection')->find($id);
 
-        if (!$entity) {
+        if (!$storyCollection) {
             throw $this->createNotFoundException('Unable to find Story Collection entity.');
         }
 
-        if (false === $this->isGranted('EDIT', $entity)) {
+        if (false === $this->isGranted('EDIT', $storyCollection)) {
             throw new AccessDeniedException();
         }
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(
-            new StoryCollectionType($this->get('validator')),
-            $entity,
+            $this->get('ee_tys.form.type.story_collection'),
+            $storyCollection,
             array('method' => 'PUT')
         );
-        $editForm->submit($request);
+        $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
 
-            $this->handleUpload($entity);
+            $this->handleUpload($storyCollection);
 
-            $em->persist($entity);
+            $em->persist($storyCollection);
             $em->flush();
 
             // After collection gets created go back to the list. The only list is the admin list.
@@ -186,7 +190,7 @@ class StoryCollectionController extends BasicController
         }
 
         return $this->render('EETYSBundle:StoryCollection:edit.html.twig', array(
-            'entity' => $entity,
+            'entity' => $storyCollection,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -212,7 +216,7 @@ class StoryCollectionController extends BasicController
             throw new AccessDeniedException();
         }
 
-        $editForm = $this->createForm(new StoryCollectionType($this->get('validator')), $entity);
+        $editForm = $this->createForm($this->get('ee_tys.form.type.story_collection'), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EETYSBundle:StoryCollection:edit.html.twig', array(
@@ -220,5 +224,36 @@ class StoryCollectionController extends BasicController
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
+    }
+
+    /**
+     * Deletes a Story collection entity.
+     *
+     * @param Request $request
+     * @param integer $id
+     * @return RedirectResponse
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+        $form->submit($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('EETYSBundle:StoryCollection')->find($id);
+
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find Story collection entity.');
+            }
+
+            if (false === $this->isGranted('DELETE', $entity)) {
+                throw new AccessDeniedException();
+            }
+
+            $em->remove($entity);
+            $em->flush();
+        }
+
+        return new RedirectResponse($this->generateUrl('eetys_admin_collections'));
     }
 }

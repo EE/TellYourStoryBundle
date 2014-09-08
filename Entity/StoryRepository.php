@@ -88,9 +88,7 @@ class StoryRepository extends EntityRepository
     private function getByCollectionQb($id, $alias = 's')
     {
         return $this->createQueryBuilder($alias)
-            ->select('s')
-            ->from('EETYSBundle:Story', 's')
-            ->join('s.storyCollections', 'sc')
+            ->join($alias . '.storyCollections', 'sc')
             ->where('sc.id = :storyCollectionId')
             ->setParameter('storyCollectionId', $id);
     }
