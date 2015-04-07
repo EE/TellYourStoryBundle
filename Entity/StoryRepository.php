@@ -185,7 +185,7 @@ class StoryRepository extends EntityRepository
      */
     public function findPublishedByCollection($id)
     {
-        return $this->addPublished($this->getByCollectionQb($id, 'k'))->getQuery()->execute();
+        return $this->addPublished($this->getByCollectionQb($id, 'k'), 'k')->getQuery()->execute();
     }
 
     /**
@@ -195,6 +195,6 @@ class StoryRepository extends EntityRepository
      */
     public function findOwnedOrPublishedByCollection($id, User $user)
     {
-        return $this->addOwnedOrPublished($this->getByCollectionQb($id, 'k'), $user)->getQuery()->execute();
+        return $this->addOwnedOrPublished($this->getByCollectionQb($id, 'k'), $user, 'k')->getQuery()->execute();
     }
 }
