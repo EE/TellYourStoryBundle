@@ -3,6 +3,7 @@
 namespace EE\TYSBundle\Controller;
 
 use EE\TYSBundle\Entity\StoryRepository;
+use EE\TYSBundle\Entity\User;
 use EE\TYSBundle\Form\AdminStoryType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +62,7 @@ class StoryController extends BasicController
     {
         $entity = new Story();
 
-        if (false === $this->isGranted('NEW', $entity)) {
+        if (false === $this->isGranted('NEW', $entity) || !$this->getUser() instanceof User) {
             throw new AccessDeniedException();
         }
 
@@ -95,7 +96,7 @@ class StoryController extends BasicController
     {
         $entity = new Story();
 
-        if (false === $this->isGranted('NEW', $entity)) {
+        if (false === $this->isGranted('NEW', $entity) || !$this->getUser() instanceof User) {
             throw new AccessDeniedException();
         }
 

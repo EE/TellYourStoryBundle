@@ -20,6 +20,10 @@ class UserController extends Controller
             throw new AccessDeniedException("You have to be logged in");
         }
 
+        if (!$this->getUser() instanceof User) {
+            throw new AccessDeniedException();
+        }
+
         return $this->render('EETYSBundle:User:dashboard.html.twig', array(
             'organizationForm' =>  $this->createOrganizationForm(
                 $this->getUser()->getId()
@@ -29,6 +33,10 @@ class UserController extends Controller
 
     public function setOrganizationAction(Request $request)
     {
+        if (!$this->getUser() instanceof User) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->createOrganizationForm($this->getUser()->getId());
         $form->submit($request);
 
