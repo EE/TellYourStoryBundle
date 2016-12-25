@@ -2,6 +2,7 @@
 
 namespace EE\TYSBundle\Controller;
 
+use EE\TYSBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -113,7 +114,9 @@ class ItemController extends Controller
             }
             $item->setStory($story);
 
-            $item->setCreatedBy($this->getUser());
+            if ($this->getUser() instanceof User) {
+                $item->setCreatedBy($this->getUser());
+            }
 
             $em->persist($item);
             $em->flush();
