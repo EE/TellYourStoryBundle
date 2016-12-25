@@ -62,7 +62,7 @@ class StoryController extends BasicController
     {
         $entity = new Story();
 
-        if (false === $this->isGranted('NEW', $entity) || !$this->getUser() instanceof User) {
+        if (false === $this->isGranted('NEW', $entity)) {
             throw new AccessDeniedException();
         }
 
@@ -73,7 +73,9 @@ class StoryController extends BasicController
             $em = $this->getDoctrine()->getManager();
 
             $this->handleUpload($entity);
-            $entity->setCreatedBy($this->getUser());
+            if ($this->getUser() instanceof User) {
+                $entity->setCreatedBy($this->getUser());
+            }
 
             $em->persist($entity);
             $em->flush();
@@ -96,7 +98,7 @@ class StoryController extends BasicController
     {
         $entity = new Story();
 
-        if (false === $this->isGranted('NEW', $entity) || !$this->getUser() instanceof User) {
+        if (false === $this->isGranted('NEW', $entity)) {
             throw new AccessDeniedException();
         }
 
